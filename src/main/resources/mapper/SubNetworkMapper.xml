@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scu.csaserver.mapper.SubNetworkMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.SubNetwork">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="subNetworkName" column="sub_network_name" jdbcType="VARCHAR"/>
+            <result property="physicalType" column="physical_type" jdbcType="VARCHAR"/>
+            <result property="logicalType" column="logical_type" jdbcType="VARCHAR"/>
+            <result property="nodeSum" column="node_sum" jdbcType="INTEGER"/>
+            <result property="linkSum" column="link_sum" jdbcType="INTEGER"/>
+            <result property="nodeConnectivity" column="node_connectivity" jdbcType="INTEGER"/>
+            <result property="linkConnectivity" column="link_connectivity" jdbcType="INTEGER"/>
+            <result property="reliability" column="reliability" jdbcType="VARCHAR"/>
+            <result property="vulnerabilitySum" column="vulnerability_sum" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,sub_network_name,physical_type,
+        logical_type,node_sum,link_sum,
+        node_connectivity,link_connectivity,reliability,
+        vulnerability_sum
+    </sql>
+</mapper>

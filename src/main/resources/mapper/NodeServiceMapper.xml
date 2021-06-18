@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scu.csaserver.mapper.NodeServiceMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.NodeService">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="nodeId" column="node_id" jdbcType="INTEGER"/>
+            <result property="serviceId" column="service_id" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="serviceControllable" column="service_controllable" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,node_id,service_id,
+        create_time,service_controllable
+    </sql>
+</mapper>

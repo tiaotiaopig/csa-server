@@ -43,7 +43,7 @@ CREATE TABLE `node`  (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `node-service`  (
+CREATE TABLE `node_service`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '节点和服务关系id',
   `node_id` int NULL COMMENT '节点id',
   `service_id` int NULL COMMENT '服务id',
@@ -52,7 +52,7 @@ CREATE TABLE `node-service`  (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `service`  (
+CREATE TABLE `service_net`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '服务索引id',
   `service_name` varchar(255) NULL COMMENT '服务名称',
   `service_port` int NULL COMMENT '服务端口',
@@ -76,7 +76,7 @@ CREATE TABLE `sub_network`  (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `sub_network-link`  (
+CREATE TABLE `sub_network_link`  (
   `id` int NOT NULL COMMENT '网络-边关系索引id\r\n',
   `sub_network_id` int NULL COMMENT '网络id',
   `link_id` int NULL COMMENT '边id',
@@ -84,7 +84,7 @@ CREATE TABLE `sub_network-link`  (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `sub_network-node`  (
+CREATE TABLE `sub_network_node`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '网络节点关系索引id',
   `sub_network_id` int NULL COMMENT '网络id',
   `node_id` int NOT NULL COMMENT '节点id',
@@ -93,9 +93,10 @@ CREATE TABLE `sub_network-node`  (
 );
 
 ALTER TABLE `network` ADD CONSTRAINT `fk_network_network_2` FOREIGN KEY (`sub_network_id`) REFERENCES `sub_network` (`id`);
-ALTER TABLE `node-service` ADD CONSTRAINT `fk_node-service_node-service_1` FOREIGN KEY (`service_id`) REFERENCES `service` (`id`);
-ALTER TABLE `node-service` ADD CONSTRAINT `fk_node-service_node-service_2` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`);
-ALTER TABLE `sub_network-link` ADD CONSTRAINT `fk_network-link_network-link_2` FOREIGN KEY (`link_id`) REFERENCES `link` (`id`);
-ALTER TABLE `sub_network-link` ADD FOREIGN KEY (`sub_network_id`) REFERENCES `sub_network` (`id`);
-ALTER TABLE `sub_network-node` ADD CONSTRAINT `fk_network-node_network-node_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`);
-ALTER TABLE `sub_network-node` ADD CONSTRAINT `fk_network-node_network-node_2` FOREIGN KEY (`sub_network_id`) REFERENCES `sub_network` (`id`);
+ALTER TABLE `node_service` ADD CONSTRAINT `fk_node-service_node-service_1` FOREIGN KEY (`service_id`) REFERENCES `service_net` (`id`);
+ALTER TABLE `node_service` ADD CONSTRAINT `fk_node-service_node-service_2` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`);
+ALTER TABLE `sub_network_link` ADD CONSTRAINT `fk_network-link_network-link_2` FOREIGN KEY (`link_id`) REFERENCES `link` (`id`);
+ALTER TABLE `sub_network_link` ADD FOREIGN KEY (`sub_network_id`) REFERENCES `sub_network` (`id`);
+ALTER TABLE `sub_network_node` ADD CONSTRAINT `fk_network-node_network-node_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`);
+ALTER TABLE `sub_network_node` ADD CONSTRAINT `fk_network-node_network-node_2` FOREIGN KEY (`sub_network_id`) REFERENCES `sub_network` (`id`);
+

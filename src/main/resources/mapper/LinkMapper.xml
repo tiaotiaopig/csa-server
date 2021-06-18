@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scu.csaserver.mapper.LinkMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.Link">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="sourceNodeId" column="source_node_id" jdbcType="INTEGER"/>
+            <result property="targetNodeId" column="target_node_id" jdbcType="INTEGER"/>
+            <result property="linkName" column="link_name" jdbcType="VARCHAR"/>
+            <result property="bandwidth" column="bandwidth" jdbcType="DOUBLE"/>
+            <result property="delay" column="delay" jdbcType="FLOAT"/>
+            <result property="losePackage" column="lose_package" jdbcType="FLOAT"/>
+            <result property="sn" column="sn" jdbcType="FLOAT"/>
+            <result property="linkType" column="link_type" jdbcType="VARCHAR"/>
+            <result property="spectrumUtilization" column="spectrum_utilization" jdbcType="FLOAT"/>
+            <result property="channelSum" column="channel_sum" jdbcType="INTEGER"/>
+            <result property="protocolLevel" column="protocol_level" jdbcType="VARCHAR"/>
+            <result property="protocolType" column="protocol_type" jdbcType="VARCHAR"/>
+            <result property="initWeight" column="init_weight" jdbcType="FLOAT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,source_node_id,target_node_id,
+        link_name,bandwidth,delay,
+        lose_package,sn,link_type,
+        spectrum_utilization,channel_sum,protocol_level,
+        protocol_type,init_weight,create_time
+    </sql>
+</mapper>

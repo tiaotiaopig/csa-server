@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scu.csaserver.mapper.SubNetworkNodeMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.SubNetworkNode">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="subNetworkId" column="sub_network_id" jdbcType="INTEGER"/>
+            <result property="nodeId" column="node_id" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,sub_network_id,node_id,
+        create_time
+    </sql>
+</mapper>

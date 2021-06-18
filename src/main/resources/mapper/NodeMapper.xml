@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scu.csaserver.mapper.NodeMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.Node">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="nodeIp" column="node_ip" jdbcType="VARCHAR"/>
+            <result property="nodeMac" column="node_mac" jdbcType="VARCHAR"/>
+            <result property="nodeVlan" column="node_vlan" jdbcType="VARCHAR"/>
+            <result property="nodeName" column="node_name" jdbcType="VARCHAR"/>
+            <result property="physicalType" column="physical_type" jdbcType="INTEGER"/>
+            <result property="logicalType" column="logical_type" jdbcType="INTEGER"/>
+            <result property="spectrumFloor" column="spectrum_floor" jdbcType="DOUBLE"/>
+            <result property="spectrumTop" column="spectrum_top" jdbcType="DOUBLE"/>
+            <result property="spectrumAvailability" column="spectrum_availability" jdbcType="FLOAT"/>
+            <result property="throughput" column="throughput" jdbcType="INTEGER"/>
+            <result property="computePerformance" column="compute_performance" jdbcType="INTEGER"/>
+            <result property="hardwareType" column="hardware_type" jdbcType="INTEGER"/>
+            <result property="serviceSum" column="service_sum" jdbcType="INTEGER"/>
+            <result property="vulnerabilitySum" column="vulnerability_sum" jdbcType="INTEGER"/>
+            <result property="controllableLevel" column="controllable_level" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,node_ip,node_mac,
+        node_vlan,node_name,physical_type,
+        logical_type,spectrum_floor,spectrum_top,
+        spectrum_availability,throughput,compute_performance,
+        hardware_type,service_sum,vulnerability_sum,
+        controllable_level
+    </sql>
+</mapper>
