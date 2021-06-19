@@ -10,6 +10,7 @@ import java.util.List;
 
 @SpringBootTest
 class NodeMapperTest {
+
     @Resource
     private NodeMapper nodeMapper;
 
@@ -18,5 +19,4 @@ class NodeMapperTest {
         List<Node> nodes = nodeMapper.selectList(null);
         System.out.println(nodes);
     }
-
 }

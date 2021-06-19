@@ -2,18 +2,19 @@ package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.Node;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @SpringBootTest
 class NodeServiceTest {
-    @Resource
+
+    @Autowired
     private NodeService nodeService;
 
     @Test
-    public void testSelect () {
+    public void testSelectAll () {
         List<Node> list = nodeService.list();
         System.out.println(list);
     }

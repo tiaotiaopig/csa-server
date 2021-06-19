@@ -18,23 +18,26 @@ public class SubNetworkNode implements Serializable {
     /**
      * 网络节点关系索引id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 网络id
      */
-    private Integer subNetworkId;
+    @TableField(value = "sub_network_id")
+    private Integer sub_network_id;
 
     /**
      * 节点id
      */
-    private Integer nodeId;
+    @TableField(value = "node_id")
+    private Integer node_id;
 
     /**
      * 关系创建时间
      */
-    private Date createTime;
+    @TableField(value = "gmt_create")
+    private Date gmt_create;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

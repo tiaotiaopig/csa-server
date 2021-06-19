@@ -17,13 +17,14 @@ public class Network implements Serializable {
     /**
      * 全局网络id
      */
-    @TableId
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 子网id
      */
-    private Integer subNetworkId;
+    @TableField(value = "sub_network_id")
+    private Integer sub_network_id;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

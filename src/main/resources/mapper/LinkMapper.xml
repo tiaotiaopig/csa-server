@@ -6,20 +6,21 @@
 
     <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.Link">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="sourceNodeId" column="source_node_id" jdbcType="INTEGER"/>
-            <result property="targetNodeId" column="target_node_id" jdbcType="INTEGER"/>
-            <result property="linkName" column="link_name" jdbcType="VARCHAR"/>
-            <result property="bandwidth" column="bandwidth" jdbcType="DOUBLE"/>
+            <result property="source_node_id" column="source_node_id" jdbcType="INTEGER"/>
+            <result property="target_node_id" column="target_node_id" jdbcType="INTEGER"/>
+            <result property="link_name" column="link_name" jdbcType="VARCHAR"/>
+            <result property="bandwidth" column="bandwidth" jdbcType="FLOAT"/>
             <result property="delay" column="delay" jdbcType="FLOAT"/>
-            <result property="losePackage" column="lose_package" jdbcType="FLOAT"/>
+            <result property="lose_package" column="lose_package" jdbcType="DECIMAL"/>
             <result property="sn" column="sn" jdbcType="FLOAT"/>
-            <result property="linkType" column="link_type" jdbcType="VARCHAR"/>
-            <result property="spectrumUtilization" column="spectrum_utilization" jdbcType="FLOAT"/>
-            <result property="channelSum" column="channel_sum" jdbcType="INTEGER"/>
-            <result property="protocolLevel" column="protocol_level" jdbcType="VARCHAR"/>
-            <result property="protocolType" column="protocol_type" jdbcType="VARCHAR"/>
-            <result property="initWeight" column="init_weight" jdbcType="FLOAT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="link_type" column="link_type" jdbcType="INTEGER"/>
+            <result property="spectrum_utilization" column="spectrum_utilization" jdbcType="DECIMAL"/>
+            <result property="channel_sum" column="channel_sum" jdbcType="INTEGER"/>
+            <result property="protocol_level" column="protocol_level" jdbcType="INTEGER"/>
+            <result property="protocol_type" column="protocol_type" jdbcType="INTEGER"/>
+            <result property="init_weight" column="init_weight" jdbcType="DECIMAL"/>
+            <result property="gmt_create" column="gmt_create" jdbcType="TIMESTAMP"/>
+            <result property="gmt_modified" column="gmt_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -27,6 +28,7 @@
         link_name,bandwidth,delay,
         lose_package,sn,link_type,
         spectrum_utilization,channel_sum,protocol_level,
-        protocol_type,init_weight,create_time
+        protocol_type,init_weight,gmt_create,
+        gmt_modified
     </sql>
 </mapper>

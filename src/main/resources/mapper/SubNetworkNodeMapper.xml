@@ -6,13 +6,13 @@
 
     <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.SubNetworkNode">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="subNetworkId" column="sub_network_id" jdbcType="INTEGER"/>
-            <result property="nodeId" column="node_id" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="sub_network_id" column="sub_network_id" jdbcType="INTEGER"/>
+            <result property="node_id" column="node_id" jdbcType="INTEGER"/>
+            <result property="gmt_create" column="gmt_create" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,sub_network_id,node_id,
-        create_time
+        gmt_create
     </sql>
 </mapper>

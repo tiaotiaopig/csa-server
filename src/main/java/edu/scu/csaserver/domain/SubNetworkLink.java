@@ -19,23 +19,26 @@ public class SubNetworkLink implements Serializable {
      * 网络-边关系索引id
 
      */
-    @TableId
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 网络id
      */
-    private Integer subNetworkId;
+    @TableField(value = "sub_network_id")
+    private Integer sub_network_id;
 
     /**
      * 边id
      */
-    private Integer linkId;
+    @TableField(value = "link_id")
+    private Integer link_id;
 
     /**
      * 关系创建时间
      */
-    private Date createTime;
+    @TableField(value = "gmt_create")
+    private Date gmt_create;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

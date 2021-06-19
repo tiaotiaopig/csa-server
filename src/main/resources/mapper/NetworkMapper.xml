@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.Network">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="subNetworkId" column="sub_network_id" jdbcType="INTEGER"/>
+            <result property="sub_network_id" column="sub_network_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

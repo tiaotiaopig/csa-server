@@ -18,78 +18,98 @@ public class Link implements Serializable {
     /**
      * 连接详情id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 源节点id
      */
-    private Integer sourceNodeId;
+    @TableField(value = "source_node_id")
+    private Integer source_node_id;
 
     /**
      * 目的节点id
      */
-    private Integer targetNodeId;
+    @TableField(value = "target_node_id")
+    private Integer target_node_id;
 
     /**
      * 连接名称
      */
-    private String linkName;
+    @TableField(value = "link_name")
+    private String link_name;
 
     /**
      * 连接带宽
      */
+    @TableField(value = "bandwidth")
     private Double bandwidth;
 
     /**
      * 连接时延
      */
+    @TableField(value = "delay")
     private Double delay;
 
     /**
      * 丢包率
      */
-    private Double losePackage;
+    @TableField(value = "lose_package")
+    private Integer lose_package;
 
     /**
      * 信噪比
      */
+    @TableField(value = "sn")
     private Double sn;
 
     /**
      * 连接类型（有线，无线）
      */
-    private String linkType;
+    @TableField(value = "link_type")
+    private Integer link_type;
 
     /**
      * 频段占用率（可选）
      */
-    private Double spectrumUtilization;
+    @TableField(value = "spectrum_utilization")
+    private Integer spectrum_utilization;
 
     /**
      * 信道电路数（可选）
      */
-    private Integer channelSum;
+    @TableField(value = "channel_sum")
+    private Integer channel_sum;
 
     /**
      * 连接逻辑类型(协议层次)
      */
-    private String protocolLevel;
+    @TableField(value = "protocol_level")
+    private Integer protocol_level;
 
     /**
      * 连接服务类型（可选, 协议类型）
      */
-    private String protocolType;
+    @TableField(value = "protocol_type")
+    private Integer protocol_type;
 
     /**
      * 连接初始权重
      */
-    private Double initWeight;
+    @TableField(value = "init_weight")
+    private Integer init_weight;
 
     /**
      * 连接创建时间
      */
-    private Date createTime;
+    @TableField(value = "gmt_create")
+    private Date gmt_create;
+
+    /**
+     * 连接修改时间
+     */
+    @TableField(value = "gmt_modified")
+    private Date gmt_modified;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
