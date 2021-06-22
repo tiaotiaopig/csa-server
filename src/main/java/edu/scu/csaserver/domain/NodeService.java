@@ -18,32 +18,28 @@ public class NodeService implements Serializable {
     /**
      * 节点和服务关系id
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
      * 节点id
      */
-    @TableField(value = "node_id")
-    private Integer node_id;
+    private Integer nodeId;
 
     /**
      * 服务id
      */
-    @TableField(value = "service_id")
-    private Integer service_id;
+    private Integer serviceId;
 
     /**
      * 关系创建时间
      */
-    @TableField(value = "gmt_create")
-    private Date gmt_create;
+    private Date gmtCreate;
 
     /**
      * 服务可运用能力（可破坏，可利用，可控制）
      */
-    @TableField(value = "service_controllable")
-    private String service_controllable;
+    private String serviceControllable;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

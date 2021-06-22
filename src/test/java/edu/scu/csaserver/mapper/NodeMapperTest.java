@@ -2,11 +2,13 @@ package edu.scu.csaserver.mapper;
 
 import edu.scu.csaserver.domain.Node;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class NodeMapperTest {
@@ -15,8 +17,10 @@ class NodeMapperTest {
     private NodeMapper nodeMapper;
 
     @Test
-    public void testSelectAll () {
+    public void testSelectAll() {
         List<Node> nodes = nodeMapper.selectList(null);
-        System.out.println(nodes);
+        for (Node node : nodes) {
+            System.out.println(node);
+        }
     }
 }

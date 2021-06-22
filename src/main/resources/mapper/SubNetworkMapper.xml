@@ -6,17 +6,17 @@
 
     <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.SubNetwork">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="sub_network_name" column="sub_network_name" jdbcType="VARCHAR"/>
-            <result property="physical_type" column="physical_type" jdbcType="INTEGER"/>
-            <result property="logical_type" column="logical_type" jdbcType="INTEGER"/>
-            <result property="node_sum" column="node_sum" jdbcType="INTEGER"/>
-            <result property="link_sum" column="link_sum" jdbcType="INTEGER"/>
-            <result property="node_connectivity" column="node_connectivity" jdbcType="INTEGER"/>
-            <result property="link_connectivity" column="link_connectivity" jdbcType="INTEGER"/>
+            <result property="subNetworkName" column="sub_network_name" jdbcType="VARCHAR"/>
+            <result property="physicalType" column="physical_type" jdbcType="INTEGER"/>
+            <result property="logicalType" column="logical_type" jdbcType="INTEGER"/>
+            <result property="nodeSum" column="node_sum" jdbcType="INTEGER"/>
+            <result property="linkSum" column="link_sum" jdbcType="INTEGER"/>
+            <result property="nodeConnectivity" column="node_connectivity" jdbcType="INTEGER"/>
+            <result property="linkConnectivity" column="link_connectivity" jdbcType="INTEGER"/>
             <result property="reliability" column="reliability" jdbcType="DECIMAL"/>
-            <result property="vulnerability_sum" column="vulnerability_sum" jdbcType="INTEGER"/>
-            <result property="gmt_create" column="gmt_create" jdbcType="TIMESTAMP"/>
-            <result property="gmt_modified" column="gmt_modified" jdbcType="TIMESTAMP"/>
+            <result property="vulnerabilitySum" column="vulnerability_sum" jdbcType="INTEGER"/>
+            <result property="gmtCreate" column="gmt_create" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="gmt_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

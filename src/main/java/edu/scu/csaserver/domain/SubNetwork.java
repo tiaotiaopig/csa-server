@@ -18,74 +18,63 @@ public class SubNetwork implements Serializable {
     /**
      * 网络id
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
      * 网络名称
      */
-    @TableField(value = "sub_network_name")
-    private String sub_network_name;
+    private String subNetworkName;
 
     /**
      * 网络物理类型(有线，无线)
      */
-    @TableField(value = "physical_type")
-    private Integer physical_type;
+    private Integer physicalType;
 
     /**
      * 网络逻辑类型（星型、总线型等）
      */
-    @TableField(value = "logical_type")
-    private Integer logical_type;
+    private Integer logicalType;
 
     /**
      * 节点数量
      */
-    @TableField(value = "node_sum")
-    private Integer node_sum;
+    private Integer nodeSum;
 
     /**
      * 边数量
      */
-    @TableField(value = "link_sum")
-    private Integer link_sum;
+    private Integer linkSum;
 
     /**
      * 节点连通度
      */
-    @TableField(value = "node_connectivity")
-    private Integer node_connectivity;
+    private Integer nodeConnectivity;
 
     /**
      * 边连通度
      */
-    @TableField(value = "link_connectivity")
-    private Integer link_connectivity;
+    private Integer linkConnectivity;
 
     /**
      * 网络可靠度
      */
-    @TableField(value = "reliability")
     private Integer reliability;
 
     /**
      * 网络脆弱点总数
      */
-    @TableField(value = "vulnerability_sum")
-    private Integer vulnerability_sum;
+    private Integer vulnerabilitySum;
 
     /**
      * 记录创建时间
      */
-    @TableField(value = "gmt_create")
-    private Date gmt_create;
+    private Date gmtCreate;
 
     /**
      * 记录修改时间
      */
-    @TableField(value = "gmt_modified")
-    private Date gmt_modified;
+    private Date gmtModified;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

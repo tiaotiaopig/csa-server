@@ -6,10 +6,10 @@
 
     <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.NodeService">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="node_id" column="node_id" jdbcType="INTEGER"/>
-            <result property="service_id" column="service_id" jdbcType="INTEGER"/>
-            <result property="gmt_create" column="gmt_create" jdbcType="TIMESTAMP"/>
-            <result property="service_controllable" column="service_controllable" jdbcType="VARCHAR"/>
+            <result property="nodeId" column="node_id" jdbcType="INTEGER"/>
+            <result property="serviceId" column="service_id" jdbcType="INTEGER"/>
+            <result property="gmtCreate" column="gmt_create" jdbcType="TIMESTAMP"/>
+            <result property="serviceControllable" column="service_controllable" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

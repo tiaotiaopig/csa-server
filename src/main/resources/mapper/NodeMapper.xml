@@ -6,23 +6,23 @@
 
     <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.Node">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="node_ip" column="node_ip" jdbcType="VARCHAR"/>
-            <result property="node_mac" column="node_mac" jdbcType="VARCHAR"/>
-            <result property="node_vlan" column="node_vlan" jdbcType="INTEGER"/>
-            <result property="node_name" column="node_name" jdbcType="VARCHAR"/>
-            <result property="physical_type" column="physical_type" jdbcType="INTEGER"/>
-            <result property="logical_type" column="logical_type" jdbcType="INTEGER"/>
-            <result property="spectrum_floor" column="spectrum_floor" jdbcType="DOUBLE"/>
-            <result property="spectrum_top" column="spectrum_top" jdbcType="DOUBLE"/>
-            <result property="spectrum_availability" column="spectrum_availability" jdbcType="DECIMAL"/>
+            <result property="nodeIp" column="node_ip" jdbcType="VARCHAR"/>
+            <result property="nodeMac" column="node_mac" jdbcType="VARCHAR"/>
+            <result property="nodeVlan" column="node_vlan" jdbcType="INTEGER"/>
+            <result property="nodeName" column="node_name" jdbcType="VARCHAR"/>
+            <result property="physicalType" column="physical_type" jdbcType="INTEGER"/>
+            <result property="logicalType" column="logical_type" jdbcType="INTEGER"/>
+            <result property="spectrumFloor" column="spectrum_floor" jdbcType="DOUBLE"/>
+            <result property="spectrumTop" column="spectrum_top" jdbcType="DOUBLE"/>
+            <result property="spectrumAvailability" column="spectrum_availability" jdbcType="DECIMAL"/>
             <result property="throughput" column="throughput" jdbcType="INTEGER"/>
-            <result property="compute_performance" column="compute_performance" jdbcType="INTEGER"/>
-            <result property="hardware_type" column="hardware_type" jdbcType="INTEGER"/>
-            <result property="service_sum" column="service_sum" jdbcType="INTEGER"/>
-            <result property="vulnerability_sum" column="vulnerability_sum" jdbcType="INTEGER"/>
-            <result property="controllable_level" column="controllable_level" jdbcType="INTEGER"/>
-            <result property="gmt_create" column="gmt_create" jdbcType="TIMESTAMP"/>
-            <result property="gmt_modified" column="gmt_modified" jdbcType="TIMESTAMP"/>
+            <result property="computePerformance" column="compute_performance" jdbcType="INTEGER"/>
+            <result property="hardwareType" column="hardware_type" jdbcType="INTEGER"/>
+            <result property="serviceSum" column="service_sum" jdbcType="INTEGER"/>
+            <result property="vulnerabilitySum" column="vulnerability_sum" jdbcType="INTEGER"/>
+            <result property="controllableLevel" column="controllable_level" jdbcType="INTEGER"/>
+            <result property="gmtCreate" column="gmt_create" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="gmt_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

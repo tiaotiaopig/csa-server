@@ -6,13 +6,13 @@
 
     <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.ServiceNet">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="service_name" column="service_name" jdbcType="VARCHAR"/>
-            <result property="service_port" column="service_port" jdbcType="INTEGER"/>
-            <result property="service_version" column="service_version" jdbcType="VARCHAR"/>
-            <result property="service_vulnerability_sum" column="service_vulnerability_sum" jdbcType="INTEGER"/>
-            <result property="service_safety_level" column="service_safety_level" jdbcType="VARCHAR"/>
-            <result property="gmt_create" column="gmt_create" jdbcType="TIMESTAMP"/>
-            <result property="gmt_modified" column="gmt_modified" jdbcType="TIMESTAMP"/>
+            <result property="serviceName" column="service_name" jdbcType="VARCHAR"/>
+            <result property="servicePort" column="service_port" jdbcType="INTEGER"/>
+            <result property="serviceVersion" column="service_version" jdbcType="VARCHAR"/>
+            <result property="serviceVulnerabilitySum" column="service_vulnerability_sum" jdbcType="INTEGER"/>
+            <result property="serviceSafetyLevel" column="service_safety_level" jdbcType="VARCHAR"/>
+            <result property="gmtCreate" column="gmt_create" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="gmt_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

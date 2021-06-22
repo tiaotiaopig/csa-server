@@ -6,9 +6,9 @@
 
     <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.SubNetworkLink">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="sub_network_id" column="sub_network_id" jdbcType="INTEGER"/>
-            <result property="link_id" column="link_id" jdbcType="INTEGER"/>
-            <result property="gmt_create" column="gmt_create" jdbcType="TIMESTAMP"/>
+            <result property="subNetworkId" column="sub_network_id" jdbcType="INTEGER"/>
+            <result property="linkId" column="link_id" jdbcType="INTEGER"/>
+            <result property="gmtCreate" column="gmt_create" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
