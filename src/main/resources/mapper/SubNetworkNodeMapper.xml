@@ -15,4 +15,7 @@
         id,sub_network_id,node_id,
         gmt_create
     </sql>
+    <select id="getNodeId" resultType="java.lang.Integer">
+        select node_id from sub_network_node where sub_network_id = #{id};
+    </select>
 </mapper>
