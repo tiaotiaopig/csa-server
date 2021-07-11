@@ -33,4 +33,7 @@
         hardware_type,service_sum,vulnerability_sum,
         controllable_level,gmt_create,gmt_modified
     </sql>
+    <select id="getNodePage" resultType="edu.scu.csaserver.domain.Node">
+        select * from node limit #{page}, #{limit};
+    </select>
 </mapper>

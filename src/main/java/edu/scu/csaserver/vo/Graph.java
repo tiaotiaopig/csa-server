@@ -1,5 +1,6 @@
 package edu.scu.csaserver.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -16,16 +17,19 @@ public class Graph {
     /**
      * 相当于拓扑图的子网
      */
+    @ApiModelProperty("相当于拓扑图的子网")
     private List<Category> categories;
 
     /**
      * 所有节点
      */
+    @ApiModelProperty("所有节点")
     private List<NodeInfo> nodes;
 
     /**
      * 所有边
      */
+    @ApiModelProperty("所有边")
     private List<LinkInfo> links;
 
     public Graph () {

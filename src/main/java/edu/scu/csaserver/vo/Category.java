@@ -1,5 +1,6 @@
 package edu.scu.csaserver.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,10 +16,12 @@ public class Category implements Serializable {
     /**
      * 类别名称
      */
+    @ApiModelProperty("类别名称")
     private String name;
     /**
      * 类别图形表示
      */
+    @ApiModelProperty("类别图形表示")
     private String symbol;
 
     private static final long serialVersionUID = 1L;
