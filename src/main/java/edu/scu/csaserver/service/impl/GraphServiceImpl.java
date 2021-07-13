@@ -29,6 +29,7 @@ public class GraphServiceImpl implements GraphService {
     private LinkMapper linkMapper;
     @Autowired
     private SubNetworkNodeMapper subNetworkNodeMapper;
+
     @Override
     public Graph generateGraph() {
         Graph graph = new Graph();
@@ -54,21 +55,17 @@ public class GraphServiceImpl implements GraphService {
             NodeInfo nodeInfo = new NodeInfo();
             nodeInfo.setName("节点" + node.getId());
             nodeInfo.setCategory(map.get(node.getId()));
-            nodeInfo.setNodeIp(node.getNodeIp());
-            nodeInfo.setNodeMac(node.getNodeMac());
-            nodeInfo.setServiceSum(node.getServiceSum());
-            nodeInfo.setControllableLevel(node.getControllableLevel());
+            nodeInfo.setNode(node);
             graph.getNodes().add(nodeInfo);
         }
         // 填充边的信息
+        // 边的source 和 target 要和 node 的 name 对应
         List<Link> links = linkMapper.selectList(null);
         for (Link link : links) {
             LinkInfo linkInfo = new LinkInfo();
             linkInfo.setSource("节点" + link.getSourceNodeId());
             linkInfo.setTarget("节点" + link.getTargetNodeId());
-            linkInfo.setBandwidth(link.getBandwidth());
-            linkInfo.setSn(link.getSn());
-            linkInfo.setLinkType(link.getLinkType());
+            linkInfo.setLink(link);
             graph.getLinks().add(linkInfo);
         }
         return graph;

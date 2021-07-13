@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2021/7/10 15:11
  */
 @Data
-public class Res {
+public class Res<T> {
     /**
      * 响应状态码
      */
@@ -24,12 +24,12 @@ public class Res {
      * 响应数据
      */
     @ApiModelProperty("响应数据")
-    private Object data;
+    private T data;
 
     public Res(){}
 
     public Res(Integer code, String msg){
-        this.code = code;
         this.msg = msg;
+        this.code = code;
     }
 }

@@ -1,8 +1,8 @@
 package edu.scu.csaserver.controller;
 
-import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.ro.Req;
 import edu.scu.csaserver.service.LinkService;
+import edu.scu.csaserver.vo.LinkInfo;
 import edu.scu.csaserver.vo.Res;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,18 +22,24 @@ import java.util.List;
 @RequestMapping("/link")
 @Api(tags = "连接管理")
 public class LinkController {
+
+    private final LinkService linkService;
     @Autowired
-    private LinkService linkService;
+    public LinkController (LinkService linkService) {
+        this.linkService = linkService;
+    }
 
     @CrossOrigin
     @PostMapping("/relatedLinks")
     @ApiOperation(value = "获取节点相关的边", notes = "只返回相关边信息")
-    public Res relatedLinks(@RequestBody @ApiParam(value = "统一请求参数", required = true) Req request) {
-        Res response = new Res(200, "请求成功");
-        Object obj = request.getParams();
-        LinkedHashMap<String, List<Integer>> nodeIds = (LinkedHashMap<String, List<Integer>>)request.getParams();
-        List<Link> links = linkService.getLinksByNodeId(nodeIds.get("nodes"));
-        response.setData(links);
-        return response;
+    public Res<List<LinkInfo>> relatedLinks(@RequestBody @ApiParam(value = "统一请求参数", required = true) Req<LinkedHashMap<String, List<Integer>>> request) {
+        Res<List<LinkInfo>> res = new Res<>(200, "请求成功");
+        // 获取前端请求参数，这里是节点id数组
+        // 如果没有对前端请求信息进行java对象的封装
+        // 返回的是LinkedHashMap<String, Object>
+        LinkedHashMap<String, List<Integer>> nodeIds = request.getParams();
+        List<LinkInfo> linkInfos = linkService.getLinksByNodeId(nodeIds.get("nodes"));
+        res.setData(linkInfos);
+        return res;
     }
 }

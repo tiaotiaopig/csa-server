@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 
+ * 数据库中的 link 表对应的实体类
  * @TableName link
  */
 @TableName(value ="link")

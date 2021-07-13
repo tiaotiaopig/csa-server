@@ -1,5 +1,6 @@
 package edu.scu.csaserver.vo;
 
+import edu.scu.csaserver.domain.Node;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -24,96 +25,11 @@ public class NodeInfo implements Serializable {
      */
     @ApiModelProperty("节点类别")
     private String category;
-
     /**
-     * 节点IP地址(可选)
+     * 节点详情
      */
-    @ApiModelProperty("节点IP地址(可选)")
-    private String nodeIp;
-
-    /**
-     * 节点MAC（可选）
-     */
-    @ApiModelProperty("节点MAC（可选）")
-    private String nodeMac;
-
-    /**
-     * 节点vlan(可选)
-     */
-    @ApiModelProperty("节点vlan(可选)")
-    private Integer nodeVlan;
-
-    /**
-     * 节点名称
-     */
-    @ApiModelProperty("节点名称")
-    private String nodeName;
-
-    /**
-     * 节点物理类型
-     */
-    @ApiModelProperty("节点物理类型")
-    private Integer physicalType;
-
-    /**
-     * 节点逻辑类型
-     */
-    @ApiModelProperty("节点逻辑类型")
-    private Integer logicalType;
-
-    /**
-     * 频谱下限
-     */
-    @ApiModelProperty("频谱下限")
-    private Double spectrumFloor;
-
-    /**
-     * 频谱上限
-     */
-    @ApiModelProperty("频谱上限")
-    private Double spectrumTop;
-
-    /**
-     * 频谱可利用率
-     */
-    @ApiModelProperty("频谱可利用率")
-    private Integer spectrumAvailability;
-
-    /**
-     * 吞吐量
-     */
-    @ApiModelProperty("吞吐量")
-    private Integer throughput;
-
-    /**
-     * 节点计算性能
-     */
-    @ApiModelProperty("节点计算性能")
-    private Integer computePerformance;
-
-    /**
-     * 硬件类型
-     */
-    @ApiModelProperty("硬件类型")
-    private Integer hardwareType;
-
-    /**
-     * 节点服务总数
-     */
-    @ApiModelProperty("节点服务总数")
-    private Integer serviceSum;
-
-    /**
-     * 节点漏洞总数
-     */
-    @ApiModelProperty("节点漏洞总数")
-    private Integer vulnerabilitySum;
-
-    /**
-     * 节点可控制级别
-     */
-    @ApiModelProperty("节点可控制级别")
-    private Integer controllableLevel;
+    @ApiModelProperty("节点详情（节点实体类）")
+    private Node node;
 
     private static final long serialVersionUID = 1L;
 }

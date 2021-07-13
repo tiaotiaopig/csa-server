@@ -16,6 +16,11 @@
         gmt_create
     </sql>
     <select id="getNodeId" resultType="java.lang.Integer">
-        select node_id from sub_network_node where sub_network_id = #{id};
+        select node_id from sub_network_node where sub_network_id = #{subId};
+    </select>
+    <select id="getSubByNodeId" resultType="java.lang.Integer">
+        select sub_network_id
+            from sub_network_node
+            where node_id = #{nodeId} limit 1
     </select>
 </mapper>

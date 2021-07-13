@@ -17,6 +17,8 @@ import lombok.Data;
 public class Node implements Serializable {
     /**
      * 节点详细信息id索引
+     * 不能叫id,echarts绘图时，会根据 name 或者 id
+     * 同时具有，边不显示
      */
     @TableId(type = IdType.AUTO)
     private Integer id;

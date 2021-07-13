@@ -53,5 +53,5 @@ public class NodeList {
      * 分页结果
      */
     @ApiModelProperty("响应数据")
-    private List<Node> data;
+    private List<NodeInfo> data;
 }

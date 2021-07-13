@@ -18,9 +18,11 @@ import java.util.List;
 @RequestMapping("/node")
 @Api(tags = "节点管理")
 public class NodeController {
-
+    private final NodeService nodeService;
     @Autowired
-    private NodeService nodeService;
+    public NodeController (NodeService nodeService) {
+        this.nodeService = nodeService;
+    }
 
     @CrossOrigin
     @ApiOperation(value = "节点分页查询", notes = "分页逻辑不完善")

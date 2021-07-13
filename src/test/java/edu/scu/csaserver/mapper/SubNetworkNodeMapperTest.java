@@ -15,7 +15,7 @@ class SubNetworkNodeMapperTest {
 
     @Test
     public void testSelect () {
-        System.out.println(subNetworkNodeMapper.getNodeId(1));
+        System.out.println(subNetworkNodeMapper.getSubByNodeId(10));
     }
 
 }

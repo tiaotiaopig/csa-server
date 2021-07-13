@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2021/7/10 15:08
  */
 @Data
-public class Req {
+public class Req<T> {
 
     /**
      * 请求口令，用于用户验证
@@ -20,5 +20,5 @@ public class Req {
      * 请求参数封装
      */
     @ApiModelProperty("请求参数json")
-    private Object params;
+    private T params;
 }

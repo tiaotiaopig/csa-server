@@ -2,14 +2,13 @@ package edu.scu.csaserver.service.impl;
 
 import edu.scu.csaserver.domain.Node;
 import edu.scu.csaserver.service.NodeService;
+import edu.scu.csaserver.vo.NodeInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class NodeServiceImplTest {
@@ -19,8 +18,8 @@ class NodeServiceImplTest {
 
     @Test
     void getNodePage() {
-        List<Node> list = nodeService.getNodePage(1, 5);
-        for (Node node : list) {
+        List<NodeInfo> list = nodeService.getNodePage(1, 5);
+        for (NodeInfo node : list) {
             System.out.println(node);
         }
     }
