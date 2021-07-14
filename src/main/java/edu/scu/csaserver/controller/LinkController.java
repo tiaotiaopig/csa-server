@@ -42,4 +42,15 @@ public class LinkController {
         res.setData(linkInfos);
         return res;
     }
+
+    @CrossOrigin
+    @ApiOperation(value = "获取连接（边）总数")
+    @GetMapping("/count")
+    public Res<Integer> getLinkCount() {
+        Res<Integer> res = new Res<>();
+        res.setCode(200);
+        res.setMsg("返回连接（边）总数");
+        res.setData(linkService.count());
+        return res;
+    }
 }

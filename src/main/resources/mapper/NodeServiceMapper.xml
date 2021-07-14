@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.scu.csaserver.mapper.NodeServiceMapper">
 
-    <resultMap id="BaseResultMap" type="edu.scu.csaserver.domain.NodeService">
+    <resultMap id="BaseResultMap" type="NodeService">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="nodeId" column="node_id" jdbcType="INTEGER"/>
             <result property="serviceId" column="service_id" jdbcType="INTEGER"/>
@@ -16,4 +16,23 @@
         id,node_id,service_id,
         gmt_create,service_controllable
     </sql>
+    <select id="serviceCount" resultType="ServiceCount">
+        WITH t_service_count(service_id, service_count) AS
+                 (SELECT
+                      service_id,
+                      COUNT( id ) AS service_count
+                  FROM
+                      node_service
+                  GROUP BY
+                      service_id)
+        SELECT
+            service_id,
+            service_name,
+            service_count
+        FROM
+            service_net AS a,
+            t_service_count AS b
+        WHERE
+            a.id = b.service_id;
+    </select>
 </mapper>

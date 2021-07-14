@@ -2,12 +2,12 @@ package edu.scu.csaserver.controller;
 
 import edu.scu.csaserver.service.NodeService;
 import edu.scu.csaserver.vo.NodeList;
+import edu.scu.csaserver.vo.Res;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * 节点相关操作接口
@@ -36,5 +36,27 @@ public class NodeController {
         Integer limitInt = Integer.parseInt(limit);
         nodeList.setData(nodeService.getNodePage(pageInt, limitInt));
         return nodeList;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "获取节点总数")
+    @GetMapping("/count")
+    public Res<Integer> getNodeCount() {
+        Res<Integer> res = new Res<>();
+        res.setCode(200);
+        res.setMsg("返回节点总数");
+        res.setData(nodeService.count());
+        return res;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "获取节点漏洞总数")
+    @GetMapping("/vulCount")
+    public Res<Integer> getNodeVulnerabilityCount() {
+        Res<Integer> res = new Res<>();
+        res.setCode(200);
+        res.setMsg("返回节点漏洞总数");
+        res.setData(nodeService.getNodeVulnerability());
+        return res;
     }
 }

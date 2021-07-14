@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface NodeService extends IService<Node> {
     List<NodeInfo> getNodePage(Integer page, Integer limit);
+
+    Integer getNodeVulnerability();
 }

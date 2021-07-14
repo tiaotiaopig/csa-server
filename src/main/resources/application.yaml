@@ -25,3 +25,10 @@ spring:
     validate-on-migrate: true
     # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
     baseline-on-migrate: true
+
+mybatis-plus:
+  # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，
+  # 注册后在 Mapper 对应的 XML 文件中可以直接使用类名，
+  # 而不用使用全限定的类名(即 XML 中调用的时候不用包含包名
+
+  type-aliases-package: edu.scu.csaserver.domain, edu.scu.csaserver.vo

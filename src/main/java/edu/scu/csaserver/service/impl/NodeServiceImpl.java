@@ -1,5 +1,6 @@
 package edu.scu.csaserver.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.Node;
 import edu.scu.csaserver.mapper.SubNetworkNodeMapper;
@@ -7,6 +8,7 @@ import edu.scu.csaserver.service.NodeService;
 import edu.scu.csaserver.mapper.NodeMapper;
 import edu.scu.csaserver.vo.NodeInfo;
 import edu.scu.csaserver.vo.NodeList;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,21 @@ implements NodeService{
             result.add(nodeInfo);
         }
         return result;
+    }
+
+    @Override
+    public Integer getNodeVulnerability() {
+        // 1. 创建QueryWrapper 对象
+        QueryWrapper<Node> query = new QueryWrapper<>();
+        // 2. 设置查询条件
+        query.select("vulnerability_sum");
+        // 3. 执行查询
+        List<Node> nodes = nodeMapper.selectList(query);
+        int sum = 0;
+        for (Node node : nodes) {
+            sum += node.getVulnerabilitySum();
+        }
+        return sum;
     }
 }
 
