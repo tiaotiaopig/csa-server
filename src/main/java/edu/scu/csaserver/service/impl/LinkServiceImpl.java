@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.service.LinkService;
 import edu.scu.csaserver.mapper.LinkMapper;
+import edu.scu.csaserver.utils.KeyNode;
 import edu.scu.csaserver.vo.LinkInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * mp 自动生成的
+ * 主要是连接相关操作
  */
 @Service
 public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link>
