@@ -39,10 +39,20 @@ public class KeyNode {
         // 默认从 java.library.path 下加载 .dll文件
         // 放在其中一个目录即可
         // 为了快速加载，我们可能要指定绝对路径
-        /**
-         * TODO: 改用加载方式，Runtime.getRuntime().load(soLibFilePath);
-         */
-        System.loadLibrary("KeyNode");
+        // 改用加载方式，Runtime.getRuntime().load(soLibFilePath);
+        // 已经改了
+        // 需要加文件名后缀，这就有点坑啊
+        // 为了开发方便我们还是要区分系统
+        String filename;
+        String osName = System.getProperty("os.name");
+        String runDir = System.getProperty("user.dir");
+        if (osName.startsWith("Windows")) {
+            filename = runDir + "\\KeyNode.dll";
+        } else {
+            filename = runDir + "\\KeyNode.so";
+        }
+        Runtime.getRuntime().load(filename);
+//        System.loadLibrary("KeyNode");
         return getKeyNode(nodeNum, links);
     }
 }
