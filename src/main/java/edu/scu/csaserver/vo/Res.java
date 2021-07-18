@@ -3,13 +3,15 @@ package edu.scu.csaserver.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 服务器给前端响应的通用模板
  * @author Lifeng
  * @date 2021/7/10 15:11
  */
 @Data
-public class Res<T> {
+public class Res<T> implements Serializable {
     /**
      * 响应状态码
      */
@@ -25,6 +27,11 @@ public class Res<T> {
      */
     @ApiModelProperty("响应数据")
     private T data;
+
+//    private void setResCode (ResCode resCode) {
+//        this.code = resCode.getCode();
+//        this.msg = resCode.getMsg();
+//    }
 
     public Res(){}
 

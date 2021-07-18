@@ -33,4 +33,13 @@ public interface NodeService extends IService<Node> {
      * @return
      */
     List<Integer> getKeyNodeIds(List<Integer> nodeIds);
+
+    /**
+     * 根据节点 id 删除节点
+     * @param id 带删除节点id
+     * @return 是否删除成功
+     */
+    Boolean deleteNodeById(Integer id);
+
+    void addNode(Integer subId, Node node);
 }

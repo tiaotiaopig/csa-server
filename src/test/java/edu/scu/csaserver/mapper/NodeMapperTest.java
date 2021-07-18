@@ -23,4 +23,9 @@ class NodeMapperTest {
             System.out.println(node);
         }
     }
+
+    @Test
+    public void testGetAuto() {
+        System.out.println(nodeMapper.getNodeAutoIncrement());
+    }
 }

@@ -30,11 +30,13 @@ public class KeyNode {
      * java 可移植性被破坏，连接库是本地编译的
      * 我们需要将链接库文件放到 java.library.path 下
      * 先将其放在jdk 的 /bin 目录下
-     * @param nodeNum
+     * @param nodeIdMax 我们是根据 id 数值构建出邻接矩阵,这里应该是id最大值,
+     *                而不是node数量,虽然很多时候nodeNum == max
+     *                但是在我们这里就不行了
      * @param links
      * @return
      */
-    public int[] getKeyNodeIds(int nodeNum, int[][] links) {
+    public int[] getKeyNodeIds(int nodeIdMax, int[][] links) {
         // System.out.println(System.getProperty("java.library.path"));
         // 默认从 java.library.path 下加载 .dll文件
         // 放在其中一个目录即可
@@ -54,19 +56,22 @@ public class KeyNode {
         }
         Runtime.getRuntime().load(filename);
 //        System.loadLibrary("KeyNode");
-        return getKeyNode(nodeNum, links);
+        return getKeyNode(nodeIdMax, links);
     }
 
+//    int[][] links = {
+//            {2, 1}, {4, 1}, {6, 1}, {6, 8}, {8, 9},
+//            {1, 3}, {9, 3}, {3, 7}, {3, 5}, {5, 10},
+//            {10, 11}, {11, 13}, {11, 14}, {13, 15}, {13, 16},
+//            {13, 17}, {15, 18}, {15, 20}, {16, 19}, {17, 18},
+//            {12, 18}, {12, 17}, {14, 16}, {19, 20}
+//    };
     public static void main(String[] args) {
         int[][] links = {
-                {2, 1}, {4, 1}, {6, 1}, {6, 8}, {8, 9},
-                {1, 3}, {9, 3}, {3, 7}, {3, 5}, {5, 10},
-                {10, 11}, {11, 13}, {11, 14}, {13, 15}, {13, 16},
-                {13, 17}, {15, 18}, {15, 20}, {16, 19}, {17, 18},
-                {12, 18}, {12, 17}, {14, 16}, {19, 20}
+                {1,2}, {2,3} ,{3,1} ,{3,4}
         };
         KeyNode keyNode = new KeyNode();
-        int[] keys = keyNode.getKeyNodeIds(20, links);
+        int[] keys = keyNode.getKeyNodeIds(19, links);
         for (int key : keys) {
             System.out.println(key);
         }

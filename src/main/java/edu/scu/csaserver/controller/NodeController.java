@@ -1,5 +1,7 @@
 package edu.scu.csaserver.controller;
 
+import edu.scu.csaserver.domain.Node;
+import edu.scu.csaserver.ro.AddedNode;
 import edu.scu.csaserver.ro.Req;
 import edu.scu.csaserver.service.NodeService;
 import edu.scu.csaserver.vo.NodeList;
@@ -32,7 +34,7 @@ public class NodeController {
     @CrossOrigin
     @ApiOperation(value = "节点分页查询", notes = "分页逻辑不完善")
     @GetMapping("/list")
-    public NodeList getNodeList(@RequestParam(defaultValue = "0") String page, @RequestParam(defaultValue = "10") String limit) {
+    public NodeList getNodeList(@RequestParam(defaultValue = "1") String page, @RequestParam(defaultValue = "10") String limit) {
         NodeList nodeList = new NodeList();
         nodeList.setCode(0);
         nodeList.setMsg("请求成功");
@@ -73,7 +75,43 @@ public class NodeController {
         res.setCode(200);
         res.setMsg("返回当前拓扑关键节点id");
         List<Integer> nodeIds = request.getParams().get("nodes");
+        // 下面的方法报错会导致整个项目崩掉
+        // 我们要增强健壮性,下面做相关边的时候,就进行了过滤
+        // 不在边里的节点会被排除
         res.setData(nodeService.getKeyNodeIds(nodeIds));
         return res;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "更新节点信息")
+    @PostMapping("/updateNode")
+    public Res<String> updateNode(@RequestBody @ApiParam(value = "节点对象", required = true) Req<Node> req) {
+        Node node = req.getParams();
+        nodeService.updateById(node);
+        return new Res<String>(200, "更新成功");
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "删除节点", notes = "有关联的边时删除失败")
+    @PostMapping("/deleteNode/{id}")
+    public Res<String> deleteNode(@PathVariable(name = "id") Integer id) {
+        Res<String> res = new Res<>();
+        if (nodeService.deleteNodeById(id)) {
+            res.setCode(200);
+            res.setMsg("删除成功");
+        } else {
+            res.setCode(100);
+            res.setMsg("删除失败,有边关联");
+        }
+        return res;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "添加节点信息")
+    @PostMapping("/addNode")
+    public Res<String> addNode(@RequestBody @ApiParam(value = "节点对象", required = true) Req<AddedNode> req) {
+        AddedNode addedNode = req.getParams();
+        nodeService.addNode(addedNode.getSubId(), addedNode.getNode());
+        return new Res<>(200, "添加成功");
     }
 }

@@ -45,6 +45,7 @@ class KeyNodeTest {
      * 	user.dir    jar包运行的目录
      */
     void getKeyNodeIds() {
+        // 不注释掉,打包会报警告
 //        int[][] links = {
 //                {2, 1}, {4, 1}, {6, 1}, {6, 8}, {8, 9},
 //                {1, 3}, {9, 3}, {3, 7}, {3, 5}, {5, 10},

@@ -40,6 +40,11 @@ implements LinkService{
         }
         return result;
     }
+
+    @Override
+    public Boolean deleteLinkById(Integer id) {
+        return id == linkMapper.deleteById(id);
+    }
 }
 
 

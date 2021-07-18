@@ -53,4 +53,19 @@ public class LinkController {
         res.setData(linkService.count());
         return res;
     }
+
+    @CrossOrigin
+    @ApiOperation(value = "删除边", notes = "删除没有约束,只是不能重复删除")
+    @GetMapping("/deleteLink/{id}")
+    public Res<String> deleteLink(@PathVariable(name = "id") Integer id) {
+        Res<String> res = new Res<>();
+        if (linkService.deleteLinkById(id)) {
+            res.setCode(200);
+            res.setMsg("删除成功");
+        } else {
+            res.setCode(100);
+            res.setMsg("删除失败");
+        }
+        return res;
+    }
 }

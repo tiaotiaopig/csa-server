@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.domain.Node;
+import edu.scu.csaserver.domain.SubNetworkNode;
 import edu.scu.csaserver.mapper.LinkMapper;
 import edu.scu.csaserver.mapper.SubNetworkNodeMapper;
 import edu.scu.csaserver.service.NodeService;
@@ -15,11 +16,10 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
+ * 节点管理的 service 层
  *
  */
 @Service
@@ -85,15 +85,47 @@ implements NodeService{
         int len = related.size();
         int[][] linkArray = new int[len][2];
         for (int i = 0; i < len; i++) {
-            link = links.get(i);
+            // 这里用的是 related,不是links,我傻了
+            link = related.get(i);
             linkArray[i][0] = link.getSourceNodeId();
             linkArray[i][1] = link.getTargetNodeId();
         }
         // int[] 转 List<Integer>
-        int[] keys = keyNode.getKeyNodeIds(nodeIds.size(), linkArray);
+        // 关键节点算法传入的是节点id最大值,而不是节点数量
+        // 虽然有时它们相等
+        // 否则数组越界,项目直接崩,服啦
+        Integer max = Collections.max(nodeIds);
+        int[] keys = keyNode.getKeyNodeIds(max, linkArray);
         List<Integer> result = new ArrayList<>();
         for (int key : keys) result.add(key);
         return result;
+    }
+
+    @Override
+    public Boolean deleteNodeById(Integer id) {
+        // 删除节点的前提:没有边和其关联
+        List<Link> links = linkMapper.selectList(null);
+        for (Link link : links) {
+            if (link.getSourceNodeId().equals(id) ||
+                    link.getTargetNodeId().equals(id)) {
+                return false;
+            }
+        }
+        nodeMapper.deleteById(id);
+        // 删除节点的同时,也要把节点-子网关系删除
+        // 1. 创建查询包装类
+        QueryWrapper<SubNetworkNode> query = new QueryWrapper<>();
+        // 2. 设置查询条件
+        query.eq("node_id", id);
+        subNetworkNodeMapper.delete(query);
+        return true;
+    }
+
+    @Override
+    public void addNode(Integer subId, Node node) {
+        nodeMapper.insert(node);
+        int autoId = nodeMapper.getNodeAutoIncrement();
+        subNetworkNodeMapper.insert(new SubNetworkNode(subId, autoId));
     }
 }
 

@@ -17,4 +17,6 @@ public interface LinkService extends IService<Link> {
      * @return
      */
     List<LinkInfo> getLinksByNodeId(List<Integer> nodes);
+
+    Boolean deleteLinkById(Integer id);
 }

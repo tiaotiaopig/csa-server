@@ -2,6 +2,7 @@ package edu.scu.csaserver.mapper;
 
 import edu.scu.csaserver.domain.Node;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,7 +17,15 @@ import java.util.List;
 @Repository
 public interface NodeMapper extends BaseMapper<Node> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @param limit
+     * @return
+     */
     public List<Node> getNodePage (Integer page, Integer limit);
+
+    Integer getNodeAutoIncrement();
 }
 
 

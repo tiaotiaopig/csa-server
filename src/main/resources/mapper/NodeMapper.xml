@@ -36,4 +36,7 @@
     <select id="getNodePage" resultType="edu.scu.csaserver.domain.Node">
         select * from node limit #{page}, #{limit};
     </select>
+    <select id="getNodeAutoIncrement" resultType="java.lang.Integer">
+        select max(id) from node;
+    </select>
 </mapper>
