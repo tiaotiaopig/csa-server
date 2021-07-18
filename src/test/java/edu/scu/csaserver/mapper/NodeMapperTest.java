@@ -28,4 +28,9 @@ class NodeMapperTest {
     public void testGetAuto() {
         System.out.println(nodeMapper.getNodeAutoIncrement());
     }
+
+    @Test
+    public void testDelete() {
+//        nodeMapper.deleteById(25);
+    }
 }

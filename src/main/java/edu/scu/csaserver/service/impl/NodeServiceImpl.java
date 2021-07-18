@@ -111,13 +111,14 @@ implements NodeService{
                 return false;
             }
         }
-        nodeMapper.deleteById(id);
         // 删除节点的同时,也要把节点-子网关系删除
+        // 关系要先删除,节点id是关系的外键
         // 1. 创建查询包装类
         QueryWrapper<SubNetworkNode> query = new QueryWrapper<>();
         // 2. 设置查询条件
         query.eq("node_id", id);
         subNetworkNodeMapper.delete(query);
+        nodeMapper.deleteById(id);
         return true;
     }
 

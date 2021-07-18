@@ -23,4 +23,9 @@ class NodeServiceImplTest {
             System.out.println(node);
         }
     }
+
+    @Test
+    void testDelete() {
+//        nodeService.deleteNodeById(26);
+    }
 }

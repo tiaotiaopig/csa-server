@@ -47,6 +47,8 @@ public class KeyNode {
         // 为了开发方便我们还是要区分系统
         String filename;
         String osName = System.getProperty("os.name");
+        // ide运行是项目根目录(pom.xml就位于该目录下)
+        // jar包运行是jar包所在目录
         String runDir = System.getProperty("user.dir");
         if (osName.startsWith("Windows")) {
             filename = runDir + "\\KeyNode.dll";
