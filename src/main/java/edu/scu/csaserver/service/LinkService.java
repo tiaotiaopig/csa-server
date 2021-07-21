@@ -19,4 +19,8 @@ public interface LinkService extends IService<Link> {
     List<LinkInfo> getLinksByNodeId(List<Integer> nodes);
 
     Boolean deleteLinkById(Integer id);
+
+    List<LinkInfo> getLinkPage(Integer page, Integer limit);
+
+    Boolean addLink(Link link);
 }

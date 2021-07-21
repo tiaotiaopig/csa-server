@@ -17,18 +17,17 @@ import lombok.Data;
 public class SubNetworkLink implements Serializable {
     /**
      * 网络-边关系索引id
-
      */
     @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 网络id
+     * 网络 id
      */
     private Integer subNetworkId;
 
     /**
-     * 边id
+     * 边 id
      */
     private Integer linkId;
 
@@ -39,4 +38,11 @@ public class SubNetworkLink implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public SubNetworkLink() {}
+
+    public SubNetworkLink(Integer subNetworkId, Integer linkId) {
+        this.linkId = linkId;
+        this.subNetworkId = subNetworkId;
+    }
 }

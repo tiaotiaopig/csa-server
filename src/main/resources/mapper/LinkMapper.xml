@@ -31,4 +31,10 @@
         protocol_type,init_weight,gmt_create,
         gmt_modified
     </sql>
+    <select id="getLinkPage" resultType="edu.scu.csaserver.domain.Link">
+        select * from link limit #{page}, #{limit};
+    </select>
+    <select id="getNodeAutoIncrement" resultType="java.lang.Integer">
+        select max(id) from link;
+    </select>
 </mapper>

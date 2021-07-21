@@ -1,9 +1,12 @@
 package edu.scu.csaserver.controller;
 
+import edu.scu.csaserver.domain.Link;
+import edu.scu.csaserver.domain.SubNetworkLink;
+import edu.scu.csaserver.ro.AddedNode;
 import edu.scu.csaserver.ro.Req;
 import edu.scu.csaserver.service.LinkService;
-import edu.scu.csaserver.vo.LinkInfo;
-import edu.scu.csaserver.vo.Res;
+import edu.scu.csaserver.service.SubNetworkLinkService;
+import edu.scu.csaserver.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,8 +27,10 @@ import java.util.List;
 public class LinkController {
 
     private final LinkService linkService;
+
     @Autowired
     public LinkController (LinkService linkService) {
+
         this.linkService = linkService;
     }
 
@@ -67,5 +72,49 @@ public class LinkController {
             res.setMsg("删除失败");
         }
         return res;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "连接分页查询", notes = "分页逻辑不完善")
+    @GetMapping("/page")
+    public Page<LinkInfo> getLinkList(@RequestParam(defaultValue = "1") String page, @RequestParam(defaultValue = "10") String limit) {
+//        NodeList nodeList = new NodeList();
+//        nodeList.setCode(0);
+//        nodeList.setMsg("请求成功");
+//        nodeList.setCount(nodeService.count());
+//        Integer pageInt = Integer.parseInt(page);
+//        Integer limitInt = Integer.parseInt(limit);
+//        nodeList.setData(nodeService.getNodePage(pageInt, limitInt));
+//        return nodeList;
+        Page<LinkInfo> linkInfoPage = new Page<>();
+        linkInfoPage.setCode(0);
+        linkInfoPage.setMsg("请求成功");
+        linkInfoPage.setCount(linkService.count());
+        int pageInt = Integer.parseInt(page);
+        int limitInt = Integer.parseInt(limit);
+        linkInfoPage.setData(linkService.getLinkPage(pageInt, limitInt));
+        return linkInfoPage;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "添加连接信息")
+    @PostMapping("/add")
+    public Res<String> addLink(@RequestBody @ApiParam(value = "连接对象", required = true) Req<Link> req) {
+        Link link = req.getParams();
+        if (linkService.addLink(link)) {
+            return new Res<>(200, "添加成功");
+        } else {
+            return new Res<>(100, "添加失败");
+        }
+
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "更新连接信息")
+    @PostMapping("/update")
+    public Res<String> updateLink(@RequestBody @ApiParam(value = "连接对象", required = true) Req<LinkInfo> req) {
+        LinkInfo linkInfo = req.getParams();
+        linkService.updateById(linkInfo.getLink());
+        return new Res<>(200, "更新成功");
     }
 }
