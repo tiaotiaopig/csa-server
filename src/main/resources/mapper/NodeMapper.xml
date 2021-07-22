@@ -14,7 +14,7 @@
             <result property="logicalType" column="logical_type" jdbcType="INTEGER"/>
             <result property="spectrumFloor" column="spectrum_floor" jdbcType="DOUBLE"/>
             <result property="spectrumTop" column="spectrum_top" jdbcType="DOUBLE"/>
-            <result property="spectrumAvailability" column="spectrum_availability" jdbcType="DECIMAL"/>
+            <result property="spectrumAvailability" column="spectrum_availability" jdbcType="FLOAT"/>
             <result property="throughput" column="throughput" jdbcType="INTEGER"/>
             <result property="computePerformance" column="compute_performance" jdbcType="INTEGER"/>
             <result property="hardwareType" column="hardware_type" jdbcType="INTEGER"/>
@@ -33,10 +33,32 @@
         hardware_type,service_sum,vulnerability_sum,
         controllable_level,gmt_create,gmt_modified
     </sql>
+
     <select id="getNodePage" resultType="edu.scu.csaserver.domain.Node">
         select * from node limit #{page}, #{limit};
     </select>
+
     <select id="getNodeAutoIncrement" resultType="java.lang.Integer">
         select max(id) from node;
+    </select>
+
+    <select id="getPhysicalTypeCount" resultType="edu.scu.csaserver.vo.Count">
+        SELECT
+            node.physical_type AS count_name,
+            COUNT( physical_type ) AS count_value
+        FROM
+            node
+        GROUP BY
+            node.physical_type;
+    </select>
+
+    <select id="getLogicalTypeCount" resultType="edu.scu.csaserver.vo.Count">
+        SELECT
+            node.logical_type AS count_name,
+            COUNT( logical_type ) AS count_value
+        FROM
+            node
+        GROUP BY
+            node.logical_type;
     </select>
 </mapper>

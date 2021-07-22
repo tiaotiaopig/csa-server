@@ -6,6 +6,7 @@ import edu.scu.csaserver.domain.NodeService;
 import edu.scu.csaserver.mapper.ServiceNetMapper;
 import edu.scu.csaserver.service.NodeServiceService;
 import edu.scu.csaserver.mapper.NodeServiceMapper;
+import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.ServiceCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,11 @@ implements NodeServiceService{
     @Override
     public List<ServiceCount> serviceCount() {
         return nSMapper.serviceCount();
+    }
+
+    @Override
+    public List<Count> serviceVulCount() {
+        return nSMapper.serviceVulCount();
     }
 }
 

@@ -11,14 +11,14 @@
             <result property="linkName" column="link_name" jdbcType="VARCHAR"/>
             <result property="bandwidth" column="bandwidth" jdbcType="FLOAT"/>
             <result property="delay" column="delay" jdbcType="FLOAT"/>
-            <result property="losePackage" column="lose_package" jdbcType="DECIMAL"/>
+            <result property="losePackage" column="lose_package" jdbcType="FLOAT"/>
             <result property="sn" column="sn" jdbcType="FLOAT"/>
             <result property="linkType" column="link_type" jdbcType="INTEGER"/>
-            <result property="spectrumUtilization" column="spectrum_utilization" jdbcType="DECIMAL"/>
+            <result property="spectrumUtilization" column="spectrum_utilization" jdbcType="FLOAT"/>
             <result property="channelSum" column="channel_sum" jdbcType="INTEGER"/>
             <result property="protocolLevel" column="protocol_level" jdbcType="INTEGER"/>
             <result property="protocolType" column="protocol_type" jdbcType="INTEGER"/>
-            <result property="initWeight" column="init_weight" jdbcType="DECIMAL"/>
+            <result property="initWeight" column="init_weight" jdbcType="FLOAT"/>
             <result property="gmtCreate" column="gmt_create" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="gmt_modified" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -31,9 +31,11 @@
         protocol_type,init_weight,gmt_create,
         gmt_modified
     </sql>
+
     <select id="getLinkPage" resultType="edu.scu.csaserver.domain.Link">
         select * from link limit #{page}, #{limit};
     </select>
+
     <select id="getNodeAutoIncrement" resultType="java.lang.Integer">
         select max(id) from link;
     </select>

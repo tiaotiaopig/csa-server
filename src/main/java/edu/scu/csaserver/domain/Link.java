@@ -58,7 +58,7 @@ public class Link implements Serializable {
      * 丢包率
      */
     @ApiModelProperty("丢包率")
-    private Integer losePackage;
+    private Float losePackage;
 
     /**
      * 信噪比
@@ -76,7 +76,7 @@ public class Link implements Serializable {
      * 频段占用率（可选）
      */
     @ApiModelProperty("频段占用率（可选）")
-    private Integer spectrumUtilization;
+    private Float spectrumUtilization;
 
     /**
      * 信道电路数（可选）
@@ -97,10 +97,10 @@ public class Link implements Serializable {
     private Integer protocolType;
 
     /**
-     * 连接初始权重
+     * 连接初始权重(0-1)
      */
     @ApiModelProperty("连接初始权重")
-    private Integer initWeight;
+    private Float initWeight;
 
     /**
      * 连接创建时间

@@ -78,7 +78,7 @@ public class Node implements Serializable {
      * 频谱可利用率
      */
     @ApiModelProperty("频谱可利用率")
-    private Integer spectrumAvailability;
+    private Float spectrumAvailability;
 
     /**
      * 吞吐量

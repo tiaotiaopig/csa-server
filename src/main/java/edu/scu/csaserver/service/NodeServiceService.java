@@ -2,6 +2,7 @@ package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.NodeService;
 import com.baomidou.mybatisplus.extension.service.IService;
+import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.ServiceCount;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface NodeServiceService extends IService<NodeService> {
      * @return
      */
     List<ServiceCount> serviceCount();
+
+    /**
+     * 对所有节点运行服务的漏洞统计
+     * @return
+     */
+    List<Count> serviceVulCount();
 }

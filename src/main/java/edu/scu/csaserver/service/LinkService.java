@@ -22,5 +22,5 @@ public interface LinkService extends IService<Link> {
 
     List<LinkInfo> getLinkPage(Integer page, Integer limit);
 
-    Boolean addLink(Link link);
+    Boolean addLink(Link link, Integer subId);
 }

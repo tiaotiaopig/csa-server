@@ -4,6 +4,7 @@ import edu.scu.csaserver.domain.Node;
 import edu.scu.csaserver.ro.AddedNode;
 import edu.scu.csaserver.ro.Req;
 import edu.scu.csaserver.service.NodeService;
+import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.NodeList;
 import edu.scu.csaserver.vo.Res;
 import io.swagger.annotations.Api;
@@ -113,5 +114,23 @@ public class NodeController {
         AddedNode addedNode = req.getParams();
         nodeService.addNode(addedNode.getSubId(), addedNode.getNode());
         return new Res<>(200, "添加成功");
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "获取节点逻辑类型统计信息")
+    @GetMapping("/logicalCount")
+    public Res<List<Count>> logicalCount() {
+        Res<List<Count>> res = new Res<>(200, "获取成功");
+        res.setData(nodeService.logicalCount());
+        return res;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "获取节点物理类型统计信息")
+    @GetMapping("/physicalCount")
+    public Res<List<Count>> physicalCount() {
+        Res<List<Count>> res = new Res<>(200, "获取成功");
+        res.setData(nodeService.physicalCount());
+        return res;
     }
 }

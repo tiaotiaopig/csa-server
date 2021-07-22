@@ -2,6 +2,7 @@ package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.Node;
 import com.baomidou.mybatisplus.extension.service.IService;
+import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.NodeInfo;
 import edu.scu.csaserver.vo.NodeList;
 
@@ -41,5 +42,22 @@ public interface NodeService extends IService<Node> {
      */
     Boolean deleteNodeById(Integer id);
 
+    /**
+     * 添加节点
+     * @param subId
+     * @param node
+     */
     void addNode(Integer subId, Node node);
+
+    /**
+     * 所有节点物理类型统计
+     * @return
+     */
+    List<Count> physicalCount();
+
+    /**
+     * 所有节点逻辑类型统计
+     * @return
+     */
+    List<Count> logicalCount();
 }

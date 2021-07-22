@@ -1,5 +1,6 @@
 package edu.scu.csaserver.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.domain.SubNetworkLink;
@@ -46,6 +47,9 @@ implements LinkService{
 
     @Override
     public Boolean deleteLinkById(Integer id) {
+        QueryWrapper<SubNetworkLink> query = new QueryWrapper<>();
+        query.eq("link_id", id);
+        subNetworkLinkMapper.delete(query);
         return 1 == linkMapper.deleteById(id);
     }
 
@@ -67,11 +71,11 @@ implements LinkService{
     }
 
     @Override
-    public Boolean addLink(Link link) {
+    public Boolean addLink(Link link, Integer subId) {
         if (link != null) {
             if (1 == linkMapper.insert(link)) {
                 // 创建子网连接关系
-                return 1 == subNetworkLinkMapper.insert(new SubNetworkLink(1, linkMapper.getNodeAutoIncrement()));
+                return 1 == subNetworkLinkMapper.insert(new SubNetworkLink(subId, linkMapper.getNodeAutoIncrement()));
             }
         }
         return false;

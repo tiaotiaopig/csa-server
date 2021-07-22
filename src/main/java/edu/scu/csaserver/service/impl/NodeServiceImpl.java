@@ -10,6 +10,7 @@ import edu.scu.csaserver.mapper.SubNetworkNodeMapper;
 import edu.scu.csaserver.service.NodeService;
 import edu.scu.csaserver.mapper.NodeMapper;
 import edu.scu.csaserver.utils.KeyNode;
+import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.NodeInfo;
 import edu.scu.csaserver.vo.NodeList;
 import io.swagger.models.auth.In;
@@ -127,6 +128,46 @@ implements NodeService{
         nodeMapper.insert(node);
         int autoId = nodeMapper.getNodeAutoIncrement();
         subNetworkNodeMapper.insert(new SubNetworkNode(subId, autoId));
+    }
+
+    @Override
+    public List<Count> physicalCount() {
+        List<Count> counts = nodeMapper.getPhysicalTypeCount();
+        // 1.主机 2.路由器 3.交换机 4.网桥 5.集线器
+        for (Count count : counts) {
+            switch (count.getCountName()) {
+                case "1":
+                    count.setCountName("主机");
+                    break;
+                case "2":
+                    count.setCountName("路由器");
+                    break;
+                case "3":
+                    count.setCountName("交换机");
+                    break;
+            }
+        }
+        return counts;
+    }
+
+    @Override
+    public List<Count> logicalCount() {
+        List<Count> counts = nodeMapper.getLogicalTypeCount();
+        // 1.交换 2.路由 3.应用
+        for (Count count : counts) {
+            switch (count.getCountName()) {
+                case "1":
+                    count.setCountName("交换");
+                    break;
+                case "2":
+                    count.setCountName("路由");
+                    break;
+                case "3":
+                    count.setCountName("应用");
+                    break;
+            }
+        }
+        return counts;
     }
 }
 

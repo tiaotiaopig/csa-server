@@ -2,6 +2,7 @@ package edu.scu.csaserver.controller;
 
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.domain.SubNetworkLink;
+import edu.scu.csaserver.ro.AddLink;
 import edu.scu.csaserver.ro.AddedNode;
 import edu.scu.csaserver.ro.Req;
 import edu.scu.csaserver.service.LinkService;
@@ -61,7 +62,7 @@ public class LinkController {
 
     @CrossOrigin
     @ApiOperation(value = "删除边", notes = "删除没有约束,只是不能重复删除")
-    @GetMapping("/deleteLink/{id}")
+    @PostMapping("/deleteLink/{id}")
     public Res<String> deleteLink(@PathVariable(name = "id") Integer id) {
         Res<String> res = new Res<>();
         if (linkService.deleteLinkById(id)) {
@@ -99,9 +100,9 @@ public class LinkController {
     @CrossOrigin
     @ApiOperation(value = "添加连接信息")
     @PostMapping("/add")
-    public Res<String> addLink(@RequestBody @ApiParam(value = "连接对象", required = true) Req<Link> req) {
-        Link link = req.getParams();
-        if (linkService.addLink(link)) {
+    public Res<String> addLink(@RequestBody @ApiParam(value = "连接对象", required = true) Req<AddLink> req) {
+        AddLink addLink = req.getParams();
+        if (linkService.addLink(addLink.getLink(), addLink.getSubId())) {
             return new Res<>(200, "添加成功");
         } else {
             return new Res<>(100, "添加失败");

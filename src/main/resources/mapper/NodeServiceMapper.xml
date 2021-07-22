@@ -35,4 +35,22 @@
         WHERE
             a.id = b.service_id;
     </select>
+
+    <select id="serviceVulCount" resultType="edu.scu.csaserver.vo.Count">
+        WITH vulnerability_count ( service_id, running_num ) AS (
+            SELECT
+                service_id,
+                COUNT( service_id ) AS running_num
+            FROM
+                node_service
+            GROUP BY service_id )
+        SELECT
+            service_name AS count_name,
+            a.running_num * b.service_vulnerability_sum AS count_value
+        FROM
+            vulnerability_count AS a,
+            service_net AS b
+        WHERE
+            b.id = a.service_id;
+    </select>
 </mapper>

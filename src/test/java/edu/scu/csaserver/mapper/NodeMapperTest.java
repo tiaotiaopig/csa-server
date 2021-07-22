@@ -1,6 +1,7 @@
 package edu.scu.csaserver.mapper;
 
 import edu.scu.csaserver.domain.Node;
+import edu.scu.csaserver.vo.Count;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -32,5 +33,21 @@ class NodeMapperTest {
     @Test
     public void testDelete() {
 //        nodeMapper.deleteById(25);
+    }
+
+    @Test
+    public void testPhysical() {
+        List<Count> counts = nodeMapper.getPhysicalTypeCount();
+        for (Count count : counts) {
+            System.out.println(count);
+        }
+    }
+
+    @Test
+    public void testLogical() {
+        List<Count> counts = nodeMapper.getLogicalTypeCount();
+        for (Count count : counts) {
+            System.out.println(count);
+        }
     }
 }

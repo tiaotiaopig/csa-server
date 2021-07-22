@@ -1,6 +1,7 @@
 package edu.scu.csaserver.controller;
 
 import edu.scu.csaserver.service.NodeServiceService;
+import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.Res;
 import edu.scu.csaserver.vo.ServiceCount;
 import io.swagger.annotations.Api;
@@ -36,6 +37,17 @@ public class ServiceNetController {
         response.setCode(200);
         response.setMsg("请求成功");
         response.setData(nss.serviceCount());
+        return response;
+    }
+
+    @CrossOrigin
+    @GetMapping("/serviceVulCount")
+    @ApiOperation("服务漏洞统计信息")
+    public Res<List<Count>> getServiceVulCount() {
+        Res<List<Count>> response = new Res<>();
+        response.setCode(200);
+        response.setMsg("请求成功");
+        response.setData(nss.serviceVulCount());
         return response;
     }
 
