@@ -60,4 +60,10 @@ public interface NodeService extends IService<Node> {
      * @return
      */
     List<Count> logicalCount();
+
+    /**
+     * 所有节点
+     * @return
+     */
+    List<Count> serviceVulCount();
 }

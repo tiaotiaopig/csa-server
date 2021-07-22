@@ -45,6 +45,8 @@ public interface NodeMapper extends BaseMapper<Node> {
      * @return
      */
     List<Count> getLogicalTypeCount();
+
+    List<Count> getServiceVulCount();
 }
 
 

@@ -20,4 +20,30 @@
         service_version,service_vulnerability_sum,service_safety_level,
         gmt_create,gmt_modified
     </sql>
+
+    <select id="getByServicePortCount" resultType="edu.scu.csaserver.vo.Count">
+        SELECT
+            b.service_port AS count_name,
+            COUNT(a.node_id) AS count_value
+        FROM
+            node_service AS a,
+            service_net AS b
+        WHERE
+            a.service_id = b.id
+        GROUP BY
+            b.service_port
+    </select>
+
+    <select id="getNodeSafetyCount" resultType="edu.scu.csaserver.vo.Count">
+        SELECT
+            a.service_safety_level AS count_name,
+            COUNT(DISTINCT b.node_id) AS count_value
+        FROM
+            service_net AS a,
+            node_service AS b
+        WHERE
+            a.id = b.service_id
+        GROUP BY
+            a.service_safety_level
+    </select>
 </mapper>

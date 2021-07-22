@@ -61,4 +61,19 @@
         GROUP BY
             node.logical_type;
     </select>
+
+    <select id="getServiceVulCount" resultType="edu.scu.csaserver.vo.Count">
+        SELECT
+            a.node_id AS count_name,
+            SUM( b.service_vulnerability_sum ) AS count_value
+        FROM
+            node_service AS a,
+            service_net AS b
+        WHERE
+            a.service_id = b.id
+        GROUP BY
+            a.node_id
+        ORDER BY
+            count_value desc
+    </select>
 </mapper>

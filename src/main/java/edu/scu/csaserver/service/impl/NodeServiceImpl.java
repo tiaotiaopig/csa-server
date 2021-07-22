@@ -169,6 +169,15 @@ implements NodeService{
         }
         return counts;
     }
+
+    @Override
+    public List<Count> serviceVulCount() {
+        List<Count> counts = nodeMapper.getServiceVulCount();
+        for (Count count : counts) {
+            count.setCountName("节点" + count.getCountName());
+        }
+        return counts;
+    }
 }
 
 

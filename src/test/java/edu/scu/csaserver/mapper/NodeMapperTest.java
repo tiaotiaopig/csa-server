@@ -50,4 +50,12 @@ class NodeMapperTest {
             System.out.println(count);
         }
     }
+
+    @Test
+    public void testServiceVul() {
+        List<Count> counts = nodeMapper.getServiceVulCount();
+        for (Count count : counts) {
+            System.out.println(count);
+        }
+    }
 }

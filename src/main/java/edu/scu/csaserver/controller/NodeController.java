@@ -133,4 +133,13 @@ public class NodeController {
         res.setData(nodeService.physicalCount());
         return res;
     }
+
+    @CrossOrigin
+    @ApiOperation(value = "获取节点漏洞统计信息")
+    @GetMapping("/serviceVulCount")
+    public Res<List<Count>> serviceVulCount() {
+        Res<List<Count>> res = new Res<>(200, "获取成功");
+        res.setData(nodeService.serviceVulCount());
+        return res;
+    }
 }

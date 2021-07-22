@@ -1,5 +1,6 @@
 package edu.scu.csaserver.controller;
 
+import edu.scu.csaserver.mapper.ServiceNetMapper;
 import edu.scu.csaserver.service.NodeServiceService;
 import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.Res;
@@ -24,9 +25,13 @@ import java.util.List;
 public class ServiceNetController {
 
     public final NodeServiceService nss;
+
+    public final ServiceNetMapper sm;
     @Autowired
-    public ServiceNetController(NodeServiceService nss) {
+    public ServiceNetController(NodeServiceService nss, ServiceNetMapper sm) {
+
         this.nss = nss;
+        this.sm = sm;
     }
 
     @CrossOrigin
@@ -41,7 +46,7 @@ public class ServiceNetController {
     }
 
     @CrossOrigin
-    @GetMapping("/serviceVulCount")
+    @GetMapping("/vulCount")
     @ApiOperation("服务漏洞统计信息")
     public Res<List<Count>> getServiceVulCount() {
         Res<List<Count>> response = new Res<>();
@@ -60,5 +65,27 @@ public class ServiceNetController {
         res.setMsg("返回运行服务总数");
         res.setData(nss.count());
         return res;
+    }
+
+    @CrossOrigin
+    @GetMapping("/portCount")
+    @ApiOperation("服务端口统计信息")
+    public Res<List<Count>> getServicePortCount() {
+        Res<List<Count>> response = new Res<>();
+        response.setCode(200);
+        response.setMsg("请求成功");
+        response.setData(sm.getByServicePortCount());
+        return response;
+    }
+
+    @CrossOrigin
+    @GetMapping("/safetyCount")
+    @ApiOperation("服务安全级别统计信息")
+    public Res<List<Count>> getServiceSafetyCount() {
+        Res<List<Count>> response = new Res<>();
+        response.setCode(200);
+        response.setMsg("请求成功");
+        response.setData(sm.getNodeSafetyCount());
+        return response;
     }
 }
