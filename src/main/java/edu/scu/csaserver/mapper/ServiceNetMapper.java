@@ -13,8 +13,16 @@ import java.util.List;
 @Repository
 public interface ServiceNetMapper extends BaseMapper<ServiceNet> {
 
+    /**
+     * 同一服务端口的节点统计
+     * @return
+     */
     List<Count> getByServicePortCount();
 
+    /**
+     * 服务安全等级的节点统计
+     * @return
+     */
     List<Count> getNodeSafetyCount();
 
 }

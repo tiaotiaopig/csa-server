@@ -76,4 +76,17 @@
         ORDER BY
             count_value desc
     </select>
+
+    <select id="getNodeVulNum" resultType="edu.scu.csaserver.vo.NodeVul">
+        SELECT
+            a.node_name,
+            c.id AS service_id,
+            c.service_vulnerability_sum AS vul_sum
+        FROM
+            node AS a,
+            node_service AS b,
+            service_net AS c
+        WHERE
+            a.id = b.node_id AND b.service_id = c.id
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package edu.scu.csaserver.controller;
 
+import edu.scu.csaserver.domain.ServiceNet;
 import edu.scu.csaserver.mapper.ServiceNetMapper;
 import edu.scu.csaserver.service.NodeServiceService;
 import edu.scu.csaserver.vo.Count;
@@ -86,6 +87,17 @@ public class ServiceNetController {
         response.setCode(200);
         response.setMsg("请求成功");
         response.setData(sm.getNodeSafetyCount());
+        return response;
+    }
+
+    @CrossOrigin
+    @GetMapping("/all")
+    @ApiOperation("获取所有服务信息")
+    public Res<List<ServiceNet>> getAllService() {
+        Res<List<ServiceNet>> response = new Res<>();
+        response.setCode(200);
+        response.setMsg("请求成功");
+        response.setData(sm.selectList(null));
         return response;
     }
 }

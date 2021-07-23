@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.NodeInfo;
 import edu.scu.csaserver.vo.NodeList;
+import edu.scu.csaserver.vo.ServiceVul;
 
 import java.util.List;
 
@@ -66,4 +67,17 @@ public interface NodeService extends IService<Node> {
      * @return
      */
     List<Count> serviceVulCount();
+
+    /**
+     * 根据安全等级获取节点
+     * @param safety
+     * @return
+     */
+    List<Node> getNodeBySafety(Integer safety);
+
+    /**
+     * 获取节点上所有服务漏洞数
+     * @return
+     */
+    ServiceVul nodeServiceVulNum();
 }

@@ -3,6 +3,8 @@ package edu.scu.csaserver.mapper;
 import edu.scu.csaserver.domain.Node;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import edu.scu.csaserver.vo.Count;
+import edu.scu.csaserver.vo.NodeVul;
+import edu.scu.csaserver.vo.ServiceVul;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -46,7 +48,13 @@ public interface NodeMapper extends BaseMapper<Node> {
      */
     List<Count> getLogicalTypeCount();
 
+    /**
+     * 获取节点服务漏洞统计
+     * @return
+     */
     List<Count> getServiceVulCount();
+
+    List<NodeVul> getNodeVulNum();
 }
 
 

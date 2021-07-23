@@ -7,6 +7,7 @@ import edu.scu.csaserver.service.NodeService;
 import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.NodeList;
 import edu.scu.csaserver.vo.Res;
+import edu.scu.csaserver.vo.ServiceVul;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -140,6 +141,24 @@ public class NodeController {
     public Res<List<Count>> serviceVulCount() {
         Res<List<Count>> res = new Res<>(200, "获取成功");
         res.setData(nodeService.serviceVulCount());
+        return res;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "根据安全等级获取节点", notes = "1=可破坏,2=可利用,3=可控制")
+    @PostMapping("/safety/{id}")
+    public Res<List<Node>> safetyNode(@PathVariable(name = "id") Integer safety) {
+        Res<List<Node>> res = new Res<>(200, "请求成功");
+        res.setData(nodeService.getNodeBySafety(safety));
+        return res;
+    }
+
+    @CrossOrigin
+    @ApiOperation(value = "获取节点服务漏洞数量")
+    @GetMapping("/vulNum")
+    public Res<ServiceVul> serviceVulNum() {
+        Res<ServiceVul> res = new Res<>(200, "获取成功");
+        res.setData(nodeService.nodeServiceVulNum());
         return res;
     }
 }

@@ -2,6 +2,7 @@ package edu.scu.csaserver.mapper;
 
 import edu.scu.csaserver.domain.Node;
 import edu.scu.csaserver.vo.Count;
+import edu.scu.csaserver.vo.NodeVul;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -56,6 +57,14 @@ class NodeMapperTest {
         List<Count> counts = nodeMapper.getServiceVulCount();
         for (Count count : counts) {
             System.out.println(count);
+        }
+    }
+
+    @Test
+    public void testNodeVulNum() {
+        List<NodeVul> nodeVulNum = nodeMapper.getNodeVulNum();
+        for (NodeVul nodeVul : nodeVulNum) {
+            System.out.println(nodeVul);
         }
     }
 }

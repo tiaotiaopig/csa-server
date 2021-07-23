@@ -39,4 +39,10 @@ public class Res<T> implements Serializable {
         this.msg = msg;
         this.code = code;
     }
+
+    public Res(Integer code, String msg, T data){
+        this.msg = msg;
+        this.code = code;
+        this.data = data;
+    }
 }

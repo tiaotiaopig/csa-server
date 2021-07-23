@@ -57,6 +57,13 @@
             <version>7.9.2</version>
         </dependency>
 
+        <!-- Sa-Token 权限认证, 在线文档：http://sa-token.dev33.cn/ -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.23.0</version>
+        </dependency>
+
         <!-- 使用swagger -->
         <dependency>
             <groupId>io.springfox</groupId>

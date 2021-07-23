@@ -30,7 +30,7 @@ public class SwaggerConfiguration {
     }
 
     private ApiInfo apiInfo() {
-        Contact contact = new Contact("李峰","http://www.diqiyuzhou.tk","2807229316@qq.com");
+        Contact contact = new Contact("李峰", "https://www.scu.edu.cn","2807229316@qq.com");
         return new ApiInfoBuilder()
                 .title("【网络态势感知Swagger UI】")
                 .description("网络态势感知后台接口")

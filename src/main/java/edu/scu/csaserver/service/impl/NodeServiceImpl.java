@@ -4,20 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.domain.Node;
+import edu.scu.csaserver.domain.ServiceNet;
 import edu.scu.csaserver.domain.SubNetworkNode;
 import edu.scu.csaserver.mapper.LinkMapper;
+import edu.scu.csaserver.mapper.ServiceNetMapper;
 import edu.scu.csaserver.mapper.SubNetworkNodeMapper;
 import edu.scu.csaserver.service.NodeService;
 import edu.scu.csaserver.mapper.NodeMapper;
 import edu.scu.csaserver.utils.KeyNode;
-import edu.scu.csaserver.vo.Count;
-import edu.scu.csaserver.vo.NodeInfo;
-import edu.scu.csaserver.vo.NodeList;
+import edu.scu.csaserver.vo.*;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 节点管理的 service 层
@@ -33,6 +34,8 @@ implements NodeService{
     private SubNetworkNodeMapper subNetworkNodeMapper;
     @Autowired
     private LinkMapper linkMapper;
+    @Autowired
+    private ServiceNetMapper serviceNetMapper;
     @Autowired
     private KeyNode keyNode;
 
@@ -177,6 +180,49 @@ implements NodeService{
             count.setCountName("节点" + count.getCountName());
         }
         return counts;
+    }
+
+    @Override
+    public List<Node> getNodeBySafety(Integer safety) {
+        // 1. 创建查询包装类
+        QueryWrapper<Node> query = new QueryWrapper<>();
+        // 2. 设置查询条件
+        query.eq("controllable_level", safety);
+        // 3. 执行查询
+        return nodeMapper.selectList(query);
+    }
+
+    @Override
+    public ServiceVul nodeServiceVulNum() {
+        ServiceVul serviceVul = new ServiceVul();
+        // 设置所有服务名称
+        List<ServiceNet> serviceNets = serviceNetMapper.selectList(null);
+        List<String> services = serviceNets.stream().map(ServiceNet::getServiceName).collect(Collectors.toList());
+        serviceVul.setServices(services);
+        // 统计每个节点的服务漏洞数量
+        HashMap<String, int[]> map = new HashMap<>();
+        List<NodeVul> nodeVulNum = nodeMapper.getNodeVulNum();
+        for (NodeVul nodeVul : nodeVulNum) {
+            String nodeName = nodeVul.getNodeName();
+            if (!map.containsKey(nodeName)) {
+                map.put(nodeName, new int[services.size()]);
+            }
+            map.get(nodeName)[nodeVul.getServiceId() - 1] = nodeVul.getVulSum();
+        }
+        // 将map数据转化成数组
+        List<NodeVulNum> data = new ArrayList<>(map.size());
+        map.forEach((key, value) -> {
+            NodeVulNum elem = new NodeVulNum();
+            elem.setNodeName(key);
+            List<Integer> list = new ArrayList<>();
+            for (int i : value) {
+                list.add(i);
+            }
+            elem.setNums(list);
+            data.add(elem);
+        });
+        serviceVul.setData(data);
+        return serviceVul;
     }
 }
 
