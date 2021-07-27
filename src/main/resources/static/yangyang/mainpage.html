@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>网络态势感知系统</title>
+    <!-- 引入 layui.css -->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css"/>
+
+    <!-- 引入 echarts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <!-- 引入 axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 引入 layui.js -->
+    <script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+    <!-- 引入 jquery.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+</head>
+<body>
+<script src="../layuiadmin/layui/layui.all.js"></script>
+<div class="layui-row  layui-col-space20">
+    <div class="layui-bg-gray" style="padding: 30px; ">
+        <div class="layui-row layui-col-space15">
+            <!--        饼图-->
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <!--                <div class="layui-card-header">卡片面板</div>-->
+                    <div id="pie-left" class="layui-card-body" style="height: 600px;">
+                        左图
+                    </div>
+                </div>
+            </div>
+            <!--        拓扑图-->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div id="Middle" class="layui-card-body" style="height: 480px;">
+                        拓扑图
+                    </div>
+                    <div class="layui-card-body" style="height: 100px;">
+                        <div class="layui-col-md12">
+                            <div style="padding: 10px 10px -5px 10px; font-size: larger; font-weight: bold;">
+                                <div class="layui-row">
+                                    <div id="s_table" class="layui-col-md3 layui-btn layui-btn-primary "
+                                         style="border: solid 0px; text-align: right">
+                                        <h2 id="SERVICE" >SERVICE: </h2>
+                                    </div>
+                                    <div id="n_table" class="layui-col-md4 layui-btn layui-btn-primary"
+                                         style="border: solid 0px;text-align: right">
+                                        <h2 id="NODE">NODE: </h2>
+                                    </div>
+                                    <div id="l_table" class="layui-col-md4 layui-btn layui-btn-primary"
+                                         style="border: solid 0px;text-align: right">
+                                            <h2 id="LINKS">LINKS: </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--        柱状图-->
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div id="pie-right" class="layui-card-body" style="height: 600px;">
+                        右图
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="layui-bg-gray" style="padding: 20px; padding-top: 0px">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12" style="border: solid 0px pink">
+                    <div class="layui-row layui-card" style="height: 70px">
+                        <div class="layui-col-md2 " style=" height: 70px;  line-height: 50px; text-align: center; margin: 10px">
+                            <h3>节点可控级别：</h3>
+                        </div>
+                        <div id="level_liyong" class="layui-col-md3 layui-btn layui-btn-primary"
+                             style="height: 70px; border: 0px;  line-height: 70px;text-align: right">
+                            <h3 id="level_l">可利用</h3>
+                        </div>
+                        <div id="level_pohuai" class="layui-col-md3 layui-btn layui-btn-primary "
+                             style="height: 70px; border: 0px;  line-height: 70px;  text-align: right">
+                            <h3 id="level_p">可破坏</h3>
+                        </div>
+                        <div id="level_kongzhi" class="layui-col-md3 layui-btn layui-btn-primary "
+                             style="height: 70px; border: 0px; line-height: 70px; text-align: right;  ">
+                            <h3 id="level_k">可控制</h3>
+                        </div>
+                    </div>
+            <div id="blanktable" class="">
+                <table class="layui-hide" id="test" lay-filter="test"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- 引入 echarts -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+<!-- 引入 axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<script>
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('pie-left'));
+    var option;
+    //左饼图
+    option = {
+        title: {
+            text: '服务占比',
+            left: 'center'
+        },
+        // 设置节点详情
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+
+        },
+        series: [
+            {
+                name: '服务名称  服务数量',
+                type: 'pie',
+                radius: '50%',
+                data: [
+                    {
+                        value: [],
+                        name: [],
+                    }
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+
+    };
+
+    axios.get('http://192.168.50.17:7788/service/serviceCount')
+        .then(function (response) {
+            // myChart.hideLoading();
+            console.log(response);
+            let service = response.data.data;
+            console.log(service);
+            let Arr = [];
+            for (let elem of service) {
+                let item = new Object();
+                item.name = elem.serviceName;
+                item.value = elem.serviceCount;
+                Arr.push(item);
+            }
+
+            console.log(Arr);
+            myChart.setOption({
+                series: [
+                    {
+                        data: Arr
+                    }
+                ]
+            });
+        });
+    option && myChart.setOption(option);
+
+
+    axios.get('http://192.168.50.17:7788/node/count')
+        .then(function (response) {
+            var nodecount = response.data.data;
+            document.getElementById("NODE").innerHTML += nodecount;
+
+        });
+    axios.get('http://192.168.50.17:7788/node/vulCount')
+        .then(function (response) {
+            var vulCount = response.data.data;
+            document.getElementById("VULNERABILITIES").innerHTML += vulCount;
+
+        });
+    axios.get('http://192.168.50.17:7788/service/count')
+        .then(function (response) {
+            var servicecount = response.data.data;
+            document.getElementById("SERVICE").innerHTML += servicecount;
+
+        });
+    axios.get('http://192.168.50.17:7788/link/count')
+        .then(function (response) {
+            var linkcount = response.data.data;
+            document.getElementById("LINKS").innerHTML += linkcount;
+
+        });
+</script>
+
+
+<script>
+    var curr_node = [];
+    var curr_link = [];
+    var curr_legend = [];
+    var curr_categories = [];
+    var idArray1 = [];
+
+    // 中间 拓扑
+    // 基于准备好的dom，初始化echarts实例
+    var myChart3 = echarts.init(document.getElementById('Middle'));
+    // 先设置图表显示样式
+    myChart3.setOption({
+        title: {
+            text: '网络拓扑',
+            top: 'top',
+            left: 'center'
+        },
+        // 设置节点详情
+        tooltip: {
+            trigger: 'item',
+            formatter: function (params) {
+                let data = params.data;
+                if (params.dataType === 'edge') {
+                    return `
+                      <h4>${params.name}</h4>
+                      <span>${'源: ' + data.source}</span><br/>
+                      <span>${'目标: ' + data.target}</span><br/>
+                      <span>${'链路类型: ' + data.link.linkType}</span><br/>
+                      <span>${'带宽: ' + data.link.bandwidth}Mbps</span><br/>
+                      <span>${'信噪比: ' + data.link.sn}dB</span><br/>
+                      `;
+                }
+                if (params.dataType === 'node') {
+                    return `
+                      <h4>节点详情</h4>
+                      <span>${'子网: ' + data.category}</span><br/>
+                      <span>${'名称: ' + data.name}</span><br/>
+                      <span>${'IP: ' + data.node.nodeIp}</span><br/>
+                      <span>${'MAC: ' + data.node.nodeMac}</span><br/>
+                      <span>${'可控级别: ' + data.node.controllableLevel}</span><br/>
+                      <span>${'服务数量: ' + data.node.serviceSum}</span><br/>
+                      `;
+                }
+            }
+        },
+        legend: {
+            left: 'left'
+        },
+        series: [
+            {
+                type: 'graph',
+                layout: 'force',
+                draggable: true,
+                legendHoverLink: true,
+                nodes: [],
+                links: [],
+                categories: [],
+                roam: true,
+                label: {
+                    position: 'top'
+                },
+                force: {
+                    repulsion: 100
+                }
+            }
+        ]
+    });
+    //显示加载动画
+    myChart3.showLoading();
+    axios.get('http://192.168.50.17:7788/graph/getGraph')
+        .then(function (response) {
+            myChart3.hideLoading();
+            let graph = response.data.data;
+            curr_node = graph.nodes;
+            curr_link = graph.links;
+            curr_categories = graph.categories;
+
+            for (let elem of curr_node) {
+                idArray1.push(elem.node.id);
+            }
+            myChart3.setOption({
+                //legend: graph.categories,
+                series: {
+                    nodes: curr_node,
+                    links: curr_link,
+                    categories: curr_categories
+                }
+            });
+        });
+    // 柱状图 右
+    var chartDom1 = document.getElementById('pie-right');
+    var myChart1 = echarts.init(chartDom1);
+    var option1;
+
+    option1 = {
+        title: {
+            text: '服务漏洞统计',
+            top: 'top',
+            left: 'center'
+        },
+        xAxis: {
+            type: 'category',
+            data: []
+            ,show: true  // 是否显示
+            ,name: '名称',    // 轴名称
+        },
+        yAxis: {
+            type: 'value'
+            ,name: '漏洞数量',    // 轴名称
+        },
+        tooltip: {  // 图列提示框，默认不显示
+            show: true,
+        },
+        series: [{
+            barWidth:30,  // 柱形的宽度
+            barCategoryGap: '15%',  // 柱形的间距
+            data: [],
+            type: 'bar'
+        }]
+    };
+
+    axios.get('http://192.168.50.17:7788/service/vulCount')
+        .then(function (response) {
+            console.log(response);
+            let service = response.data.data;
+            console.log("service");
+            console.log(service);
+            let Arr = [];
+            for (let elem of service) {
+                let item = new Object();
+                item.name = elem.countName;
+                item.value = elem.countValue;
+                Arr.push(item);
+            }
+            let item_name = [];
+            let item_Value = [];
+            for (var i = 0; i < Arr.length; i++) {
+                item_name.push(Arr[i].name);
+                item_Value.push(Arr[i].value)
+
+            }
+            console.log(item_name);
+
+            myChart1.setOption({
+                xAxis: {
+                    data: item_name
+                },
+                series:
+                    [{
+                        data: item_Value,
+                        type: 'bar'
+                    }]
+            });
+        });
+    option1 && myChart1.setOption(option1);
+
+    //数据表格
+    layui.use(['table', 'layer', 'element', 'layer', 'util'], function () {
+        var table = layui.table
+            , layer = layui.layer
+            , util = layui.util
+            , $ = layui.$;
+
+        $(function () {
+            //服务 表格
+            $("#s_table").click(function () {
+                $("#blanktable").load("Table/Service.html");
+            });
+            //节点 表格
+            $("#n_table").click(function () {
+                $("#blanktable").load("Table/Nodes.html");
+            });
+
+            //边 表格
+            $("#l_table").click(function () {
+                $("#blanktable").load("Table/Links.html");
+            });
+
+            //可破坏 表格
+            $("#level_pohuai").click(function () {
+                axios.post('http://192.168.50.17:7788/node/safety/1')
+                    .then(function (response) {
+                        var dd = response.data.data;
+                        var aa = [];
+                        for (let i = 0; i < dd.length; i++) {
+                            aa.push(dd[i].id);
+                        }
+                        for (var i = 0; i < idArray1.length; i++) {
+                            curr_node[i].symbolSize = 10;
+                        }
+                        for (var i = 0; i < aa.length; i++) {
+                            for (var j = 0; j < idArray1.length; j++) {
+                                if (aa[i] == idArray1[j]) {
+                                    curr_node[j].symbolSize = 20;
+                                }
+                            }
+                        }
+                        myChart3.setOption({
+                            series: {
+                                nodes: curr_node,
+                                links: curr_link
+                            }
+                        });
+                    });
+                $("#blanktable").load("Table/C_Node_1.html");
+            });
+
+            //可利用 表格
+            $("#level_liyong").click(function () {
+                axios.post('http://192.168.50.17:7788/node/safety/2')
+                    .then(function (response) {
+                        let dd = response.data.data;
+                        let aa = []; //可利用节点数组
+                        for (let i = 0; i < dd.length; i++) {
+                            aa.push(dd[i].id);
+                        }
+                        //初始化symbolSize
+                        for (var i = 0; i < idArray1.length; i++) {
+                            curr_node[i].symbolSize = 10;
+                        }
+                        //修改symbolSize
+                        for (var i = 0; i < aa.length; i++) {
+                            for (var j = 0; j < idArray1.length; j++) {
+                                if (aa[i] == idArray1[j]) {
+                                    curr_node[j].symbolSize = 20;
+                                }
+                            }
+                        }
+                        //重绘拓扑
+                        myChart3.setOption({
+                            series: {
+                                nodes: curr_node,
+                                links: curr_link
+                            }
+                        });
+                    });
+                $("#blanktable").load("Table/C_Node_2.html");
+            });
+
+            //可控制 表格
+            $("#level_kongzhi").click(function () {
+                axios.post('http://192.168.50.17:7788/node/safety/3')
+                    .then(function (response) {
+                        let dd = response.data.data;
+                        let aa = []; //可利用节点数组
+                        for (let i = 0; i < dd.length; i++) {
+                            aa.push(dd[i].id);
+                        }
+                        for (var i = 0; i < idArray1.length; i++) {
+                            curr_node[i].symbolSize = 10;
+                        }
+                        for (var i = 0; i < aa.length; i++) {
+                            for (var j = 0; j < idArray1.length; j++) {
+                                if (aa[i] == idArray1[j]) {
+                                    curr_node[j].symbolSize = 20;
+                                }
+                            }
+                        }
+                        myChart3.setOption({
+                            series: {
+                                nodes: curr_node,
+                                links: curr_link
+                            }
+                        });
+                    });
+                $("#blanktable").load("Table/C_Node_3.html");
+            });
+        });
+    });
+</script>
+</body>
+</html>

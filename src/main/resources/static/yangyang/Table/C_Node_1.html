@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>网络态势感知系统</title>
+    <!-- 引入 layui.css -->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css"/>
+
+    <!-- 引入 echarts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <!-- 引入 axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 引入 layui.js -->
+    <script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+    <!-- 引入 jquery.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+</head>
+<body>
+
+<div class="layui-row  layui-col-space20" >
+
+    <div class="layui-bg-gray" style="padding-left: 30px;padding-right: 30px; ">
+
+        <div class="layui-row layui-col-space15">
+            <div  class="layui-col-md12">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                    <legend>节点可控制级别:可破坏</legend>
+                </fieldset>
+                <div id= "hhh" class="layui-panel" style="height: 200px" >
+                    <table class="layui-hide" id="test"  lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 引入 echarts -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+<!-- 引入 axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Node表 -->
+<script>
+    var countdata;
+    layui.use(['table', 'layer'], function () {
+        var table = layui.table
+            , layer = layui.layer;
+        // 表格数据渲染
+        table.render({
+            elem: '#test'
+            ,even: true //开启隔行背景
+            , url: 'http://192.168.50.17:7788/node/list'
+            ,parseData: function(res){ //res 即为原始返回的数据
+                console.log("res")
+                console.log(res)
+                countdata = res.count;
+                let o_node = res.data;
+                console.log(o_node)
+                // console.log(o_node[0].node)
+                let c_node_1 = [];
+                let arr = [];
+
+                for(var i=0;i<o_node.length;i++){
+                    if(o_node[i].node.controllableLevel ==1){
+                        arr.push(o_node[i].node.id);
+                        c_node_1.push(o_node[i])
+                    }
+                }
+                // console.log("arr")
+                // console.log(arr)
+                // console.log("c_node_1")
+                // console.log(c_node_1)
+
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "", //解析提示文本
+                    "count": arr.length, //解析数据长度
+                    "data": c_node_1 //解析数据列表
+                };
+            }
+             , limit: 20
+
+            , title: '用户数据表'
+            , cols: [[
+
+                {field: 'node.id'
+                    , title: 'ID'
+                    , templet:function (fileIng){
+                        return fileIng.node.id;
+                    }
+                    ,width: 80, fixed: 'left', unresize: true, sort: true
+                }
+                , {field: 'node.nodeIp'
+                    , title: 'nodeIp'
+                    , templet:function (fileIng){
+                        return fileIng.node.nodeIp;
+                    }
+                    , width: 150, edit: 'text'}
+                , {field: 'node.nodeMac', title: 'nodeMac'
+                    , templet:function (fileIng){
+                        return fileIng.node.nodeMac;
+                    }
+                    , width: 180, edit: 'text'}
+                , {field: 'node.nodeVlan', title: 'nodeVlan'
+                    , templet:function (fileIng){
+                        return fileIng.node.nodeVlan;
+                    }
+                    , width: 90, edit: 'text'}
+                , {field: 'node.nodeName'
+                    , title: 'nodeName'
+                    , templet:function (fileIng){
+                        return fileIng.node.nodeName;
+                    }
+                    , width: 120, sort: true}
+                , {field: 'node.physicalType'
+                    , title: 'physicalType'
+                    , templet:function (fileIng){
+                        return fileIng.node.physicalType;
+                    }
+                    , width: 90}
+                , {field: 'node.logicalType'
+                    , title: 'logicalType'
+                    , templet:function (fileIng){
+                        return fileIng.node.logicalType;
+                    }
+                    , width: 90, sort: true}
+                , {field: 'node.spectrumFloor'
+                    , title: 's_Floor'
+                    , templet:function (fileIng){
+                        return fileIng.node.spectrumFloor;
+                    }
+                    , width: 90}
+
+                , {field: 'node.spectrumAvailability'
+                    , title: 's_Availability'
+                    , templet:function (fileIng){
+                        return fileIng.node.spectrumAvailability;
+                    }
+                    , width: 90}
+                , {field: 'node.throughput'
+                    , title: 'throughput'
+                    , templet:function (fileIng){
+                        return fileIng.node.throughput;
+                    }
+                    , width: 120}
+                , {field: 'node.computePerformance'
+                    , title: 'computePerformance'
+                    , templet:function (fileIng){
+                        return fileIng.node.computePerformance;
+                    }
+                    , width: 120}
+                , {field: 'node.hardwareType'
+                    , title: 'hardwareType'
+                    , templet:function (fileIng){
+                        return fileIng.node.hardwareType;
+                    }
+                    , width: 120}
+                , {field: 'node.serviceSum'
+                    , title: 'serviceSum'
+                    , templet:function (fileIng){
+                        return fileIng.node.serviceSum;
+                    }
+                    , width: 120}
+                , {field: 'node.controllableLevel'
+                    , title: 'controllableLevel'
+                    , templet:function (fileIng){
+                        return fileIng.node.controllableLevel;
+                    }
+                    , width: 120}
+
+
+            ]]
+            , page: true
+        });
+
+    });
+
+</script>
+
+
+</body>
+</html>

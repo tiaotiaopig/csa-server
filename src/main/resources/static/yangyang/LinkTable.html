@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>网络态势感知系统</title>
+    <!-- 引入 layui.css -->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css"/>
+
+    <!-- 引入 echarts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <!-- 引入 axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 引入 layui.js -->
+    <script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+    <!-- 引入 jquery.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+</head>
+<body>
+<!--<script src="../layuiadmin/layui/layui.all.js"></script>-->
+
+
+<div class="layui-row  layui-col-space20">
+
+
+    <div class="layui-bg-gray" style="padding: 20px; ">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px; ">
+            <legend>Link Table</legend>
+        </fieldset>
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-panel">
+                    <div class="layui-btn-group demoTable">
+                        <button class="layui-btn" data-type="addData">添加边</button>
+                    </div>
+                    <table class="layui-table" id="tabledata" style="padding: 50px 30px; " lay-filter="demo"></table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<form id="editForm" method="post" hidden = "hidden">
+    <div style="margin:15px 5px 10px 5px"> 类别：<input type="text" id="edit_category"></div>
+    <div style="margin:15px 5px 10px 5px"> 备注：<input type="text" height="30px" id="edit_annotation" maxlength="100"></div>
+</form>
+
+
+<!--表格操作按钮集-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    layui.use(['table', 'layer'], function () {
+        var table = layui.table;
+        // , layer = layui.layer;
+        // 表格数据渲染
+        table.render({
+            elem: '#tabledata'
+            , url: 'http://192.168.50.17:7788/link/page'
+            ,even: true //开启隔行背景
+            ,parseData: function(res){ //res 即为原始返回的数据
+                console.log("res")
+                console.log(res.data)
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "", //解析提示文本
+                    "count":  res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+            , limit: 20
+            , title: '边数据表'
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,
+                {field: 'link.id'
+                    , title: 'id'
+                    , templet:function (fileIng){
+                        return fileIng.link.id;
+                    }
+                    ,width: 80, fixed: 'left', unresize: true, sort: true
+                }
+                , {field: 'link.sourceNodeId'
+                    , title: 'src_node_id'
+                    , templet:function (fileIng){
+                        return fileIng.link.sourceNodeId;
+                    }
+                    , width: 120, edit: 'text'}
+                , {field: 'link.targetNodeId', title: 'targetNodeId'
+                    , templet:function (fileIng){
+                        return fileIng.link.targetNodeId;
+                    }
+                    , width: 120, edit: 'text'}
+                , {field: 'link.linkName', title: 'linkName'
+                    , templet:function (fileIng){
+                        return fileIng.link.linkName;
+                    }
+                    , width: 120, edit: 'text'}
+                , {field: 'link.bandwidth'
+                    , title: 'bandwidth'
+                    , templet:function (fileIng){
+                        return fileIng.link.bandwidth;
+                    }
+                    , width: 120, sort: true}
+                , {field: 'link.delay'
+                    , title: 'delay'
+                    , templet:function (fileIng){
+                        return fileIng.link.delay;
+                    }
+                    , width: 100}
+                , {field: 'link.losePackage'
+                    , title: 'losePackage'
+                    , templet:function (fileIng){
+                        return fileIng.link.losePackage;
+                    }
+                    , width: 80, sort: true}
+                , {field: 'link.sn'
+                    , title: 'sn'
+                    , templet:function (fileIng){
+                        return fileIng.link.sn;
+                    }
+                    , width: 100}
+                , {field: 'link.linkType'
+                    , title: 'linkType'
+                    , templet:function (fileIng){
+                        return fileIng.link.linkType;
+                    }
+                    , width: 80}
+                , {field: 'link.spectrumUtilization'
+                    , title: 'spectrumUtilization'
+                    , templet:function (fileIng){
+                        return fileIng.link.spectrumUtilization;
+                    }
+                    , width: 100}
+                , {field: 'link.channelSum'
+                    , title: 'channelSum'
+                    , templet:function (fileIng){
+                        return fileIng.link.channelSum;
+                    }
+                    , width: 60}
+                , {field: 'link.protocolLevel'
+                    , title: 'protocolLevel'
+                    , templet:function (fileIng){
+                        return fileIng.link.protocolLevel;
+                    }
+                    , width: 50}
+                , {field: 'link.protocolType'
+                    , title: 'protocolType'
+                    , templet:function (fileIng){
+                        return fileIng.link.protocolType;
+                    }
+                    , width: 60}
+                , {field: 'link.initWeight'
+                    , title: 'initWeight'
+                    , templet:function (fileIng){
+                        return fileIng.link.initWeight;
+                    }
+                    , width: 60}
+                , {field: 'link.gmtCreate'
+                    , title: 'gmtCreate'
+                    , templet:function (fileIng){
+                        return fileIng.link.gmtCreate;
+                    }
+                    , width: 120}
+                , {field: 'link.gmtModified'
+                    , title: 'gmtModified'
+                    , templet:function (fileIng){
+                        return fileIng.link.gmtModified;
+                    }
+                    , width: 120}
+                , {
+                    field: 'right'
+                    , width: 178, align: 'center', toolbar: '#barDemo',fixed: 'right'
+                }
+            ]]
+            , page: true
+        });
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            //console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+
+            var data = obj.data.link;
+            // console.log("data");
+            // console.log(data);
+            if(obj.event === 'detail'){
+                layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    var baseUrl = 'http://192.168.50.17:7788/link/deleteLink/'
+                    var num = data.id;
+                    console.log("num")
+                    console.log(num)
+                    axios({
+                        method: 'get',
+                        url: baseUrl+num,
+                        responseType: 'json',
+                        data: {
+                            params: data,
+                            token: ""
+                        }
+                    })
+                        .then(function (res) {
+                            layer.msg(res.msg);
+                            table.reload('tabledata');
+                        });
+
+                    // obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                layer.open({
+                    type: 2, //Layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）,
+                    shade:0.1, //遮罩层透明度
+                    area:['850px','500px'], //弹出层宽高
+                    title:'修改数据',//弹出层标题
+                    content: 'LinkDemoTable.html'//弹出的页面
+                    ,success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);
+
+
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        //console.log(data.content);
+
+                        //var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                        //console.log(body.html()) //得到iframe页的body内容
+                        //初始化表单数据的值
+
+                        //要修改的每个td的值存为变量传进去
+                        body.find("#id").val(data.id);
+                        body.find("#targetNodeId").val(data.targetNodeId);
+                        body.find("#linkName").val(data.linkName);
+                        body.find("#bandwidth").val(data.bandwidth);
+                        body.find("#delay").val(data.delay);
+                        body.find("#sourceNodeId").val(data.sourceNodeId);
+                        // console.log(body.find("#nodeIp").val());
+                        //console.log(data.logicalType);
+
+                    }
+                    ,btn: ['确认更新', '取消']
+                    ,yes: function(index, layero){
+                        var body = layer.getChildFrame('body', index);
+                        //按钮【按钮一】的回调
+                        data.id = body.find("#id").val();
+                        data.targetNodeId = body.find("#targetNodeId").val();
+                        data.linkName = body.find("#linkName").val();
+                        data.bandwidth = body.find("#bandwidth").val();
+                        data.delay = body.find("#delay").val() ;
+                        data.sourceNodeId = body.find("#sourceNodeId").val();
+
+                        var links = new Object()
+                        links.bandwidth = data.bandwidth;
+                        links.channelSum = data.channelSum;
+                        links.delay = data.delay;
+                        links.gmtCreate = data.gmtCreate;
+                        links.gmtModified = data.gmtModified;
+                        links.id = data.id;
+                        links.initWeight = data.initWeight;
+                        links.linkName = data.linkName;
+                        links.linkType = data.linkType;
+                        links.losePackage = data.losePackage;
+                        links.protocolLevel = data.protocolLevel;
+                        links.sn = data.sn;
+                        links.sourceNodeId = data.sourceNodeId;
+                        links.spectrumUtilization = data.spectrumUtilization;
+                        links.targetNodeId = data.targetNodeId;
+                        console.log("links");
+
+                        console.log(links);
+
+                        console.log("data");
+                       // console.log(data);
+
+                        axios({
+                            method: 'post',
+                            url: 'http://192.168.50.17:7788/link/update',
+                            responseType: 'json',
+                            data: {
+                                params:{
+                                    link: links,
+                                    source: obj.data.source,
+
+                                    target:obj.data.target
+                                },
+
+                                token: ""
+
+
+                            }
+                        })
+                            .then(function (res) {
+                                layer.msg(res.msg);
+                                table.reload('tabledata');
+                            });
+                        layer.close(index); //关闭弹层
+                    }
+                    ,btn2: function(index, layero){
+                        //按钮【按钮二】的回调
+
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+
+                    ,cancel: function(){
+                        //右上角关闭回调
+
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+                    ,shadeClose: true //点击遮罩关闭
+
+                });
+
+            }
+        });
+
+
+
+        var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('tabledata')
+                    ,data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+            ,getCheckLength: function(){ //获取选中数目
+                var checkStatus = table.checkStatus('tabledata')
+                    ,data = checkStatus.data;
+                layer.msg('选中了：'+ data.length + ' 个');
+            }
+            ,isAll: function(){ //验证是否全选
+                var checkStatus = table.checkStatus('tabledata');
+                layer.msg(checkStatus.isAll ? '全选': '未全选')
+            }
+            ,addData: function(){
+                layer.open({
+                    type: 2, //Layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）,
+                    shade:0.1, //遮罩层透明度
+                    area:['850px','500px'], //弹出层宽高
+                    title:'添加数据',//弹出层标题
+                    content: 'LinkDemotable.html'//弹出的页面
+                    ,success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+
+                    }
+                    ,btn: ['提交', '取消']
+                    ,yes: function(index, layero){
+                        var body = layer.getChildFrame('body', index);
+                        //按钮【按钮一】的回调
+                        //let id = body.find("#id").val();
+                        let targetNodeId = body.find("#targetNodeId").val();
+                        let linkName = body.find("#linkName").val();
+                        let bandwidth = body.find("#bandwidth").val();
+                        let delay = body.find("#delay").val() ;
+                        let sourceNodeId = body.find("#sourceNodeId").val();
+
+                        console.log(bandwidth);
+                        console.log(targetNodeId);
+                        console.log(sourceNodeId);
+                        console.log(delay);
+                        console.log(linkName);
+
+                        axios({
+                            method: 'post',
+                            url: 'http://192.168.50.17:7788/link/add',
+                            responseType: 'json',
+                            data: {
+                                params: {
+                                    link: {
+                                        bandwidth: bandwidth,
+                                        delay: delay,
+                                        linkName: linkName,
+                                        sourceNodeId: sourceNodeId,
+                                        targetNodeId: targetNodeId
+                                    },
+                                    subId: 1
+                                },
+                                token: ""
+                            }
+                        })
+                            .then(function (res) {
+                                layer.msg(res.msg);
+                                table.reload('tabledata');
+                            });
+                        layer.close(index); //关闭弹层
+                    }
+                    ,btn2: function(index, layero){
+                        layer.close(index); //关闭弹层
+                    }
+                    ,cancel: function(){
+                        //右上角关闭回调
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+                    ,shadeClose: true //点击遮罩关闭
+                });
+            }
+
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+</script>
+
+
+</body>
+</html>

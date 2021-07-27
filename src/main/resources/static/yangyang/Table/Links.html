@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>网络态势感知系统</title>
+    <!-- 引入 layui.css -->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css"/>
+
+    <!-- 引入 echarts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <!-- 引入 axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 引入 layui.js -->
+    <script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+    <!-- 引入 jquery.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+</head>
+<body>
+
+<div class="layui-row  layui-col-space20" >
+
+    <div class="layui-bg-gray" style="padding-left: 30px; padding-right: 30px;">
+
+        <div class="layui-row layui-col-space15">
+            <div  class="layui-col-md12">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                    <legend>Link Table</legend>
+                </fieldset>
+                <div id= "hhh" class="layui-panel" style="height: 675px" >
+                    <table class="layui-hide" id="test"  lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 引入 echarts -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+<!-- 引入 axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Node表 -->
+<script>
+    layui.use(['table', 'layer'], function () {
+        var table = layui.table
+            , layer = layui.layer;
+
+        // 表格数据渲染
+        table.render({
+            elem: '#test'
+            , url: 'http://192.168.50.17:7788/link/page'
+            ,even: true //开启隔行背景
+            ,parseData: function(res){ //res 即为原始返回的数据
+                console.log("res")
+                console.log(res.data)
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "", //解析提示文本
+                    "count":  res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+            , limit: 15
+            ,limits:[15,30,45]
+            , title: '边数据表'
+            , cols: [[
+
+                {field: 'link.id'
+                    , title: 'id'
+                    , templet:function (fileIng){
+                        return fileIng.link.id;
+                    }
+                    ,width: 90, fixed: 'left', unresize: true, sort: true
+                }
+                , {field: 'link.sourceNodeId'
+                    , title: 'src_node_id'
+                    , templet:function (fileIng){
+                        return fileIng.link.sourceNodeId;
+                    }
+                    , width: 90, edit: 'text'}
+                , {field: 'link.targetNodeId', title: 'targetNodeId'
+                    , templet:function (fileIng){
+                        return fileIng.link.targetNodeId;
+                    }
+                    , width: 90, edit: 'text'}
+                , {field: 'link.linkName', title: 'linkName'
+                    , templet:function (fileIng){
+                        return fileIng.link.linkName;
+                    }
+                    , width: 110, edit: 'text'}
+                , {field: 'link.bandwidth'
+                    , title: 'bandwidth'
+                    , templet:function (fileIng){
+                        return fileIng.link.bandwidth;
+                    }
+                    , width: 120, sort: true}
+                , {field: 'link.delay'
+                    , title: 'delay'
+                    , templet:function (fileIng){
+                        return fileIng.link.delay;
+                    }
+                    , width: 120}
+                , {field: 'link.losePackage'
+                    , title: 'losePackage'
+                    , templet:function (fileIng){
+                        return fileIng.link.losePackage;
+                    }
+                    , width: 120, sort: true}
+                , {field: 'link.sn'
+                    , title: 'sn'
+                    , templet:function (fileIng){
+                        return fileIng.link.sn;
+                    }
+                    , width: 120}
+                , {field: 'link.linkType'
+                    , title: 'linkType'
+                    , templet:function (fileIng){
+                        return fileIng.link.linkType;
+                    }
+                    , width: 120}
+                , {field: 'link.spectrumUtilization'
+                    , title: 'spectrumUtilization'
+                    , templet:function (fileIng){
+                        return fileIng.link.spectrumUtilization;
+                    }
+                    , width: 120}
+                , {field: 'link.channelSum'
+                    , title: 'channelSum'
+                    , templet:function (fileIng){
+                        return fileIng.link.channelSum;
+                    }
+                    , width: 120}
+                , {field: 'link.protocolLevel'
+                    , title: 'protocolLevel'
+                    , templet:function (fileIng){
+                        return fileIng.link.protocolLevel;
+                    }
+                    , width: 120}
+                , {field: 'link.protocolType'
+                    , title: 'protocolType'
+                    , templet:function (fileIng){
+                        return fileIng.link.protocolType;
+                    }
+                    , width: 120}
+                , {field: 'link.initWeight'
+                    , title: 'initWeight'
+                    , templet:function (fileIng){
+                        return fileIng.link.initWeight;
+                    }
+                    , width: 120}
+
+            ]]
+            , page: true
+        });
+
+    });
+
+</script>
+
+
+</body>
+</html>
