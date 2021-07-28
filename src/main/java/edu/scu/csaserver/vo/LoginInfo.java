@@ -12,6 +12,14 @@ import lombok.Data;
 public class LoginInfo {
 
     /**
+     * sa登录的token
+     * 为了在前后端分离情况下，让前端携带token
+     * 不然，实现不了登录
+     */
+    @ApiModelProperty("sa登录的token")
+    private String saToken;
+
+    /**
      * 用户名正确1 错误 0
      */
     @ApiModelProperty("用户名正确1 错误 0")

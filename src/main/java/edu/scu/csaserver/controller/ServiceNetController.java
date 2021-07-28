@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -35,10 +36,11 @@ public class ServiceNetController {
         this.sm = sm;
     }
 
-    @CrossOrigin
+    @CrossOrigin()
     @GetMapping("/serviceCount")
     @ApiOperation("服务统计信息")
-    public Res<List<ServiceCount>> getServiceCount() {
+    public Res<List<ServiceCount>> getServiceCount(HttpServletRequest request) {
+        System.out.println(request.getHeader("satoken"));
         Res<List<ServiceCount>> response = new Res<>();
         response.setCode(200);
         response.setMsg("请求成功");

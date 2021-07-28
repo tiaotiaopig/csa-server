@@ -24,7 +24,7 @@ import java.util.Random;
  * @author lifeng
  * @date 2021/7/22 下午2:48
  */
-@CrossOrigin
+@CrossOrigin("http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/user")
 @Api(tags = "用户登录鉴权")
@@ -36,7 +36,7 @@ public class UserController {
     public Res<LoginInfo> doLogin(@RequestBody @ApiParam(value = "前端登录用户", required = true) Req<LoginUser> req, HttpServletRequest request) {
         LoginUser loginUser = req.getParams();
         LoginInfo loginInfo = new LoginInfo();
-        if (verCode == null || !verCode.equals(loginUser.getVerCode())) {
+        if (verCode == null || !verCode.equals(loginUser.getVerCode().toLowerCase())) {
             return new Res<>(100, "验证码失败", loginInfo);
         }
         loginInfo.setCaptchaMsg(1);
@@ -50,6 +50,7 @@ public class UserController {
         loginInfo.setPwdMsg(1);
         // sa登录
         StpUtil.login(10001);
+        loginInfo.setSaToken(StpUtil.getTokenValue());
         return new Res<>(200, "登录成功", loginInfo);
     }
 
@@ -69,7 +70,8 @@ public class UserController {
 
     @GetMapping("/doLogout")
     @ApiOperation("用户登出")
-    public void doLogout() {
+    public void doLogout(HttpServletRequest request) {
+        System.out.println(request.getHeader("satoken"));
         StpUtil.logout();
     }
 }

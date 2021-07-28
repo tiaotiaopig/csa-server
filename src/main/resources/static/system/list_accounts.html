@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>标题随便写，不影响</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">账户名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        搜索
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
+        </div>
+    </div>
+</div>
+
+
+<!--操作-->
+<script type="text/html" id="table-content-list">
+    <!--<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i-->
+    <!--class="layui-icon layui-icon-edit"></i>编辑</a>-->
+    {{# if (d.enable) { }}
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="disable"><i
+            class="layui-icon layui-icon-close-fill"></i>冻结</a>
+    {{# } else { }}
+    <a class="layui-btn layui-btn-xs" lay-event="disable"><i
+            class="layui-icon layui-icon-ok-circle"></i>激活</a>
+    {{# } }}
+    <a class="layui-btn layui-btn-xs" lay-event="restore"><i
+            class="layui-icon layui-icon-password"></i>重置密码</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
+            class="layui-icon layui-icon-delete"></i>删除</a>
+</script>
+
+<script src="../layuiadmin/layui/layui.js"></script>
+<script>
+	layui.config({
+		base: '../layuiadmin/' //静态资源所在路径
+	}).extend({
+		index: 'lib/index' //主入口模块
+	}).use(['index', 'table', 'util'], function () {
+		var table = layui.table
+			, util = layui.util
+			, form = layui.form;
+
+		//监听搜索
+		form.on('submit(LAY-app-contlist-search)', function (data) {
+			var field = data.field;
+
+			//执行重载
+			table.reload('LAY-app-content-list', {
+				where: field
+			});
+		});
+
+		//加载表格
+		table.render({
+			elem: '#LAY-app-content-list'
+            , url: '../tablelist' //模拟接口
+			, where: {
+				operation: '系统.人员.列部门管理人员'
+			}
+			, response: {
+                countName: 'count' //规定数据总数的字段名称，默认：count
+			}
+			, cols: [[
+				{field: 'name', width: 100, title: '姓名', sort: true}
+				, {
+					field: 'login', title: '登录帐号', templet: function (d) {
+						return d.account.login;
+					}
+				}
+                , {
+                    field: 'phone', title: '手机号'
+                }
+				, {
+					field: 'role', title: '角色', templet: function (d) {
+						var roleName = "";
+						for (var i = 0; i < d.roles.length; i++) {
+							roleName += d.roles[i].name + "，";
+						}
+						return roleName.substring(0, roleName.length - 1);
+					}
+				}
+				, {
+					field: 'department', title: '部门', templet: function (d) {
+						return d.department.name;
+					}
+				}
+				, {
+					field: 'createDate', title: '创建时间', templet: function (d) {
+						return util.toDateString(d.createDate, 'yyyy-MM-dd');
+					}
+				}
+				, {
+					field: 'enable', title: '是否有效', templet: function (d) {
+						return d.enable ? "有效" : "无效";
+					}
+				}
+				, {title: '操作', align: 'center', width: 300, fixed: 'right', toolbar: '#table-content-list'}
+			]]
+			, page: true
+		});
+
+		//监听工具条
+		table.on('tool(LAY-app-content-list)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				layer.confirm("确认删除‘" + data.name + "’用户吗?该操作不可逆！删除后会删除其他表数据，请谨慎！！！", function (index) {
+					layer.close(index);
+					
+					onDelete(data, function () {
+						// 后台删除完成以后，更新前端的数据显示，这里直接删除这行数据
+						obj.del();
+					});
+				});
+			} else if (obj.event === 'edit') {
+				layer.open({
+					type: 2
+					, title: '编辑文章'
+					, content: './account.html'
+					, maxmin: true
+					, area: ['550px', '550px']
+					, btn: ['确定', '取消']
+					, yes: function (index, layero) {
+						var iframeWindow = window['layui-layer-iframe' + index]
+							, submit = layero.find('iframe').contents().find("#layuiadmin-app-form-edit");
+
+						//监听提交
+						iframeWindow.layui.form.on('submit(layuiadmin-app-form-edit)', function (data) {
+							var field = data.field; //获取提交的字段
+
+							//提交 Ajax 成功后，静态更新表格中的数据
+							//$.ajax({});
+							obj.update({
+								label: field.label
+								, title: field.title
+								, author: field.author
+								, status: field.status
+							}); //数据更新
+
+							form.render();
+							layer.close(index); //关闭弹层
+						});
+
+						submit.trigger('click');
+					}
+				});
+			} else if (obj.event === 'disable') {
+				layer.confirm("确认修改用户‘" + data.name + "’的状态吗?", function (index) {
+					layer.close(index);
+
+					onDisable(data, function () {
+						// 更新表格数据
+						table.reload('LAY-app-content-list');
+					});
+				});
+			} else if (obj.event === 'restore') {
+				layer.confirm("确认恢复用户‘" + data.name + "’的密码吗？", function (index) {
+					layer.close(index);
+
+					onRestore(data, function () {
+						layer.msg("操作成功！", {
+							icon: 1,
+							time: 500
+						});
+					});
+				});
+			}
+		});
+
+		//删除账户信息
+		function onDelete(data, callback) {
+			var operation = new Operation("系统.人员.删除人员");
+			operation.id = data.id;
+			operation.execute(callback);
+		}
+
+		//重置账户信息
+		function onDisable(data, callback) {
+			var operation = new Operation("系统.人员.重置人员");
+			operation.id = data.id;
+			operation.execute(callback);
+		}
+
+		//恢复密码
+		function onRestore(data, callback) {
+			var operation = new Operation("系统.人员.恢复密码");
+			operation.accountId = data.account.id;
+			operation.execute(callback);
+		}
+	});
+</script>
+</body>
+</html>

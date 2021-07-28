@@ -5,6 +5,7 @@ import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,7 +18,22 @@ import java.util.Collections;
  */
 @Configuration
 public class SaTokenConfiguration implements WebMvcConfigurer {
+
     private StpUtil StpUserUtil;
+    /**
+     * 为了使前后端分离，我们需要使用跨域资源共享
+     * 主要还是为了让跨域能够带cookie,或者自定义请求头，进行认证授权
+     * @param registry
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://127.0.0.1:5500", "http://127.0.0.1:7788")
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowCredentials(true)
+                .maxAge(3600)
+                .allowedHeaders("*");
+    }
 
     // 注册Sa-Token的拦截器
     @Override
@@ -28,9 +44,10 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
             // 登录验证 -- 拦截所有路由，并排除/user/doLogin 用于开放登录
 //            SaRouter.match("/**", "/user/doLogin", StpUtil::checkLogin);
 
-            // 登录验证 -- 排除多个路径
-            SaRouter.match(Collections.singletonList("/**"), Arrays.asList("/user/doLogin", "/user/captcha"), StpUtil::checkLogin);
-
+            if (!"OPTIONS".equals(req.getMethod())) {
+                // 登录验证 -- 排除多个路径
+                SaRouter.match(Collections.singletonList("/**"), Arrays.asList("/user/doLogin", "/user/captcha"), StpUtil::checkLogin);
+            }
 //            // 角色认证 -- 拦截以 admin 开头的路由，必须具备[admin]角色或者[super-admin]角色才可以通过认证
 //            SaRouter.match("/admin/**", () -> StpUtil.checkRoleOr("admin", "super-admin"));
 //
@@ -59,6 +76,8 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
 //            SaRouter.match("/user/**", () -> StpUserUtil.checkLogin());
 
         })).addPathPatterns("/**")
-                .excludePathPatterns("/doc.html","/swagger-resources/**","/webjars/**");
+                .excludePathPatterns("/doc.html","/v2/api-docs", "/swagger-resources/configuration/ui",
+                        "/swagger-resources", "/swagger-resources/configuration/security",
+                        "/swagger-ui.html", "/webjars/**", "/images/**", "/layuiadmin/**", "/login.html");
     }
 }
