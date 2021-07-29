@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Lifeng
  * @date 2021/6/25 20:15
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/graph")
 @Api(tags = "拓扑图管理")
@@ -26,7 +26,6 @@ public class GraphController {
     private GraphService graphService;
 
 
-    @CrossOrigin
     @GetMapping("/getGraph")
     @ApiOperation(value = "获取拓扑图", notes = "获取整个网络的拓扑数据")
     public Res<Graph> getGraph () {

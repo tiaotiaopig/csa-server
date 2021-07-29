@@ -22,6 +22,7 @@ import java.util.List;
  * @author Lifeng
  * @date 2021/7/10 16:03
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/link")
 @Api(tags = "连接管理")
@@ -35,7 +36,6 @@ public class LinkController {
         this.linkService = linkService;
     }
 
-    @CrossOrigin
     @PostMapping("/relatedLinks")
     @ApiOperation(value = "获取节点相关的边", notes = "只返回相关边信息")
     public Res<List<LinkInfo>> relatedLinks(@RequestBody @ApiParam(value = "统一请求参数", required = true) Req<LinkedHashMap<String, List<Integer>>> request) {
@@ -49,7 +49,6 @@ public class LinkController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取连接（边）总数")
     @GetMapping("/count")
     public Res<Integer> getLinkCount() {
@@ -60,9 +59,8 @@ public class LinkController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "删除边", notes = "删除没有约束,只是不能重复删除")
-    @PostMapping("/deleteLink/{id}")
+    @GetMapping("/deleteLink/{id}")
     public Res<String> deleteLink(@PathVariable(name = "id") Integer id) {
         Res<String> res = new Res<>();
         if (linkService.deleteLinkById(id)) {
@@ -75,18 +73,9 @@ public class LinkController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "连接分页查询", notes = "分页逻辑不完善")
     @GetMapping("/page")
     public Page<LinkInfo> getLinkList(@RequestParam(defaultValue = "1") String page, @RequestParam(defaultValue = "10") String limit) {
-//        NodeList nodeList = new NodeList();
-//        nodeList.setCode(0);
-//        nodeList.setMsg("请求成功");
-//        nodeList.setCount(nodeService.count());
-//        Integer pageInt = Integer.parseInt(page);
-//        Integer limitInt = Integer.parseInt(limit);
-//        nodeList.setData(nodeService.getNodePage(pageInt, limitInt));
-//        return nodeList;
         Page<LinkInfo> linkInfoPage = new Page<>();
         linkInfoPage.setCode(0);
         linkInfoPage.setMsg("请求成功");
@@ -97,7 +86,6 @@ public class LinkController {
         return linkInfoPage;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "添加连接信息")
     @PostMapping("/add")
     public Res<String> addLink(@RequestBody @ApiParam(value = "连接对象", required = true) Req<AddLink> req) {
@@ -110,7 +98,6 @@ public class LinkController {
 
     }
 
-    @CrossOrigin
     @ApiOperation(value = "更新连接信息")
     @PostMapping("/update")
     public Res<String> updateLink(@RequestBody @ApiParam(value = "连接对象", required = true) Req<LinkInfo> req) {

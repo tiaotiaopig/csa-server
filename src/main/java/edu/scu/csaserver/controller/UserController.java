@@ -21,10 +21,11 @@ import java.util.Random;
 /**
  * 我们来简单实现一下认证功能
  * 至于鉴权以后有机会再实现吧
+ * 登录的token,可以存在cookie，请求头，请求体中
  * @author lifeng
  * @date 2021/7/22 下午2:48
  */
-@CrossOrigin("http://127.0.0.1:5500")
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 @Api(tags = "用户登录鉴权")
@@ -71,7 +72,6 @@ public class UserController {
     @GetMapping("/doLogout")
     @ApiOperation("用户登出")
     public void doLogout(HttpServletRequest request) {
-        System.out.println(request.getHeader("satoken"));
         StpUtil.logout();
     }
 }

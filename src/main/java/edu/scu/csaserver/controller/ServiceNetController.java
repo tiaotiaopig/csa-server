@@ -21,6 +21,7 @@ import java.util.List;
  * @author Lifeng
  * @date 2021/7/14 13:09
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/service")
 @Api(tags = "服务管理")
@@ -36,11 +37,9 @@ public class ServiceNetController {
         this.sm = sm;
     }
 
-    @CrossOrigin()
     @GetMapping("/serviceCount")
     @ApiOperation("服务统计信息")
-    public Res<List<ServiceCount>> getServiceCount(HttpServletRequest request) {
-        System.out.println(request.getHeader("satoken"));
+    public Res<List<ServiceCount>> getServiceCount() {
         Res<List<ServiceCount>> response = new Res<>();
         response.setCode(200);
         response.setMsg("请求成功");
@@ -48,7 +47,6 @@ public class ServiceNetController {
         return response;
     }
 
-    @CrossOrigin
     @GetMapping("/vulCount")
     @ApiOperation("服务漏洞统计信息")
     public Res<List<Count>> getServiceVulCount() {
@@ -59,7 +57,6 @@ public class ServiceNetController {
         return response;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取节点运行服务总数")
     @GetMapping("/count")
     public Res<Integer> getNodeCount() {
@@ -70,7 +67,6 @@ public class ServiceNetController {
         return res;
     }
 
-    @CrossOrigin
     @GetMapping("/portCount")
     @ApiOperation("服务端口统计信息")
     public Res<List<Count>> getServicePortCount() {
@@ -81,7 +77,6 @@ public class ServiceNetController {
         return response;
     }
 
-    @CrossOrigin
     @GetMapping("/safetyCount")
     @ApiOperation("服务安全级别统计信息")
     public Res<List<Count>> getServiceSafetyCount() {
@@ -92,7 +87,6 @@ public class ServiceNetController {
         return response;
     }
 
-    @CrossOrigin
     @GetMapping("/all")
     @ApiOperation("获取所有服务信息")
     public Res<List<ServiceNet>> getAllService() {

@@ -23,6 +23,7 @@ import java.util.List;
  * @author Lifeng
  * @date 2021/7/8 14:45
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/node")
 @Api(tags = "节点管理")
@@ -33,7 +34,6 @@ public class NodeController {
         this.nodeService = nodeService;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "节点分页查询", notes = "分页逻辑不完善")
     @GetMapping("/list")
     public NodeList getNodeList(@RequestParam(defaultValue = "1") String page, @RequestParam(defaultValue = "10") String limit) {
@@ -47,7 +47,6 @@ public class NodeController {
         return nodeList;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取节点总数")
     @GetMapping("/count")
     public Res<Integer> getNodeCount() {
@@ -58,7 +57,6 @@ public class NodeController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取节点漏洞总数")
     @GetMapping("/vulCount")
     public Res<Integer> getNodeVulnerabilityCount() {
@@ -69,7 +67,6 @@ public class NodeController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取关键节点id")
     @PostMapping("/keyNode")
     public Res<List<Integer>> getKeyNode(@RequestBody @ApiParam(value = "统一请求参数", required = true) Req<LinkedHashMap<String, List<Integer>>> request) {
@@ -84,7 +81,6 @@ public class NodeController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "更新节点信息")
     @PostMapping("/updateNode")
     public Res<String> updateNode(@RequestBody @ApiParam(value = "节点对象", required = true) Req<Node> req) {
@@ -93,7 +89,6 @@ public class NodeController {
         return new Res<String>(200, "更新成功");
     }
 
-    @CrossOrigin
     @ApiOperation(value = "删除节点", notes = "有关联的边时删除失败")
     @PostMapping("/deleteNode/{id}")
     public Res<String> deleteNode(@PathVariable(name = "id") Integer id) {
@@ -108,7 +103,6 @@ public class NodeController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "添加节点信息")
     @PostMapping("/addNode")
     public Res<String> addNode(@RequestBody @ApiParam(value = "节点对象", required = true) Req<AddedNode> req) {
@@ -117,7 +111,6 @@ public class NodeController {
         return new Res<>(200, "添加成功");
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取节点逻辑类型统计信息")
     @GetMapping("/logicalCount")
     public Res<List<Count>> logicalCount() {
@@ -126,7 +119,6 @@ public class NodeController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取节点物理类型统计信息")
     @GetMapping("/physicalCount")
     public Res<List<Count>> physicalCount() {
@@ -135,7 +127,6 @@ public class NodeController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取节点漏洞统计信息")
     @GetMapping("/serviceVulCount")
     public Res<List<Count>> serviceVulCount() {
@@ -144,16 +135,14 @@ public class NodeController {
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "根据安全等级获取节点", notes = "1=可破坏,2=可利用,3=可控制")
-    @PostMapping("/safety/{id}")
+    @GetMapping("/safety/{id}")
     public Res<List<Node>> safetyNode(@PathVariable(name = "id") Integer safety) {
         Res<List<Node>> res = new Res<>(200, "请求成功");
         res.setData(nodeService.getNodeBySafety(safety));
         return res;
     }
 
-    @CrossOrigin
     @ApiOperation(value = "获取节点服务漏洞数量")
     @GetMapping("/vulNum")
     public Res<ServiceVul> serviceVulNum() {

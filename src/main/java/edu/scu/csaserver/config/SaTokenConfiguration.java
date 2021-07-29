@@ -44,6 +44,9 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
             // 登录验证 -- 拦截所有路由，并排除/user/doLogin 用于开放登录
 //            SaRouter.match("/**", "/user/doLogin", StpUtil::checkLogin);
 
+            // 这里把预请求给过滤掉
+            // 跨域的自定义请求头，会发送两次请求，但是预请求中不包含自定义请求头
+            // 因此已定义请求头也会鉴权，铁定失败，我们在这里过滤一下
             if (!"OPTIONS".equals(req.getMethod())) {
                 // 登录验证 -- 排除多个路径
                 SaRouter.match(Collections.singletonList("/**"), Arrays.asList("/user/doLogin", "/user/captcha"), StpUtil::checkLogin);
