@@ -21,18 +21,21 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
 
     private StpUtil StpUserUtil;
     /**
-     * 为了使前后端分离，我们需要使用跨域资源共享
+     * 使用cors解决跨域问题，nginx不需要额外配置
+     * 为了使前后端分离，我们需要使用跨域资源共享解决跨域问题
      * 主要还是为了让跨域能够带cookie,或者自定义请求头，进行认证授权
      * @param registry
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:5500", "http://127.0.0.1:7788")
+                .allowedOrigins("http://127.0.0.1:5500", "http://192.168.50.17:6688")
                 .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)
                 .maxAge(3600)
                 .allowedHeaders("*");
+        // 经测试，允许的额外请求头参数，可以设为"satoken", "content-type"
+        // content-type 在登陆时用到啦，为了方便我们还是使用了通配符
     }
 
     // 注册Sa-Token的拦截器
