@@ -3,6 +3,7 @@ package edu.scu.csaserver.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,8 @@ import java.util.List;
  * @date 2021/7/20 下午2:32
  */
 @Data
-public class Page<T> {
+public class Page<T> implements Serializable {
+    private static final long serialVersionUID = -5806185072563975498L;
     /**
      * 响应状态码
      */

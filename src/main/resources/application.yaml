@@ -3,10 +3,16 @@ server:
 
 spring:
   datasource:
+    # mysql配置
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.50.17:33061/csa?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
     username: root
     password: csa123
+
+  # redis配置
+  redis:
+    host: 192.168.50.17
+    port: 6379
 
   flyway:
     # 是否启用flyway

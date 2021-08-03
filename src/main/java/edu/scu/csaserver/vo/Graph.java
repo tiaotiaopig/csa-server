@@ -3,6 +3,7 @@ package edu.scu.csaserver.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,8 @@ import java.util.List;
  * @date 2021/6/25 19:42
  */
 @Data
-public class Graph {
+public class Graph implements Serializable {
+    private static final long serialVersionUID = 2599753147171110921L;
     /**
      * 相当于拓扑图的子网
      */

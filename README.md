@@ -125,13 +125,28 @@ a server code for our project:csa(网络态势感知)
 
 在使用springboot解决跨域问题，主要是通过**跨域资源共享**（**cors**），还有其他解决方式，没试过
 
+其主要实现原理，就是拦截请求和响应，在响应头中添加cors相关的响应头，例如`Access-Control-Allow-Origin`
+
 代码实现只需两步，真的很简单，过程却很曲折
 
 1. `@CrossOrigin`
 
-   该注解可以作用在方法上，也可以作用在controller类上，**开启跨域**，默认所有origin都允许，也可以指定origin，例如192.168.50.145:5533，这样就只有origin是这个地址的请求会被响应
+   该注解可以作用在方法上，也可以作用在controller类上，**开启跨域**，默认**所有origin**都允许，所有方法被允许，**所有请求头**被允许，也可以指定origin，例如192.168.50.145:5533，这样就只有origin是这个地址的请求会被响应
 
-2. 跨域配置
+   该注解有以下属性可以配置
+
+   - `origins`
+   - `methods`
+   - `allowedHeaders`
+   - `exposedHeaders`
+   - `allowCredentials`
+   - `maxAge`
+
+   和全局配置的方法时一一对应的
+
+   基于注解的方式，是更加细粒度的cors控制，基于过滤器的方式，是全局的cors方式，两种允许组合
+
+2. 跨域配置（全局cors）
 
    ```java
    @Configuration
@@ -186,7 +201,7 @@ a server code for our project:csa(网络态势感知)
    重写**addCorsMappings**方法，配置跨域项
 
    > 1. `allowedOrigins`允许请求的origin，就是前端的地址
-   > 2. `allowedMethods`允许的http方法
+   > 2. `allowedMethods`允许的http方法，`*`代表**GET,POST,HEAD**不是所有
    > 3. `allowCredentials`允许带cookie
    > 4. `maxAge`在此时间内相同请求，不会再发送预检请求
    > 5. `allowedHeaders`允许的自定义请求头，一般设为通配符

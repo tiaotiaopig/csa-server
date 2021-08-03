@@ -3,6 +3,7 @@ package edu.scu.csaserver.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,8 @@ import java.util.List;
  * @date 2021/7/22 下午3:52
  */
 @Data
-public class ServiceVul {
+public class ServiceVul implements Serializable {
+    private static final long serialVersionUID = 9095769254908004958L;
     /**
      * 所有服务的名称,和data中的nums要一一对应
      */

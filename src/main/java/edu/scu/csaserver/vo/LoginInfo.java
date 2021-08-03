@@ -3,14 +3,17 @@ package edu.scu.csaserver.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 用于封装登录时,返回给前端的响应信息
  * @author lifeng
  * @date 2021/7/23 上午11:36
  */
 @Data
-public class LoginInfo {
+public class LoginInfo implements Serializable {
 
+    private static final long serialVersionUID = 6449417731835896649L;
     /**
      * sa登录的token
      * 为了在前后端分离情况下，让前端携带token

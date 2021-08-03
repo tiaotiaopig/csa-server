@@ -3,6 +3,7 @@ package edu.scu.csaserver.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,8 +12,9 @@ import java.util.List;
  * @date 2021/7/22 下午4:54
  */
 @Data
-public class NodeVulNum {
+public class NodeVulNum implements Serializable {
 
+    private static final long serialVersionUID = -9054288897870697737L;
     /**
      * 节点名称
      */

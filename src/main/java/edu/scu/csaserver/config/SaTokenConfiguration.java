@@ -21,11 +21,12 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
 
     private StpUtil StpUserUtil;
     /**
+     * cors的全局配置，@CrossOrigin 是更细粒度（fine-grained）的方法和controller级的cors
      * 使用cors解决跨域问题，nginx不需要额外配置
      * 为了使前后端分离，我们需要使用跨域资源共享解决跨域问题
      * 主要还是为了让跨域能够带cookie,或者自定义请求头，进行认证授权
      * @param registry
-     */
+     */ 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

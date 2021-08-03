@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @Data
 public class Res<T> implements Serializable {
+    private static final long serialVersionUID = 2570727641048946088L;
     /**
      * 响应状态码
      */

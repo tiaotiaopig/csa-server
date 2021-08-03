@@ -3,6 +3,8 @@ package edu.scu.csaserver.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 统一封装 pie 图的响应信息
  * 主要就是 名称 和 数量
@@ -10,7 +12,8 @@ import lombok.Data;
  * @date 2021/7/21 上午10:41
  */
 @Data
-public class Count {
+public class Count implements Serializable {
+    private static final long serialVersionUID = -2492821582953183419L;
     /**
      * 统计量的名称
      */
