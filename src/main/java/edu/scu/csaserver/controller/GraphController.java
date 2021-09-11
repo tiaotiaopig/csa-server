@@ -25,13 +25,9 @@ public class GraphController {
     @Autowired
     private GraphService graphService;
 
-
     @GetMapping("/getGraph")
     @ApiOperation(value = "获取拓扑图", notes = "获取整个网络的拓扑数据")
     public Res<Graph> getGraph () {
-
-        Res<Graph> res = new Res<>(200, "请求成功");
-        res.setData(graphService.generateGraph());
-        return res;
+        return Res.success(graphService.generateGraph());
     }
 }

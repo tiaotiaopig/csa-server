@@ -13,6 +13,7 @@ import edu.scu.csaserver.vo.Graph;
 import edu.scu.csaserver.vo.LinkInfo;
 import edu.scu.csaserver.vo.NodeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -29,6 +30,8 @@ public class GraphServiceImpl implements GraphService {
     private LinkMapper linkMapper;
     @Autowired
     private SubNetworkNodeMapper subNetworkNodeMapper;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public Graph generateGraph() {
@@ -50,7 +53,13 @@ public class GraphServiceImpl implements GraphService {
             }
         }
         // 填充节点信息
-        List<Node> nodes = nodeMapper.selectList(null);
+        List<Node> nodes = null;
+        if (redisTemplate.opsForHash().hasKey("graph", "nodes")) {
+            nodes = (List<Node>) redisTemplate.opsForHash().get("graph", "nodes");
+        } else {
+            nodes = nodeMapper.selectList(null);
+            redisTemplate.opsForHash().put("graph", "nodes", nodes);
+        }
         for (Node node : nodes) {
             NodeInfo nodeInfo = new NodeInfo();
             nodeInfo.setName("节点" + node.getId());

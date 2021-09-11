@@ -39,24 +39,19 @@ public class LinkController {
     @PostMapping("/relatedLinks")
     @ApiOperation(value = "获取节点相关的边", notes = "只返回相关边信息")
     public Res<List<LinkInfo>> relatedLinks(@RequestBody @ApiParam(value = "统一请求参数", required = true) Req<LinkedHashMap<String, List<Integer>>> request) {
-        Res<List<LinkInfo>> res = new Res<>(200, "请求成功");
         // 获取前端请求参数，这里是节点id数组
         // 如果没有对前端请求信息进行java对象的封装
         // 返回的是LinkedHashMap<String, Object>
         LinkedHashMap<String, List<Integer>> nodeIds = request.getParams();
         List<LinkInfo> linkInfos = linkService.getLinksByNodeId(nodeIds.get("nodes"));
-        res.setData(linkInfos);
-        return res;
+        return Res.success(linkInfos);
     }
 
     @ApiOperation(value = "获取连接（边）总数")
     @GetMapping("/count")
     public Res<Integer> getLinkCount() {
         Res<Integer> res = new Res<>();
-        res.setCode(200);
-        res.setMsg("返回连接（边）总数");
-        res.setData(linkService.count());
-        return res;
+        return Res.success(linkService.count());
     }
 
     @ApiOperation(value = "删除边", notes = "删除没有约束,只是不能重复删除")

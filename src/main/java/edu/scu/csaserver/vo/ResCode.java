@@ -7,8 +7,10 @@ package edu.scu.csaserver.vo;
 public enum ResCode {
     // success resultcode
     // 根据业务逻辑声明一些常用的状态码
-    SUCCESS(200, "成功"),
-    FAIL(400, "失败");
+    SUCCESS(200, "请求成功"),
+    DELETE_SUCCESS(205, "删除成功"),
+    DELETE_FAIL(405, "删除失败"),
+    FAIL(400, "请求失败");
     /**
      * 状态码
      */

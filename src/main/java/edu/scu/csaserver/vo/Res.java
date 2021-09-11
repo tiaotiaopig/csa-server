@@ -29,12 +29,12 @@ public class Res<T> implements Serializable {
     @ApiModelProperty("响应数据")
     private T data;
 
-//    private void setResCode (ResCode resCode) {
-//        this.code = resCode.getCode();
-//        this.msg = resCode.getMsg();
-//    }
-
     public Res(){}
+
+    public Res(ResCode resCode) {
+        this.code = resCode.getCode();
+        this.msg = resCode.getMsg();
+    }
 
     public Res(Integer code, String msg){
         this.msg = msg;
@@ -45,5 +45,27 @@ public class Res<T> implements Serializable {
         this.msg = msg;
         this.code = code;
         this.data = data;
+    }
+
+    /**
+     * 对成功的响应进行统一的封装
+     * @param data 请求成功时响应的数据
+     * @param <T>
+     * @return
+     */
+    public static <T> Res<T> success(T data) {
+        Res<T> res = new Res<>(ResCode.SUCCESS);
+        res.setData(data);
+        return res;
+    }
+
+    public static <T> Res<T> success(ResCode resCode, T data) {
+        Res<T> res = new Res<>(resCode);
+        res.setData(data);
+        return res;
+    }
+
+    public static <T> Res<T> fail(Integer code, String msg) {
+        return new Res<>(code, msg);
     }
 }

@@ -73,7 +73,7 @@ public class KeyNode {
                 {1,2}, {2,3} ,{3,1} ,{3,4}
         };
         KeyNode keyNode = new KeyNode();
-        int[] keys = keyNode.getKeyNodeIds(19, links);
+        int[] keys = keyNode.getKeyNodeIds(4, links);
         for (int key : keys) {
             System.out.println(key);
         }

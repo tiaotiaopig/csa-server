@@ -30,7 +30,7 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:5500", "http://192.168.50.17:6688")
+                .allowedOrigins("http://192.168.50.136:63342","http://127.0.0.1:5500", "http://192.168.50.17:6688")
                 .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)
                 .maxAge(3600)
@@ -51,7 +51,9 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
             // 这里把预请求给过滤掉
             // 跨域的自定义请求头，会发送两次请求，但是预请求中不包含自定义请求头
             // 因此已定义请求头也会鉴权，铁定失败，我们在这里过滤一下
-            if (!"OPTIONS".equals(req.getMethod())) {
+            // 为了开发方便，放行来自swagger的请求
+            // swagger上发送请求，会有一个自定义请求头，刚好让我们识别来源进行放行
+            if (!"OPTIONS".equals(req.getMethod()) && !"SwaggerBootstrapUi".equals(req.getHeader("request-origion"))) {
                 // 登录验证 -- 排除多个路径
                 SaRouter.match(Collections.singletonList("/**"), Arrays.asList("/user/doLogin", "/user/captcha"), StpUtil::checkLogin);
             }
