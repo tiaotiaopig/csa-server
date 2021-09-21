@@ -2,6 +2,7 @@ package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.Node;
 import com.baomidou.mybatisplus.extension.service.IService;
+import edu.scu.csaserver.utils.KeyNodePath;
 import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.NodeInfo;
 import edu.scu.csaserver.vo.NodeList;
@@ -80,4 +81,10 @@ public interface NodeService extends IService<Node> {
      * @return
      */
     ServiceVul nodeServiceVulNum();
+
+    /**
+     * 我们需要读取数据库的边数据，然后对 KeyNodePath
+     * @return
+     */
+    KeyNodePath getKeyNodePath();
 }
