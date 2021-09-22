@@ -1,5 +1,9 @@
 package edu.scu.csaserver.situation;
 
+import edu.scu.csaserver.domain.Node;
+
+import java.util.List;
+
 /**
  * 计算网络的逻辑传输效能（态势）
  * @author Lifeng

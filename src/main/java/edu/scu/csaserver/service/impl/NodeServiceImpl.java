@@ -12,8 +12,8 @@ import edu.scu.csaserver.mapper.SubNetworkNodeMapper;
 import edu.scu.csaserver.service.NodeService;
 import edu.scu.csaserver.mapper.NodeMapper;
 import edu.scu.csaserver.utils.KeyNode;
+import edu.scu.csaserver.utils.KeyNodePath;
 import edu.scu.csaserver.vo.*;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -223,6 +223,11 @@ implements NodeService{
         });
         serviceVul.setData(data);
         return serviceVul;
+    }
+
+    @Override
+    public KeyNodePath getKeyNodePath() {
+        return null;
     }
 }
 

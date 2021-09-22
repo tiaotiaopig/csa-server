@@ -1,5 +1,7 @@
 package edu.scu.csaserver.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +17,7 @@ import java.util.List;
  * @author Lifeng
  * @date 2021/9/14 18:01
  */
+@Component
 public class KeyNodePath {
     private final static int HOP_MAX = 13;      // 最大路径长度
     private int idMax;
@@ -165,6 +168,33 @@ public class KeyNodePath {
         int[][] res = nodeWeight.clone();
         Arrays.sort(res, (a, b) -> b[1] - a[1]);
         return res;
+    }
+
+    public int[][] getEdgeWeight() {
+        return edgeWeight;
+    }
+
+    public int edgeWeightSum() {
+        int sum = 0;
+        for (int i = 1; i <= idMax; i++) {
+            for (int j = i + 1; j <= idMax; j++) {
+                sum += edgeWeight[i][j];
+            }
+        }
+        return sum;
+    }
+
+
+    public int[][] getNodeWeight() {
+        return nodeWeight;
+    }
+
+    public int nodeWeightSum() {
+        int sum = 0;
+        for (int[] weight : nodeWeight) {
+            sum += weight[1];
+        }
+        return sum;
     }
 
     /**

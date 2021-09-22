@@ -46,13 +46,13 @@ public class Link implements Serializable {
      * 连接带宽
      */
     @ApiModelProperty("连接带宽")
-    private Double bandwidth;
+    private Float bandwidth;
 
     /**
      * 连接时延
      */
     @ApiModelProperty("连接时延")
-    private Double delay;
+    private Float delay;
 
     /**
      * 丢包率
@@ -64,7 +64,7 @@ public class Link implements Serializable {
      * 信噪比
      */
     @ApiModelProperty("信噪比")
-    private Double sn;
+    private Float sn;
 
     /**
      * 连接类型（有线，无线）
