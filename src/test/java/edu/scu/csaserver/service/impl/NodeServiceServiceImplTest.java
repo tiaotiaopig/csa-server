@@ -18,12 +18,12 @@ class NodeServiceServiceImplTest {
 
     @Test
     public void testWrapper () {
-        // 创建QueryWrapper 对象
-        QueryWrapper<Map<String, Integer>> wrapper = new QueryWrapper<>();
-        // 设置查询条件
-        wrapper.select("service_id")
-                .groupBy("service_id");
-        // 执行查询
+//        // 创建QueryWrapper 对象
+//        QueryWrapper<Map<String, Integer>> wrapper = new QueryWrapper<>();
+//        // 设置查询条件
+//        wrapper.select("service_id")
+//                .groupBy("service_id");
+//        // 执行查询
 
     }
 }

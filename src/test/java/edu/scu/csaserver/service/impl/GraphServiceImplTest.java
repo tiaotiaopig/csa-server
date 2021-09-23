@@ -8,10 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class GraphServiceImplTest {
 
-    @Autowired
-    private GraphService graphService;
-    @Test
-    void generateGraph() {
-        System.out.println(graphService.generateGraph());
-    }
+//    @Autowired
+//    private GraphService graphService;
+//    @Test
+//    void generateGraph() {
+//        System.out.println(graphService.generateGraph());
+//    }
 }

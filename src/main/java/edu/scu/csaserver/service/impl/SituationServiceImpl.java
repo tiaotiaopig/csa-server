@@ -9,7 +9,6 @@ import edu.scu.csaserver.situation.NodeProcess;
 import edu.scu.csaserver.situation.PhysicalTransmission;
 import edu.scu.csaserver.utils.KeyNodePath;
 import edu.scu.csaserver.vo.NodeNormal;
-import edu.scu.csaserver.vo.Res;
 import edu.scu.csaserver.vo.TopoElem;
 import org.springframework.stereotype.Service;
 
