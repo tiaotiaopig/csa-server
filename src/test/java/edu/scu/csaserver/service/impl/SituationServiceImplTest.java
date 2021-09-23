@@ -25,13 +25,13 @@ class SituationServiceImplTest {
 
     @Test
     void nodeProcess() {
-        situationService.init();
+//        situationService.init();
         System.out.println(situationService.nodeProcess());
     }
 
     @Test
     void npElem() {
-        situationService.init();
+//        situationService.init();
         System.out.println(situationService.npElem());
     }
 }

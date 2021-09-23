@@ -9,8 +9,8 @@ import edu.scu.csaserver.situation.NodeProcess;
 import edu.scu.csaserver.situation.PhysicalTransmission;
 import edu.scu.csaserver.utils.KeyNodePath;
 import edu.scu.csaserver.vo.NodeNormal;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import edu.scu.csaserver.vo.Res;
+import edu.scu.csaserver.vo.TopoElem;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,17 +24,22 @@ import java.util.List;
  */
 @Service
 public class SituationServiceImpl implements SituationService {
-    @Autowired
-    private LinkMapper linkMapper;
-    @Autowired
-    private NodeMapper nodeMapper;
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-    @Autowired
-    private KeyNodePath keyNodePath;
 
-    public void init() {
-        if (keyNodePath.getNodeWeight() != null) return;
+    private final LinkMapper linkMapper;
+    private final NodeMapper nodeMapper;
+    private final KeyNodePath keyNodePath;
+
+    public SituationServiceImpl(LinkMapper linkMapper, NodeMapper nodeMapper, KeyNodePath keyNodePath) {
+        this.linkMapper = linkMapper;
+        this.nodeMapper = nodeMapper;
+        this.keyNodePath = keyNodePath;
+        init();
+    }
+
+    /**
+     * 关键节点的算法，需要从数据库查询边的关系，进行初始化
+     */
+    private void init() {
         List<Link> links = linkMapper.selectList(null);
         if (links == null) return;
         int size = links.size();
@@ -48,6 +53,9 @@ public class SituationServiceImpl implements SituationService {
     }
 
     @Override
+    /**
+     * 使用归一化 + 加权平均的方法，求得网络传输效能
+     */
     public float phyTrans() {
         float sum = 0, score;
         List<Link> links = linkMapper.selectList(null);
@@ -64,6 +72,9 @@ public class SituationServiceImpl implements SituationService {
     }
 
     @Override
+    /**
+     * 使用加权平均的方法计算物理传输要素的平均值
+     */
     public Link phyLinkElem() {
         Link res = new Link();
         List<Link> links = linkMapper.selectList(null);
@@ -119,6 +130,20 @@ public class SituationServiceImpl implements SituationService {
         res.setThroughout(avgThroughout);
         res.setVul(avgVul);
         return res;
+    }
+
+    @Override
+    public TopoElem topologyElem() {
+        TopoElem topoElem = new TopoElem();
+        topoElem.setLinkCount(22);
+        topoElem.setNodeCount(20);
+        topoElem.setLinkConn(3);
+        topoElem.setNodeConn(2);
+        topoElem.setNodeStrength(4.32f);
+        topoElem.setWCCoefficient(5.78f);
+        topoElem.setCentrality(3.27f);
+        topoElem.setAvgPathLength(6.7f);
+        return topoElem;
     }
 
 }

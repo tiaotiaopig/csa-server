@@ -1,8 +1,13 @@
 package edu.scu.csaserver.controller;
 
+import edu.scu.csaserver.domain.Link;
+import edu.scu.csaserver.service.SituationService;
+import edu.scu.csaserver.vo.NodeNormal;
 import edu.scu.csaserver.vo.Res;
+import edu.scu.csaserver.vo.TopoElem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "网络态势")
 public class SituationController {
 
+    @Autowired
+    private SituationService situationService;
+
     /**
      * 网络物理传输效能
      * @return
@@ -26,7 +34,14 @@ public class SituationController {
     @GetMapping("/phyTrans")
     @ApiOperation("网络物理传输效能")
     public Res<Float> physicalTransmission() {
-        return Res.success(35.6f);
+
+        return Res.success(situationService.phyTrans());
+    }
+
+    @GetMapping("/phyTransElem")
+    @ApiOperation("网络物理传输要素平均值")
+    public Res<Link> phyTransElem() {
+        return Res.success(situationService.phyLinkElem());
     }
 
     /**
@@ -34,7 +49,7 @@ public class SituationController {
      * @return
      */
     @GetMapping("/logTrans")
-    @ApiOperation("网络逻辑传输效能")
+    @ApiOperation("网络逻辑传输效能(未完善)")
     public Res<Float> logicalTransmission() {
         return Res.success(58.4f);
     }
@@ -46,7 +61,14 @@ public class SituationController {
     @GetMapping("/procession")
     @ApiOperation("节点处理效能")
     public Res<Float> nodeProcession() {
-        return Res.success(78.5f);
+
+        return Res.success(situationService.nodeProcess());
+    }
+
+    @GetMapping("/nodeProElem")
+    @ApiOperation("节点性能要素平均值")
+    public Res<NodeNormal> nodeProElem() {
+        return Res.success(situationService.npElem());
     }
 
     /**
@@ -54,9 +76,19 @@ public class SituationController {
      * @return
      */
     @GetMapping("/topology")
-    @ApiOperation("拓扑结构效能")
+    @ApiOperation("拓扑结构效能(未完善)")
     public Res<Float> topologyStructure() {
         return Res.success(72.3f);
+    }
+
+    /**
+     * 拓扑结构效能要素
+     * @return
+     */
+    @GetMapping("/topologyElem")
+    @ApiOperation("拓扑结构效能要素(未完善)")
+    public Res<TopoElem> topologyElement() {
+        return Res.success(situationService.topologyElem());
     }
 
     /**
@@ -64,7 +96,7 @@ public class SituationController {
      * @return
      */
     @GetMapping("/overall")
-    @ApiOperation("网络效能态势")
+    @ApiOperation("网络效能态势(未完善)")
     public Res<Float> overallSituation() {
         return Res.success(78.5f);
     }

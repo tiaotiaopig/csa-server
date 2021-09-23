@@ -3,6 +3,8 @@ package edu.scu.csaserver.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 
 /**
  * 包装一下节点属性归一化后的值
@@ -11,8 +13,9 @@ import lombok.Data;
  */
 
 @Data
-public class NodeNormal {
+public class NodeNormal implements Serializable {
 
+    private static final long serialVersionUID = 7782659380157656752L;
     /**
      * 节点id
      */

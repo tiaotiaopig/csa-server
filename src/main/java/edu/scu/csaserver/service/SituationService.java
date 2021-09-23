@@ -2,6 +2,7 @@ package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.vo.NodeNormal;
+import edu.scu.csaserver.vo.TopoElem;
 
 /**
  * 计算网络效能态势的业务逻辑
@@ -20,7 +21,21 @@ public interface SituationService {
      */
     Link phyLinkElem();
 
+    /**
+     * 网络的节点处理效能
+     * @return
+     */
     float nodeProcess();
 
+    /**
+     * 网络的节点效能要素
+     * @return
+     */
     NodeNormal npElem();
+
+    /**
+     * 网络拓扑效能要素
+     * @return
+     */
+    TopoElem topologyElem();
 }
