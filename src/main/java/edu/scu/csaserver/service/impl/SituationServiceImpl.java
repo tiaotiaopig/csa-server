@@ -7,6 +7,7 @@ import edu.scu.csaserver.mapper.NodeMapper;
 import edu.scu.csaserver.service.SituationService;
 import edu.scu.csaserver.situation.NodeProcess;
 import edu.scu.csaserver.situation.PhysicalTransmission;
+import edu.scu.csaserver.situation.TopologyStructure;
 import edu.scu.csaserver.utils.KeyNodePath;
 import edu.scu.csaserver.vo.NodeNormal;
 import edu.scu.csaserver.vo.TopoElem;
@@ -27,6 +28,7 @@ public class SituationServiceImpl implements SituationService {
     private final LinkMapper linkMapper;
     private final NodeMapper nodeMapper;
     private final KeyNodePath keyNodePath;
+    private int[][] edges;
 
     public SituationServiceImpl(LinkMapper linkMapper, NodeMapper nodeMapper, KeyNodePath keyNodePath) {
         this.linkMapper = linkMapper;
@@ -47,6 +49,7 @@ public class SituationServiceImpl implements SituationService {
             edges[i][0] = links.get(i).getSourceNodeId();
             edges[i][1] = links.get(i).getTargetNodeId();
         }
+        this.edges = edges;
         keyNodePath.init(edges);
         keyNodePath.find();
     }
@@ -132,16 +135,21 @@ public class SituationServiceImpl implements SituationService {
     }
 
     @Override
+    public float topoSituation() {
+        return TopologyStructure.topoSituation(edges);
+    }
+
+    @Override
     public TopoElem topologyElem() {
         TopoElem topoElem = new TopoElem();
-        topoElem.setLinkCount(22);
-        topoElem.setNodeCount(20);
-        topoElem.setLinkConn(3);
-        topoElem.setNodeConn(2);
+        topoElem.setLinkCount(linkMapper.selectCount(null));
+        topoElem.setNodeCount(nodeMapper.selectCount(null));
+        topoElem.setLinkConn((int) TopologyStructure.edgeConn);
+        topoElem.setNodeConn((int) TopologyStructure.nodeConn);
         topoElem.setNodeStrength(4.32f);
         topoElem.setWCCoefficient(5.78f);
-        topoElem.setCentrality(3.27f);
-        topoElem.setAvgPathLength(6.7f);
+        topoElem.setCentrality(TopologyStructure.betweenCentrality);
+        topoElem.setAvgPathLength(TopologyStructure.avgPath);
         return topoElem;
     }
 

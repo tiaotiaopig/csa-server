@@ -78,7 +78,7 @@ public class SituationController {
     @GetMapping("/topology")
     @ApiOperation("拓扑结构效能(未完善)")
     public Res<Float> topologyStructure() {
-        return Res.success(72.3f);
+        return Res.success(situationService.topoSituation());
     }
 
     /**

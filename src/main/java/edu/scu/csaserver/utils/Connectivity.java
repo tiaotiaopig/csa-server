@@ -1,6 +1,7 @@
 package edu.scu.csaserver.utils;
 
 /**
+ * 这个是从 0 开始编号节点的
  * 计算网络的点连通度和边连通度
  * FordFulkerson 可以计算任意两个节点的最大流（最小割）
  * 则整个网络的边连通度就是：任意两个节点的最大流的最小值
@@ -10,6 +11,20 @@ package edu.scu.csaserver.utils;
  * @date 2021/9/23 14:38
  */
 public class Connectivity {
+
+    public static double[][] graph(int[][] edges) {
+        int idMax = 0;
+        for (int[] edge : edges) {
+            idMax = Math.max(idMax, Math.max(edge[0], edge[1]));
+        }
+        double[][] graph = new double[idMax][idMax];
+        for (int[] edge : edges) {
+            // 换成从0 开始编号
+            graph[edge[0] - 1][edge[1] - 1] = 1;
+            graph[edge[1] - 1][edge[0] - 1] = 1;
+        }
+        return graph;
+    }
 
     public static int edgeConn(double[][] graph) {
         int len = graph.length;
@@ -55,12 +70,10 @@ public class Connectivity {
     }
 
     public static void main(String[] args) {
-        double[][] graph = {
-                {0, 1, 1, 0},
-                {1, 0, 1, 1},
-                {1, 1, 0, 1},
-                {0, 1, 1, 0}
+        int[][] edges = {
+                {1, 2}, {1, 3}, {2, 4}, {3, 4}
         };
+        double[][] graph = graph(edges);
         System.out.println(Connectivity.edgeConn(graph));
         System.out.println(Connectivity.nodeConn(graph));
     }

@@ -34,6 +34,11 @@ public interface SituationService {
     NodeNormal npElem();
 
     /**
+     * 计算网络拓扑效能
+     * @return
+     */
+    float topoSituation();
+    /**
      * 网络拓扑效能要素
      * @return
      */
