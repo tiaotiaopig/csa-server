@@ -43,4 +43,10 @@ public interface SituationService {
      * @return
      */
     TopoElem topologyElem();
+
+    /**
+     * 根据ahp,计算出传输，节点处理，拓扑的权重：0.21，0.10，0.69
+     * @return
+     */
+    float overallSituation();
 }

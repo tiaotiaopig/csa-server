@@ -11,6 +11,8 @@ import edu.scu.csaserver.situation.TopologyStructure;
 import edu.scu.csaserver.utils.KeyNodePath;
 import edu.scu.csaserver.vo.NodeNormal;
 import edu.scu.csaserver.vo.TopoElem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +31,7 @@ public class SituationServiceImpl implements SituationService {
     private final NodeMapper nodeMapper;
     private final KeyNodePath keyNodePath;
     private int[][] edges;
+    private float[] situations = new float[4];
 
     public SituationServiceImpl(LinkMapper linkMapper, NodeMapper nodeMapper, KeyNodePath keyNodePath) {
         this.linkMapper = linkMapper;
@@ -59,6 +62,7 @@ public class SituationServiceImpl implements SituationService {
      * 使用归一化 + 加权平均的方法，求得网络传输效能
      */
     public float phyTrans() {
+        if (situations[0] != 0f) return situations[0];
         float sum = 0, score;
         List<Link> links = linkMapper.selectList(null);
         if (links == null) return sum;
@@ -70,7 +74,8 @@ public class SituationServiceImpl implements SituationService {
                     link.getLosePackage() * 0.3f + link.getSn() * 0.1f;
             sum += score * edgeWeight[link.getSourceNodeId()][link.getTargetNodeId()] / weightSum;
         }
-        return sum * 100;
+        situations[0] = sum * 100;
+        return situations[0];
     }
 
     @Override
@@ -99,6 +104,7 @@ public class SituationServiceImpl implements SituationService {
 
     @Override
     public float nodeProcess() {
+        if (situations[1] != 0f) return situations[1];
         float sum = 0, score;
         List<Node> nodes = nodeMapper.selectList(null);
         if (nodes == null) return sum;
@@ -110,7 +116,8 @@ public class SituationServiceImpl implements SituationService {
                     normal.getCp() * 0.3f + normal.getVul() * 0.2f;
             sum += score * nodeWeight[normal.getNodeId()][1] / weightSum;
         }
-        return sum * 100;
+        situations[1] = sum * 100;
+        return situations[1];
     }
 
     @Override
@@ -136,7 +143,10 @@ public class SituationServiceImpl implements SituationService {
 
     @Override
     public float topoSituation() {
-        return TopologyStructure.topoSituation(edges);
+        if (situations[2] != 0f) return situations[2];
+        float res = TopologyStructure.topoSituation(edges);
+        situations[2] = TopologyStructure.topoSituation(edges) * 100;
+        return situations[2];
     }
 
     @Override
@@ -151,6 +161,15 @@ public class SituationServiceImpl implements SituationService {
         topoElem.setCentrality(TopologyStructure.betweenCentrality);
         topoElem.setAvgPathLength(TopologyStructure.avgPath);
         return topoElem;
+    }
+
+    @Override
+    public float overallSituation() {
+        if (situations[0] == 0f) situations[0] = phyTrans();
+        if (situations[1] == 0f) situations[1] = nodeProcess();
+        if (situations[2] == 0f) situations[2] = topoSituation();
+        situations[3] = situations[0] * 0.21f + situations[1] * 0.1f + situations[2] * 0.69f;
+        return Float.parseFloat(String.format("%.1f", situations[3]));
     }
 
 }

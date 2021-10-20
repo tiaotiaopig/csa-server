@@ -98,6 +98,6 @@ public class SituationController {
     @GetMapping("/overall")
     @ApiOperation("网络效能态势(未完善)")
     public Res<Float> overallSituation() {
-        return Res.success(78.5f);
+        return Res.success(situationService.overallSituation());
     }
 }

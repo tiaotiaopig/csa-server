@@ -9,6 +9,7 @@ import edu.scu.csaserver.service.LinkService;
 import edu.scu.csaserver.mapper.LinkMapper;
 import edu.scu.csaserver.vo.LinkInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,22 +27,52 @@ implements LinkService{
     private LinkMapper linkMapper;
     @Autowired
     private SubNetworkLinkMapper subNetworkLinkMapper;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public List<LinkInfo> getLinksByNodeId(List<Integer> nodes) {
 
         List<LinkInfo> result = new ArrayList<>();
+//        List<Link> links = linkMapper.selectList(null);
+//        for (Link link : links) {
+//            if (nodes.contains(link.getSourceNodeId()) &&
+//            nodes.contains(link.getTargetNodeId())) {
+//                LinkInfo linkInfo = new LinkInfo();
+//                linkInfo.setSource("节点" + link.getSourceNodeId());
+//                linkInfo.setTarget("节点" + link.getTargetNodeId());
+//                linkInfo.setLink(link);
+//                result.add(linkInfo);
+//            }
+//        }
+
+        List<Link> related;
+        if (redisTemplate.opsForHash().hasKey("graph", "related")) {
+            related = (List<Link>) redisTemplate.opsForHash().get("graph", "related");
+        } else {
+            related = getRelatedLinks(nodes);
+        }
+        for (Link link : related) {
+            LinkInfo linkInfo = new LinkInfo();
+            linkInfo.setSource("节点" + link.getSourceNodeId());
+            linkInfo.setTarget("节点" + link.getTargetNodeId());
+            linkInfo.setLink(link);
+            result.add(linkInfo);
+        }
+        return result;
+    }
+
+    @Override
+    public List<Link> getRelatedLinks(List<Integer> nodes) {
+        List<Link> result = new ArrayList<>();
         List<Link> links = linkMapper.selectList(null);
         for (Link link : links) {
             if (nodes.contains(link.getSourceNodeId()) &&
-            nodes.contains(link.getTargetNodeId())) {
-                LinkInfo linkInfo = new LinkInfo();
-                linkInfo.setSource("节点" + link.getSourceNodeId());
-                linkInfo.setTarget("节点" + link.getTargetNodeId());
-                linkInfo.setLink(link);
-                result.add(linkInfo);
+                    nodes.contains(link.getTargetNodeId())) {
+                result.add(link);
             }
         }
+        redisTemplate.opsForHash().put("graph", "related", result);
         return result;
     }
 

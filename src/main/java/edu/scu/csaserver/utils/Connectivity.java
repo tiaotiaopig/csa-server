@@ -71,7 +71,7 @@ public class Connectivity {
 
     public static void main(String[] args) {
         int[][] edges = {
-                {1, 2}, {1, 3}, {2, 4}, {3, 4}
+                {1, 2}, {1, 3}, {2, 4}, {3, 4},{2,3}
         };
         double[][] graph = graph(edges);
         System.out.println(Connectivity.edgeConn(graph));

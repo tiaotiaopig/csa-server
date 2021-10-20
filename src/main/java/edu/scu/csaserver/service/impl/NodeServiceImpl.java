@@ -9,12 +9,15 @@ import edu.scu.csaserver.domain.SubNetworkNode;
 import edu.scu.csaserver.mapper.LinkMapper;
 import edu.scu.csaserver.mapper.ServiceNetMapper;
 import edu.scu.csaserver.mapper.SubNetworkNodeMapper;
+import edu.scu.csaserver.service.LinkService;
 import edu.scu.csaserver.service.NodeService;
 import edu.scu.csaserver.mapper.NodeMapper;
+import edu.scu.csaserver.utils.KeyLink;
 import edu.scu.csaserver.utils.KeyNode;
 import edu.scu.csaserver.utils.KeyNodePath;
 import edu.scu.csaserver.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,6 +41,12 @@ implements NodeService{
     private ServiceNetMapper serviceNetMapper;
     @Autowired
     private KeyNode keyNode;
+    @Autowired
+    private KeyLink keyLink;
+    @Autowired
+    private LinkService linkService;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public List<NodeInfo> getNodePage(Integer page, Integer limit) {
@@ -74,15 +83,15 @@ implements NodeService{
 
     @Override
     public List<Integer> getKeyNodeIds(List<Integer> nodeIds) {
-        List<Link> related = new ArrayList<>();
-        List<Link> links = linkMapper.selectList(null);
-        // 获取节点相关边
-        for (Link link : links) {
-            if (nodeIds.contains(link.getSourceNodeId()) &&
-                    nodeIds.contains(link.getTargetNodeId())) {
-                related.add(link);
-            }
-        }
+        List<Link> related = linkService.getRelatedLinks(nodeIds);
+//        List<Link> links = linkMapper.selectList(null);
+//        // 获取节点相关边
+//        for (Link link : links) {
+//            if (nodeIds.contains(link.getSourceNodeId()) &&
+//                    nodeIds.contains(link.getTargetNodeId())) {
+//                related.add(link);
+//            }
+//        }
         // 将相关边的连接关系取出
         // 封装成二维数组，供关键节点算法使用
         Link link;
@@ -102,6 +111,9 @@ implements NodeService{
         int[] keys = keyNode.getKeyNodeIds(max, linkArray);
         List<Integer> result = new ArrayList<>();
         for (int key : keys) result.add(key);
+        // 在计算关键节点时，一并把关键链路算了
+        keyLink.init(linkArray, max);
+        redisTemplate.opsForHash().put("graph", "keyLinks", keyLink.getKeyLinks(result));
         return result;
     }
 

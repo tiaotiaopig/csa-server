@@ -43,7 +43,7 @@ const char* KEY_NODE = "keynode.txt";
 const int REMOVE_STRATEGY = 3; // 1: weighted method: powerIterationB(); vertex_cover_2() -- remove the node with smaller degree first // 优先移除度数更小的节点
 							   // 3: unweighted method with one-degree in vertex cover： powerIteration; vertex_cover() -- remove the node with larger degree first // 优先移除度数更大的节点
 const int PLOT_SIZE = 1; // the removal size of each line in FILE_PLOT. E.g. PLOT_SIZE=2 means each line of FILE_PLOT is the result that remove two nodes from the network // 输出文件的每一行表示从网络中每移除PLOT_SIZE个节点后得到的结果
-const int TARGET_SIZE = 2; // If the gcc size is smaller than TARGET_SIZE, the dismantling will stop. Default value can be 0.01*NODE_NUM  OR  1000 // 算法中止条件
+const int TARGET_SIZE = 4; // If the gcc size is smaller than TARGET_SIZE, the dismantling will stop. Default value can be 0.01*NODE_NUM  OR  1000 // 算法中止条件
 
 // 读取JNI二维数组，填充到 A 中并返回
 void input(vector<vector<int>*>* A, JNIEnv *env, jobjectArray array) {

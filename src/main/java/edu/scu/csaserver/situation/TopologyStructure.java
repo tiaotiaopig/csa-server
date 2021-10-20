@@ -29,7 +29,8 @@ public class TopologyStructure {
         avgPath = floats[0];
         avgShortest = floats[0] / floats[1];
 
-        return 0.2f * nodeConn / nodeMax + 0.3f * edgeConn / edgeMax + betweenCentrality * 0.2f + avgShortest * 0.3f;
+        float res = 0.2f * nodeConn / nodeMax + 0.3f * edgeConn / edgeMax + betweenCentrality * 0.2f + avgShortest * 0.3f;
+        return Float.parseFloat(String.format("%.3f", res));
     }
 
 

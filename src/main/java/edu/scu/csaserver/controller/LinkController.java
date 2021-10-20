@@ -12,8 +12,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -28,13 +30,10 @@ import java.util.List;
 @Api(tags = "连接管理")
 public class LinkController {
 
-    private final LinkService linkService;
-
     @Autowired
-    public LinkController (LinkService linkService) {
-
-        this.linkService = linkService;
-    }
+    private LinkService linkService;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @PostMapping("/relatedLinks")
     @ApiOperation(value = "获取节点相关的边", notes = "只返回相关边信息")
@@ -99,5 +98,15 @@ public class LinkController {
         LinkInfo linkInfo = req.getParams();
         linkService.updateById(linkInfo.getLink());
         return new Res<>(200, "更新成功");
+    }
+
+    @ApiOperation(value = "关键链路")
+    @PostMapping("/keyLink")
+    public Res<List<Link>> keyLink() {
+        List<Link> keyLinks = new ArrayList<>();
+        if (redisTemplate.opsForHash().hasKey("graph", "keyLinks")) {
+            keyLinks = (List<Link>) redisTemplate.opsForHash().get("graph", "keyLinks");
+        }
+        return Res.success(keyLinks);
     }
 }

@@ -108,7 +108,7 @@ public class Floyd {
     public static void main(String[] args) {
         int[][] edge = {{1, 2}, {1, 3}, {3, 4}, {2, 4}, {1, 4}};
         floyd(edge);
-        System.out.println(avgShort());
+        System.out.println(Arrays.toString(avgShort()));
         System.out.println(centrality());
     }
 }
