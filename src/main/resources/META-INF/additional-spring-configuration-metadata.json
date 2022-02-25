@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "self.cyber-sky.url",
+      "type": "java.lang.String",
+      "description": "Description for self.cyber-sky.url."
+  }
+] }

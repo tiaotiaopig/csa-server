@@ -55,3 +55,10 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: false
+
+# 其他配置
+self:
+  cyber-sky:
+    url: http://221.236.30.70:16520/sap/api
+    secret: c4a2d9e32fa6d3dc7ff70f734175900125aa9b3cd3519a8252d276fe37264abf
+    username: licl
