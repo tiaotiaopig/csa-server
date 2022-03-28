@@ -1,0 +1,47 @@
+package edu.scu.csaserver.controller;
+
+import edu.scu.csaserver.service.FileService;
+import edu.scu.csaserver.vo.Res;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+/**
+ * 接收前端上传的文件
+ * @author Lifeng
+ * @date 2022/3/26 19:16
+ */
+@CrossOrigin
+@RestController
+@RequestMapping("/file")
+@Api(tags = "文件管理")
+public class FileController {
+
+    private final FileService fileService;
+
+    @Autowired
+    public FileController(FileService fileService) {
+        this.fileService = fileService;
+    }
+
+    @PostMapping("/upload")
+    @ApiOperation(value = "上传文件", notes = "上传单个文件，文件内容为空会上传失败")
+    public Res<String> upload(@RequestParam("file") MultipartFile file) {
+        boolean success = fileService.upload(file);
+        if (success) {
+            return Res.success("上传成功");
+        } else {
+            return Res.fail(578, "上传失败");
+        }
+    }
+
+    @GetMapping("/getAll")
+    @ApiOperation(value = "获取所有上传文件名称", notes = "为空表示没有")
+    public Res<List<String>> getUploadedFiles() {
+        return Res.success(fileService.getUploaded());
+    }
+}

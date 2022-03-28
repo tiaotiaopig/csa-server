@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * mp 自动生成的
@@ -46,12 +47,7 @@ implements LinkService{
 //            }
 //        }
 
-        List<Link> related;
-        if (redisTemplate.opsForHash().hasKey("graph", "related")) {
-            related = (List<Link>) redisTemplate.opsForHash().get("graph", "related");
-        } else {
-            related = getRelatedLinks(nodes);
-        }
+        List<Link> related = getRelatedLinks(nodes);
         for (Link link : related) {
             LinkInfo linkInfo = new LinkInfo();
             linkInfo.setSource("节点" + link.getSourceNodeId());
@@ -65,14 +61,20 @@ implements LinkService{
     @Override
     public List<Link> getRelatedLinks(List<Integer> nodes) {
         List<Link> result = new ArrayList<>();
-        List<Link> links = linkMapper.selectList(null);
+        List<Link> links;
+        if (Boolean.TRUE.equals(redisTemplate.opsForValue().getOperations().hasKey("links"))) {
+            links = (List<Link>) redisTemplate.opsForValue().get("links");
+        } else {
+            links = linkMapper.selectList(null);
+            redisTemplate.opsForValue().set("links", links);
+            redisTemplate.expire("links", 300, TimeUnit.SECONDS);
+        }
         for (Link link : links) {
             if (nodes.contains(link.getSourceNodeId()) &&
                     nodes.contains(link.getTargetNodeId())) {
                 result.add(link);
             }
         }
-        redisTemplate.opsForHash().put("graph", "related", result);
         return result;
     }
 

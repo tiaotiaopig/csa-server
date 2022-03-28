@@ -7,6 +7,7 @@ import edu.scu.csaserver.mapper.LinkMapper;
 import edu.scu.csaserver.mapper.NodeMapper;
 import edu.scu.csaserver.mapper.SubNetworkMapper;
 import edu.scu.csaserver.mapper.SubNetworkNodeMapper;
+import edu.scu.csaserver.service.FileService;
 import edu.scu.csaserver.service.GraphService;
 import edu.scu.csaserver.vo.Category;
 import edu.scu.csaserver.vo.Graph;
@@ -32,6 +33,8 @@ public class GraphServiceImpl implements GraphService {
     private SubNetworkNodeMapper subNetworkNodeMapper;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private FileService fileService;
 
     @Override
     public Graph generateGraph() {
@@ -76,6 +79,36 @@ public class GraphServiceImpl implements GraphService {
             linkInfo.setTarget("节点" + link.getTargetNodeId());
             linkInfo.setLink(link);
             graph.getLinks().add(linkInfo);
+        }
+        return graph;
+    }
+
+    /**
+     * 根据拓扑图文件生成图
+     *
+     * @param filename
+     * @return
+     */
+    @Override
+    public Graph generateGraph(String filename) {
+        Graph graph = new Graph();
+        List<int[]> parseRes = fileService.parseTxt(filename);
+        int len = parseRes.size();
+        // 先填充边信息
+        int[] link, nodes;
+        for (int i = 0; i < len - 1; i++) {
+            link = parseRes.get(i);
+            LinkInfo linkInfo = new LinkInfo();
+            linkInfo.setSource("节点" + link[0]);
+            linkInfo.setTarget("节点" + link[1]);
+            graph.getLinks().add(linkInfo);
+        }
+        // 填充节点
+        nodes = parseRes.get(len - 1);
+        for (int node : nodes) {
+            NodeInfo nodeInfo = new NodeInfo();
+            nodeInfo.setName("节点" + node);
+            graph.getNodes().add(nodeInfo);
         }
         return graph;
     }
