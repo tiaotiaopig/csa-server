@@ -14,6 +14,7 @@ import edu.scu.csaserver.vo.Graph;
 import edu.scu.csaserver.vo.LinkInfo;
 import edu.scu.csaserver.vo.NodeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +93,14 @@ public class GraphServiceImpl implements GraphService {
     @Override
     public Graph generateGraph(String filename) {
         Graph graph = new Graph();
-        List<int[]> parseRes = fileService.parseTxt(filename);
+        List<int[]> parseRes;
+        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
+        if (hash.hasKey("graph", filename)) {
+            parseRes = (List<int[]>) hash.get("graph", filename);
+        } else {
+            parseRes = fileService.parseTxt(filename);
+            hash.put("graph", filename, parseRes);
+        }
         int len = parseRes.size();
         // 先填充边信息
         int[] link, nodes;

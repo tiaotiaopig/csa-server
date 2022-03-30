@@ -150,4 +150,10 @@ public class NodeController {
         res.setData(nodeService.nodeServiceVulNum());
         return res;
     }
+
+    @ApiOperation(value = "获取节点服务漏洞数量")
+    @GetMapping("/keyNodeBy")
+    public List<Integer> keyNodeByFunc(@RequestParam("func") String func, @RequestParam("path") String path) {
+        return nodeService.keyNode(func, path);
+    }
 }

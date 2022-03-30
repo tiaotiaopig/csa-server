@@ -15,8 +15,10 @@ import edu.scu.csaserver.mapper.NodeMapper;
 import edu.scu.csaserver.utils.KeyLink;
 import edu.scu.csaserver.utils.KeyNode;
 import edu.scu.csaserver.utils.KeyNodePath;
+import edu.scu.csaserver.utils.KeyNodeUtil;
 import edu.scu.csaserver.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -240,6 +242,30 @@ implements NodeService{
     @Override
     public KeyNodePath getKeyNodePath() {
         return null;
+    }
+
+    /**
+     * 选择某种关键节点算法，对某张图进行关键节点检测
+     *
+     * @param func 方法名称
+     * @param path 拓扑图路径
+     * @return 关键节点id列表
+     */
+    @Override
+    public List<Integer> keyNode(String func, String path) {
+        if (!"default".equals(func)) return KeyNodeUtil.keyNode(func, path);
+        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
+        // 前端确保先解析，这样redis中才有数据
+        List<int[]> graph = (List<int[]>) hash.get("graph", path);
+        int len = graph.size(), idMax;
+        int[][] links = new int[len - 1][];
+        for (int i = 0; i < len - 1; i++) links[i] = graph.get(i);
+        idMax = Arrays.stream(graph.get(len - 1)).max().getAsInt();
+        // 图太大，直接崩掉了
+        int[] keyNodeIds = keyNode.getKeyNodeIds(idMax, links);
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int keyNodeId : keyNodeIds) res.add(keyNodeId);
+        return res;
     }
 }
 

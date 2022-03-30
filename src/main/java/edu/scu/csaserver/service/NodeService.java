@@ -87,4 +87,13 @@ public interface NodeService extends IService<Node> {
      * @return
      */
     KeyNodePath getKeyNodePath();
+
+    /**
+     * 选择某种关键节点算法，对某张图进行关键节点检测
+     * @param func 方法名称
+     * @param path 拓扑图路径
+     * @return 关键节点id列表
+     */
+    List<Integer> keyNode(String func, String path);
+
 }
