@@ -58,14 +58,20 @@ public class Res<T> implements Serializable {
         res.setData(data);
         return res;
     }
-
-    public static <T> Res<T> success(ResCode resCode, T data) {
-        Res<T> res = new Res<>(resCode);
-        res.setData(data);
-        return res;
+//
+//    public static <T> Res<T> success(ResCode resCode, T data) {
+//        Res<T> res = new Res<>(resCode);
+//        res.setData(data);
+//        return res;
+//    }
+//
+//    public static <T> Res<T> fail(Integer code, String msg) {
+//        return new Res<>(code, msg);
+//    }
+    public static <T> Res<T> genRes(ResCode code){
+        return new Res<>(code);
     }
-
-    public static <T> Res<T> fail(Integer code, String msg) {
-        return new Res<>(code, msg);
+    public static <T> Res<T> genResWithData(ResCode code,T data){
+        return new Res<>(code.getCode(),code.getMsg(),data);
     }
 }

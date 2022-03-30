@@ -7,23 +7,21 @@ import edu.scu.csaserver.vo.Res;
 import edu.scu.csaserver.vo.ResCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Map;
 
-@Api(tags = "CyberSky接口转发")
 @RestController
+@Api(tags = "CyberSky接口转发")
 public class CyberSkyController {
 
     @Autowired
@@ -43,8 +41,8 @@ public class CyberSkyController {
      *
      * @return
      */
+    @GetMapping("/cyberSky/access")
     @ApiOperation(value = "token刷新", notes = "获取cyberSky server token")
-    @PostMapping("/cyberSky/access")
     public Res access() {
         String timestamp = System.currentTimeMillis() + "";
         byte[] bytes = new SecureRandom().generateSeed(16);
@@ -89,9 +87,9 @@ public class CyberSkyController {
 //            return Res.fail(401, e.getMessage());
 //        }
 //    }
-    @ApiOperation(value = "转发请求", notes = "转发请求至cyberSky server")
     @PostMapping("/cyberSky")
-    public Res query(@RequestBody CyberSkyArg arg) {
+    @ApiOperation(value = "转发请求", notes = "转发请求至cyberSky server")
+    public Res query(@RequestBody @ApiParam(value = "cyberSky接口参数") CyberSkyArg arg) {
         HttpHeaders headers = new HttpHeaders();
         if (arg.getCyberToken() != null && arg.getCyberToken().length() > 0) {
             headers.add("Authorization", "Bearer " + arg.getCyberToken());
@@ -109,7 +107,7 @@ public class CyberSkyController {
                 response = httpUtil.get(arg.getUrl(), headers, arg.getData());
             }
             if (response.getBody() == null){
-                return Res.success(ResCode.SUCCESS,null);
+                return Res.genRes(ResCode.SUCCESS);
             }
             return Res.success(response.getBody());
 //            else if (response.getBody() instanceof Map) {
@@ -118,7 +116,7 @@ public class CyberSkyController {
 //                return Res.fail(response.getStatusCodeValue(), response.getBody().toString());
 //            }
         } catch (Exception e) {
-            return Res.fail(401, e.getMessage());
+            return Res.genRes(ResCode.FAIL);
         }
 
     }

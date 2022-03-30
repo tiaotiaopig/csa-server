@@ -27,13 +27,24 @@
             <version>2.5.1</version>
         </dependency>
 
+<!--        rabbitMq-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
         <!-- ORM框架 Mybatis -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.4.3.1</version>
         </dependency>
-
+        <!--        json对象-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20220320</version>
+        </dependency>
         <!-- mysql数据库驱动 -->
         <dependency>
             <groupId>mysql</groupId>

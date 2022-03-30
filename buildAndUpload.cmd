@@ -1,0 +1,1 @@
+mvn clean package -f pom.xml -Dmaven.test.skip=true && scp C:\Users\13208\Desktop\csa-server\target\csa-server-0.0.1-SNAPSHOT.jar licl@192.168.50.30:/home/licl/develop/backend

@@ -30,7 +30,7 @@
 //    @Override
 //    public void addCorsMappings(CorsRegistry registry) {
 //        registry.addMapping("/**")
-//                .allowedOrigins("http://127.0.0.1:5558", "http://192.168.50.17:6688")
+//                .allowedOrigins("http://127.0.0.1:5558", "http://192.168.1.96:7788")
 //                .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
 //                .allowCredentials(true)
 //                .maxAge(3600)
