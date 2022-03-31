@@ -15,7 +15,7 @@ import java.util.Scanner;
  */
 @Component
 public class KeyNodeUtil {
-    private final static String pythonPath = "/home/lifeng/anaconda3/bin/python ";
+    private final static String pythonPath = "/home/lifeng/anaconda3/bin/python keyNode.py ";
 
     /**
      * 使用关键节点算法 func 计算 path 图的关键节点（取前10%）
@@ -40,7 +40,7 @@ public class KeyNodeUtil {
 
     public static void main(String[] args) {
 //        execBC("", "graph/BUP.txt");
-        List<Integer> list = keyNode("D_BC_CC.py", "graph/BUP.txt");
+        List<Integer> list = keyNode("D", "graph/BUP.txt");
         list.forEach(System.out::println);
     }
 }

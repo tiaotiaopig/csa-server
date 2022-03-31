@@ -151,7 +151,7 @@ public class NodeController {
         return res;
     }
 
-    @ApiOperation(value = "获取节点服务漏洞数量")
+    @ApiOperation(value = "根据方法名和文件名获取关键节点id")
     @GetMapping("/keyNodeBy")
     public List<Integer> keyNodeByFunc(@RequestParam("func") String func, @RequestParam("path") String path) {
         return nodeService.keyNode(func, path);
