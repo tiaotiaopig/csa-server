@@ -7,7 +7,9 @@ import edu.scu.csaserver.vo.Count;
 import edu.scu.csaserver.vo.NodeInfo;
 import edu.scu.csaserver.vo.NodeList;
 import edu.scu.csaserver.vo.ServiceVul;
+import io.swagger.models.auth.In;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -95,5 +97,23 @@ public interface NodeService extends IService<Node> {
      * @return 关键节点id列表
      */
     List<Integer> keyNode(String func, String path);
+
+    /**
+     * 选择某种关键节点算法，对某张图进行关键节点检测
+     * @param func 方法名称
+     * @param path 拓扑图路径
+     * @return 关键节点id和对应的权值
+     */
+    HashMap<Integer, Double> keyNode2(String func, String path);
+
+    /**
+     * 返回某张图的节点详情分页结果
+     * 这里直接 mock,脏活累活都是我，天哪
+     * @param page 第几页
+     * @param limit 多少行
+     * @param filepath 图名称
+     * @return
+     */
+    List<NodeInfo> getNodePageBy(Integer page, Integer limit, String filepath);
 
 }

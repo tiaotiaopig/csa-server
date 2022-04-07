@@ -276,6 +276,41 @@ implements NodeService{
         for (int keyNodeId : keyNodeIds) res.add(keyNodeId);
         return res;
     }
+
+    /**
+     * 选择某种关键节点算法，对某张图进行关键节点检测
+     *
+     * @param func 方法名称
+     * @param path 拓扑图路径
+     * @return 关键节点id和对应的权值
+     */
+    @Override
+    public HashMap<Integer, Double> keyNode2(String func, String path) {
+        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
+        // 为了不和原来的冲突，简单在hashkey加个"_2"表示
+        String hashKey2 = path + "_2";
+        if (hash.hasKey(func, hashKey2)) {
+            return (HashMap<Integer, Double>) hash.get(func, hashKey2);
+        } else {
+            HashMap<Integer, Double> map = KeyNodeUtil.keyNode2(func, path);
+            hash.put(func, hashKey2, map);
+            return map;
+        }
+    }
+
+    /**
+     * 返回某张图的节点详情分页结果
+     * 这里直接 mock,脏活累活都是我，天哪
+     *
+     * @param page     第几页
+     * @param limit    多少行
+     * @param filepath 图名称
+     * @return
+     */
+    @Override
+    public List<NodeInfo> getNodePageBy(Integer page, Integer limit, String filepath) {
+        return null;
+    }
 }
 
 

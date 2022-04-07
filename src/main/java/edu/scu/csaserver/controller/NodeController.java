@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -155,5 +156,11 @@ public class NodeController {
     @GetMapping("/keyNodeBy")
     public Res<List<Integer>> keyNodeByFunc(@RequestParam("func") String func, @RequestParam("path") String path) {
         return Res.success(nodeService.keyNode(func, path));
+    }
+
+    @ApiOperation(value = "根据方法名和文件名获取关键节点id和权值")
+    @GetMapping("/keyNode2By")
+    public Res<HashMap<Integer, Double>> keyNodeByFunc2(@RequestParam("func") String func, @RequestParam("path") String path) {
+        return Res.success(nodeService.keyNode2(func, path));
     }
 }

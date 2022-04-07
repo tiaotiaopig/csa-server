@@ -2,8 +2,11 @@ package edu.scu.csaserver.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,6 +39,29 @@ public class KeyNodeUtil {
             e.printStackTrace();
         }
         return list;
+    }
+
+    /**
+     * 这次获取关键节点 id 和 权值
+     * @param func 使用哪种关键节点算法，xx.py
+     * @param path 待计算的图的路径，xx.txt,点对格式（从0或1开始编号）
+     * @return 返回前10%节点作为关键节点
+     */
+    public static HashMap<Integer, Double> keyNode2(String func, String path) {
+        HashMap<Integer, Double> map = new HashMap<>();
+        String cmd = pythonPath + func + " graph/" + path;
+        try {
+            Process proc = Runtime.getRuntime().exec(cmd);
+            Scanner res = new Scanner(proc.getInputStream());
+            while (res.hasNext()) {
+                map.put(res.nextInt(), res.nextDouble());
+            }
+            res.close();
+            proc.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 
     public static void main(String[] args) {
