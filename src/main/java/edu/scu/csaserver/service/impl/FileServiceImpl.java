@@ -69,7 +69,7 @@ public class FileServiceImpl implements FileService {
             String[] pairStr;
             int[] pairInt;
             while ((line = br.readLine()) != null) {
-                pairStr = line.split(" ");
+                pairStr = line.split("[ \\t]+");
                 pairInt = new int[2];
                 pairInt[0] = Integer.parseInt(pairStr[0]);
                 pairInt[1] = Integer.parseInt(pairStr[1]);

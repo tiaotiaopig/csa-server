@@ -32,4 +32,11 @@ public interface LinkService extends IService<Link> {
 
     Boolean addLink(Link link, Integer subId);
 
+    /**
+     * 根据方法名和文件名,调用对应的链路预测算法,返回10%预测为存在的边
+     * @param func 要调用的方法名
+     * @param filename 拓扑图的名称
+     * @return 10%预测为存在的边
+     */
+    List<LinkInfo> linkPredictByFunc(String func, String filename);
 }

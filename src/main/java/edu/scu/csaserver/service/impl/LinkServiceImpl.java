@@ -7,8 +7,10 @@ import edu.scu.csaserver.domain.SubNetworkLink;
 import edu.scu.csaserver.mapper.SubNetworkLinkMapper;
 import edu.scu.csaserver.service.LinkService;
 import edu.scu.csaserver.mapper.LinkMapper;
+import edu.scu.csaserver.utils.LinkPredictionUtil;
 import edu.scu.csaserver.vo.LinkInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -112,6 +114,34 @@ implements LinkService{
             }
         }
         return false;
+    }
+
+    /**
+     * 根据方法名和文件名,调用对应的链路预测算法,返回10%预测为存在的边
+     *
+     * @param func     要调用的方法名
+     * @param filename 拓扑图的名称
+     * @return 10%预测为存在的边
+     */
+    @Override
+    public List<LinkInfo> linkPredictByFunc(String func, String filename) {
+        List<LinkInfo> links;
+        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
+        if (hash.hasKey(func, filename)) {
+            links = (List<LinkInfo>) hash.get(func, filename);
+        } else {
+            List<Integer> exist = LinkPredictionUtil.linkPrediction(func, filename);
+            int len = exist.size();
+            links = new ArrayList<>(len / 2);
+            for (int index = 0; index < len; index += 2) {
+                LinkInfo linkInfo = new LinkInfo();
+                linkInfo.setSource("节点" + exist.get(index));
+                linkInfo.setTarget("节点" + exist.get(index + 1));
+                links.add(linkInfo);
+            }
+            hash.put(func, filename, links);
+        }
+        return links;
     }
 
 

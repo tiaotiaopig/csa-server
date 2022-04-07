@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,5 +44,15 @@ public class FileController {
     @ApiOperation(value = "获取所有上传文件名称", notes = "为空表示没有")
     public Res<List<String>> getUploadedFiles() {
         return Res.success(fileService.getUploaded());
+    }
+
+    @GetMapping("/func/{choice}")
+    @ApiOperation(value = "获取所有关键节点/链路预测方法名称", notes = "选项为node或link")
+    public Res<List<String>> getALLFunction(@PathVariable("choice") String choice) {
+        if ("node".equals(choice)) {
+            return Res.success(Arrays.asList("D", "BC", "CC"));
+        } else {
+            return Res.success(Arrays.asList("common_neighbor", "page_rank", "sim_rank"));
+        }
     }
 }

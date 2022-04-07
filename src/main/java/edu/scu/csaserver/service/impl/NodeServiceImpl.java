@@ -253,8 +253,17 @@ implements NodeService{
      */
     @Override
     public List<Integer> keyNode(String func, String path) {
-        if (!"default".equals(func)) return KeyNodeUtil.keyNode(func, path);
         HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
+        if (!"default".equals(func)) {
+            List<Integer> ids;
+            if (!hash.hasKey(func, path)) {
+                ids = KeyNodeUtil.keyNode(func, path);
+                hash.put(func, path, ids);
+            } else {
+                ids = (List<Integer>) hash.get(func, path);
+            }
+            return ids;
+        }
         // 前端确保先解析，这样redis中才有数据
         List<int[]> graph = (List<int[]>) hash.get("graph", path);
         int len = graph.size(), idMax;

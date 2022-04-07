@@ -34,4 +34,6 @@ public class GraphController {
 
         return Res.success(graphService.generateGraph(filename));
     }
+
+
 }

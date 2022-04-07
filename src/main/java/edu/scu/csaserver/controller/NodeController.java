@@ -153,7 +153,7 @@ public class NodeController {
 
     @ApiOperation(value = "根据方法名和文件名获取关键节点id")
     @GetMapping("/keyNodeBy")
-    public List<Integer> keyNodeByFunc(@RequestParam("func") String func, @RequestParam("path") String path) {
-        return nodeService.keyNode(func, path);
+    public Res<List<Integer>> keyNodeByFunc(@RequestParam("func") String func, @RequestParam("path") String path) {
+        return Res.success(nodeService.keyNode(func, path));
     }
 }

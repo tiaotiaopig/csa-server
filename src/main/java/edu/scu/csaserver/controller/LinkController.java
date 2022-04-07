@@ -109,4 +109,10 @@ public class LinkController {
         }
         return Res.success(keyLinks);
     }
+
+    @ApiOperation(value = "根据提供的方法和文件名进行链路预测")
+    @GetMapping("/predict")
+    public Res<List<LinkInfo>> linkPredictBy(@RequestParam("func") String func, @RequestParam("filename") String filename) {
+        return Res.success(linkService.linkPredictByFunc(func, filename));
+    }
 }
