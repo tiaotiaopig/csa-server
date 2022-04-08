@@ -69,7 +69,9 @@ public class FileServiceImpl implements FileService {
             String[] pairStr;
             int[] pairInt;
             while ((line = br.readLine()) != null) {
-                pairStr = line.split("[ \\t]+");
+                // 文本文件格式不统一,好烦呀
+                // 删除左右空格,以空格+或者\t分隔
+                pairStr = line.trim().split("[ +\\t]+");
                 pairInt = new int[2];
                 pairInt[0] = Integer.parseInt(pairStr[0]);
                 pairInt[1] = Integer.parseInt(pairStr[1]);

@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 /**
  * 拓扑图相关接口
  * @author Lifeng
@@ -29,11 +31,16 @@ public class GraphController {
     }
 
     @GetMapping("/get/{filename}")
-    @ApiOperation(value = "由文件名获取拓扑图", notes = "获取拓扑文件对应的拓扑图")
+    @ApiOperation(value = "由文件名获取拓扑图", notes = "所有节点和边")
     public Res<Graph> getByFilename(@PathVariable String filename) {
 
         return Res.success(graphService.generateGraph(filename));
     }
 
+    @GetMapping("/graphCount/{filename}")
+    @ApiOperation(value = "由文件名获取拓扑图统计信息", notes = "简要统计信息")
+    public Res<HashMap<String, String>> getGraphCount(@PathVariable String filename) {
 
+        return Res.success(graphService.getGraphInfo(filename));
+    }
 }

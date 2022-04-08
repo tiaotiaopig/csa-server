@@ -20,6 +20,7 @@ import edu.scu.csaserver.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -246,23 +247,22 @@ implements NodeService{
 
     /**
      * 选择某种关键节点算法，对某张图进行关键节点检测
+     * 废弃掉了,留着给点参考价值
      *
      * @param func 方法名称
      * @param path 拓扑图路径
      * @return 关键节点id列表
      */
     @Override
-    public List<Integer> keyNode(String func, String path) {
+    public List<Integer> keyNode2(String func, String path) {
         HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
         if (!"default".equals(func)) {
-            List<Integer> ids;
-            if (!hash.hasKey(func, path)) {
-                ids = KeyNodeUtil.keyNode(func, path);
-                hash.put(func, path, ids);
+            if (hash.hasKey(func, path)) {
+                hash.get(func, path);
             } else {
-                ids = (List<Integer>) hash.get(func, path);
+                HashMap<Integer, Double> map = KeyNodeUtil.keyNode(func, path);
+                hash.put(func, path, map);
             }
-            return ids;
         }
         // 前端确保先解析，这样redis中才有数据
         List<int[]> graph = (List<int[]>) hash.get("graph", path);
@@ -279,21 +279,19 @@ implements NodeService{
 
     /**
      * 选择某种关键节点算法，对某张图进行关键节点检测
-     *
+     * 只想要id可以让前端自己过滤
      * @param func 方法名称
      * @param path 拓扑图路径
      * @return 关键节点id和对应的权值
      */
     @Override
-    public HashMap<Integer, Double> keyNode2(String func, String path) {
+    public HashMap<Integer, Double> keyNode(String func, String path) {
         HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
-        // 为了不和原来的冲突，简单在hashkey加个"_2"表示
-        String hashKey2 = path + "_2";
-        if (hash.hasKey(func, hashKey2)) {
-            return (HashMap<Integer, Double>) hash.get(func, hashKey2);
+        if (hash.hasKey(func, path)) {
+            return (HashMap<Integer, Double>) hash.get(func, path);
         } else {
-            HashMap<Integer, Double> map = KeyNodeUtil.keyNode2(func, path);
-            hash.put(func, hashKey2, map);
+            HashMap<Integer, Double> map = KeyNodeUtil.keyNode(func, path);
+            hash.put(func, path, map);
             return map;
         }
     }
@@ -309,7 +307,55 @@ implements NodeService{
      */
     @Override
     public List<NodeInfo> getNodePageBy(Integer page, Integer limit, String filepath) {
-        return null;
+        // 从redis中读取节点总数
+        ValueOperations<String, Object> opsForValue = redisTemplate.opsForValue();
+        // mock数据，从数据库读取所有节点数据，然后随机抽取作为模拟数据
+        List<Node> nodes;
+        if (!redisTemplate.hasKey("db_nodes")) {
+            nodes = nodeMapper.selectList(null);
+            opsForValue.set("db_nodes", nodes);
+        } else {
+            nodes = (List<Node>) opsForValue.get("db_nodes");
+        }
+        // 我真是大聪明呀，哈哈（苦笑）
+        // 计算分页逻辑下节点的编号
+        // 深拷贝节点数据，然后修改
+        Random rand = new Random();
+        int size = nodes.size();
+        int start = (page - 1) * limit, end = start + limit;
+        List<NodeInfo> res = new ArrayList<>(limit);
+        for (int id = start; id < end; id++) {
+            // 随机抽一个
+            Node node = nodes.get(rand.nextInt(size));
+            Node newNode = new Node();
+            // 手动复制，真的丑陋
+            newNode.setNodeName("节点" + id);
+            newNode.setId(id);
+            newNode.setNodeIp(node.getNodeIp());
+            newNode.setComputePerformance(node.getComputePerformance());
+            // 填充nodeInfo
+            NodeInfo nodeInfo = new NodeInfo();
+            nodeInfo.setName("节点" + id);
+            nodeInfo.setNode(newNode);
+            res.add(nodeInfo);
+        }
+        return res;
+    }
+
+    /**
+     * 根据文件名获取节点数
+     *
+     * @param path 文件名
+     * @return 节点数
+     */
+    @Override
+    public Integer getNodeCountBy(String path) {
+
+        String key = "graphCount";
+        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
+        HashMap<String, String> graphCount = (HashMap<String, String>) hash.get(key, path);
+        if (graphCount == null) return 100;
+        return Integer.parseInt(graphCount.get("node_count"));
     }
 }
 

@@ -96,7 +96,7 @@ public interface NodeService extends IService<Node> {
      * @param path 拓扑图路径
      * @return 关键节点id列表
      */
-    List<Integer> keyNode(String func, String path);
+    List<Integer> keyNode2(String func, String path);
 
     /**
      * 选择某种关键节点算法，对某张图进行关键节点检测
@@ -104,7 +104,7 @@ public interface NodeService extends IService<Node> {
      * @param path 拓扑图路径
      * @return 关键节点id和对应的权值
      */
-    HashMap<Integer, Double> keyNode2(String func, String path);
+    HashMap<Integer, Double> keyNode(String func, String path);
 
     /**
      * 返回某张图的节点详情分页结果
@@ -115,5 +115,12 @@ public interface NodeService extends IService<Node> {
      * @return
      */
     List<NodeInfo> getNodePageBy(Integer page, Integer limit, String filepath);
+
+    /**
+     * 根据文件名获取节点数
+     * @param path 文件名
+     * @return 节点数
+     */
+    Integer getNodeCountBy(String path);
 
 }

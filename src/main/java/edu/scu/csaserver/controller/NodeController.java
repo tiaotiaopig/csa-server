@@ -48,6 +48,19 @@ public class NodeController {
         return nodeList;
     }
 
+    @ApiOperation(value = "按照文件名进行节点分页查询", notes = "按照文件名")
+    @GetMapping("/listBy")
+    public NodeList getNodeListBy(@RequestParam(defaultValue = "1") String page, @RequestParam(defaultValue = "10") String limit, @RequestParam(defaultValue = "BUP.txt")String path) {
+        NodeList nodeList = new NodeList();
+        nodeList.setCode(0);
+        nodeList.setMsg("请求成功");
+        nodeList.setCount(nodeService.getNodeCountBy(path));
+        Integer pageInt = Integer.parseInt(page);
+        Integer limitInt = Integer.parseInt(limit);
+        nodeList.setData(nodeService.getNodePageBy(pageInt, limitInt, path));
+        return nodeList;
+    }
+
     @ApiOperation(value = "获取节点总数")
     @GetMapping("/count")
     public Res<Integer> getNodeCount() {
@@ -152,15 +165,22 @@ public class NodeController {
         return res;
     }
 
-    @ApiOperation(value = "根据方法名和文件名获取关键节点id")
-    @GetMapping("/keyNodeBy")
-    public Res<List<Integer>> keyNodeByFunc(@RequestParam("func") String func, @RequestParam("path") String path) {
-        return Res.success(nodeService.keyNode(func, path));
-    }
+//    @ApiOperation(value = "根据方法名和文件名获取关键节点id")
+//    @GetMapping("/keyNodeBy")
+//    public Res<List<Integer>> keyNodeByFunc(@RequestParam("func") String func, @RequestParam("path") String path) {
+//        return Res.success(nodeService.keyNode(func, path));
+//    }
 
+    /**
+     * 采用同时返回节点和权值的方式
+     * 以前的方法废弃掉吧
+     * @param func
+     * @param path
+     * @return
+     */
     @ApiOperation(value = "根据方法名和文件名获取关键节点id和权值")
-    @GetMapping("/keyNode2By")
-    public Res<HashMap<Integer, Double>> keyNodeByFunc2(@RequestParam("func") String func, @RequestParam("path") String path) {
-        return Res.success(nodeService.keyNode2(func, path));
+    @GetMapping("/keyNodeBy")
+    public Res<HashMap<Integer, Double>> keyNodeByFunc(@RequestParam("func") String func, @RequestParam("path") String path) {
+        return Res.success(nodeService.keyNode(func, path));
     }
 }

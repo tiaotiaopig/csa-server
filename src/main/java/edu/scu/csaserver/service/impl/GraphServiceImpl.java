@@ -9,17 +9,17 @@ import edu.scu.csaserver.mapper.SubNetworkMapper;
 import edu.scu.csaserver.mapper.SubNetworkNodeMapper;
 import edu.scu.csaserver.service.FileService;
 import edu.scu.csaserver.service.GraphService;
-import edu.scu.csaserver.vo.Category;
-import edu.scu.csaserver.vo.Graph;
-import edu.scu.csaserver.vo.LinkInfo;
-import edu.scu.csaserver.vo.NodeInfo;
+import edu.scu.csaserver.utils.GraphUtil;
+import edu.scu.csaserver.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class GraphServiceImpl implements GraphService {
@@ -119,5 +119,26 @@ public class GraphServiceImpl implements GraphService {
             graph.getNodes().add(nodeInfo);
         }
         return graph;
+    }
+
+    /**
+     * 由拓扑图路径名获取图的统计信息
+     *
+     * @param filename 拓扑图路径名
+     * @return 图的统计信息
+     */
+    @Override
+    public HashMap<String, String> getGraphInfo(String filename) {
+        String key = "graphCount";
+        HashMap<String, String> graphCount;
+        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
+        if (hash.hasKey(key, filename)) {
+            graphCount = (HashMap<String, String>) hash.get(key, filename);
+//            redisTemplate.expire(key, 60, TimeUnit.SECONDS);
+        } else {
+            graphCount = GraphUtil.graphCount(filename);
+            hash.put(key, filename, graphCount);
+        }
+        return graphCount;
     }
 }

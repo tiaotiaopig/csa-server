@@ -21,33 +21,12 @@ public class KeyNodeUtil {
     private final static String pythonPath = "/home/lifeng/anaconda3/bin/python pyfile/KeyNode.py ";
 
     /**
-     * 使用关键节点算法 func 计算 path 图的关键节点（取前10%）
-     * @param func 使用哪种关键节点算法，xx.py
-     * @param path 待计算的图的路径，xx.txt,点对格式（从0或1开始编号）
-     * @return 返回前10%节点作为关键节点
-     */
-    public static List<Integer> keyNode(String func, String path) {
-        List<Integer> list = new ArrayList<>();
-        String cmd = pythonPath + func + " graph/" + path;
-        try {
-            Process proc = Runtime.getRuntime().exec(cmd);
-            Scanner res = new Scanner(proc.getInputStream());
-            while (res.hasNext()) list.add(res.nextInt());
-            res.close();
-            proc.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    /**
      * 这次获取关键节点 id 和 权值
      * @param func 使用哪种关键节点算法，xx.py
      * @param path 待计算的图的路径，xx.txt,点对格式（从0或1开始编号）
      * @return 返回前10%节点作为关键节点
      */
-    public static HashMap<Integer, Double> keyNode2(String func, String path) {
+    public static HashMap<Integer, Double> keyNode(String func, String path) {
         HashMap<Integer, Double> map = new HashMap<>();
         String cmd = pythonPath + func + " graph/" + path;
         try {
@@ -66,7 +45,6 @@ public class KeyNodeUtil {
 
     public static void main(String[] args) {
 //        execBC("", "graph/BUP.txt");
-        List<Integer> list = keyNode("D", "BUP.txt");
-        list.forEach(System.out::println);
+//        HashMap<Integer, Double> map = keyNode("D", "BUP.txt");
     }
 }
