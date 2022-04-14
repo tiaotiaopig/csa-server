@@ -79,6 +79,9 @@ self:
     tshark-upload-dev: C:\Users\13208\Desktop\csa-server\target\classes\public\pcap\
     tshark-split-dir: /home/mool/backend/split-pcap/
     expire-time: 604800
+    unknown-status-key: unknown_status
+    unknown-chart-key: unknown
+
     status:
       doing: doing
       empty: empty
@@ -86,3 +89,5 @@ self:
       error: error
     tshark:
       path: tshark
+    pcap-ana-script:
+      path: /home/mool/backend/anaUnknownPcap.py

@@ -32,6 +32,9 @@ public class AsyncUPService {
     @Value("${self.unnamed-protocol.tshark-split-dir}")
     private String tsharkSplitPath;
 
+    @Value("${self.unnamed-protocol.pcap-ana-script.path}")
+    private String pcapAnaScriptPath;
+
     @Value("${self.unnamed-protocol.status.doing}")
     private String doing;
     @Value("${self.unnamed-protocol.status.empty}")
@@ -40,6 +43,9 @@ public class AsyncUPService {
     private String done;
     @Value("${self.unnamed-protocol.status.error}")
     private String error;
+
+
+    private static final String protein = "ACDEFGHIKLMNPQRSTVWY";
 
 
 
@@ -60,7 +66,7 @@ public class AsyncUPService {
                 System.out.println(Arrays.toString(cmd1));
                 String []cmd2= new String[]{"sh", "-c", tsharkPath + " -r " + file.getAbsolutePath() + " -R \"" + proto + "\" -2 -Y \"frame\" -x"};
                 System.out.println(Arrays.toString(cmd2));
-                doGenData(file.getName(),file.getAbsolutePath(),proto,fields,cmd1,cmd2);
+                 doGenData(file.getName(),file.getAbsolutePath(),proto,fields,cmd1,cmd2);
             }else {
                 String filePath = tsharkSplitPath+key;
                 StringBuilder sb = new StringBuilder();
@@ -173,14 +179,24 @@ public class AsyncUPService {
                 use = true;
                 continue;
             }
-//                if (line.length()==37)
-//                    System.out.println(line);
             pre.append(StringUtils.arrayToDelimitedString(line.substring(6, 53).split(" "), ""));
         }
 
         return proc2.waitFor();
 
     }
+    @Async
+    public void genUnknown(String filepath){
+        String []cmd = new String[]{"sh","-c","python3 "+ pcapAnaScriptPath+" "+filepath};
+        try {
+            Process process = Runtime.getRuntime().exec(cmd);
+            int code = process.waitFor();
+            System.out.println("uk ret:"+code);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void doGenData(String originFile,String fileName,String proto,String [] fields,String []cmd1,String [] cmd2) throws IOException, InterruptedException {
         List<Map<String, Object>> tableData = new ArrayList<>();

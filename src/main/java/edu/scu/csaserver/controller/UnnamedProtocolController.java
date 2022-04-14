@@ -83,8 +83,12 @@ public class UnnamedProtocolController {
     static final int pageSize = 20;
     @Value("${self.unnamed-protocol.redis-table-name}")
     private String redisTableName;
-    @Value("${self.unnamed-protocol.tshark-result}")
-    private String tsharkResult;
+
+    @Value("${self.unnamed-protocol.unknown-status-key}")
+    private String ukStatusKey;
+
+    @Value("${self.unnamed-protocol.unknown-chart-key}")
+    private String ukChartKey;
 
     @Value("${self.unnamed-protocol.tshark-upload-pro}")
     private String tsharkUploadPro;
@@ -97,6 +101,8 @@ public class UnnamedProtocolController {
 
     @Value("${self.unnamed-protocol.tshark.path}")
     private String tsharkPath;
+    @Value("${self.unnamed-protocol.pcap-ana-script.path}")
+    private String pcapAnaScriptPath;
 
     @Value("${self.unnamed-protocol.status.doing}")
     private String doing;
@@ -182,7 +188,73 @@ public class UnnamedProtocolController {
     @CrossOrigin
     @PostMapping("upload")
     public Object upload(@RequestParam("file") MultipartFile file) throws FileNotFoundException {
-        return Res.genRes(saveFile(file));
+        ResCode opCode = saveFile(file);
+        if (opCode.equals(ResCode.SUCCESS)) {
+            asyncUPService.genUnknown(tsharkUploadPro + file.getOriginalFilename());
+        }
+        return Res.genRes(opCode);
+    }
+
+
+    private String genUnknownKey(String filename, String protocol) {
+        return filename + "_" + protocol;
+    }
+
+
+    @CrossOrigin
+    @GetMapping("unknownChart")
+    public Object getUkChart(@RequestParam(name = "file", required = true) String filename) {
+        String stKey = genUnknownKey(filename, ukStatusKey);
+        String chartKey = genUnknownKey(filename, ukChartKey);
+        if (!asyncUPService.hasKey(redisTableName, stKey))
+            return Res.genRes(ResCode.FILE_NOT_EXIST);
+        String status = asyncUPService.status(filename, ukStatusKey);
+        assert status != null;
+        if (status.equals("done")) {
+            return Res.success(redisTemplate.opsForHash().get(redisTableName, chartKey));
+        } else if (status.equals("error")) {
+            return Res.genRes(ResCode.ANALYZE_FAILED);
+        } else {
+            return Res.genRes(ResCode.WAIT_A_MOMENT);
+        }
+    }
+
+    @CrossOrigin
+    @GetMapping("unknownData")
+    public Object getUkData(@RequestParam(name = "file", required = true) String filename,
+                            @RequestParam(name = "protocol", required = true) String proto,
+                            @RequestParam(name = "pageNo", required = false) Integer pageNo) {
+        if (pageNo == null)
+            pageNo = 0;
+        int st = pageNo * pageSize;
+        int end = st + pageSize;
+        String key = asyncUPService.genKey(filename,proto);
+        String stKey = genUnknownKey(filename, ukStatusKey);
+        if (!asyncUPService.hasKey(redisTableName, stKey))//状态信息
+            return Res.genRes(ResCode.FILE_NOT_EXIST);
+        if (!hasKey(key))//协议信息
+            return Res.genRes(ResCode.PROTOCOL_NOT_EXIST);
+
+        String status = asyncUPService.status(filename, ukStatusKey);
+        assert status != null;
+        long count =0;
+        List<Object> data = new ArrayList<>();
+        if (status.equals("done")) {
+            data.addAll(Objects.requireNonNull(redisTemplate.opsForList().range(key, st, end - 1)));
+            count = Objects.requireNonNull(redisTemplate.opsForList().size(key));
+        } else if (status.equals("error")) {
+            return Res.genRes(ResCode.ANALYZE_FAILED);
+        } else {
+            return Res.genRes(ResCode.WAIT_A_MOMENT);
+        }
+        Map<String,Object> ret = new HashMap<>();
+        ret.put("data",data);
+        ret.put("count",count);
+        long pageNum = count / pageSize;
+        if (count % pageSize != 0)
+            ++pageNum;
+        ret.put("pageCount",pageNum);
+        return Res.success(ret);
     }
 
     @PostMapping("multiUpload")
@@ -203,6 +275,7 @@ public class UnnamedProtocolController {
         else
             return Res.genResWithData(ResCode.UPLOAD_FAIL, map);
     }
+
 
     private ResCode saveFile(MultipartFile file) throws FileNotFoundException {
         if (file.isEmpty()) {
@@ -260,7 +333,7 @@ public class UnnamedProtocolController {
             for (String t : DATA)
                 sb.append(" -e ").append(t);
             sb.append(" -T fields").append(" -E separator=^");
-            String []cmd = new String[]{"sh","-c",sb.toString()};
+            String[] cmd = new String[]{"sh", "-c", sb.toString()};
 
             System.out.println(Arrays.toString(cmd));
 
@@ -287,7 +360,7 @@ public class UnnamedProtocolController {
             proc.waitFor();
 
             Map<String, Object> charData = getChartData(chartList);
-            splitFile(fileDisk, ((Map<String,Integer>) charData.get("upLayer")));
+            splitFile(fileDisk, ((Map<String, Integer>) charData.get("upLayer")));
             Map[] objArr = new HashMap[tableData.size()];
             for (int i = 0; i < tableData.size(); i++) {
                 objArr[i] = tableData.get(i);
@@ -317,7 +390,6 @@ public class UnnamedProtocolController {
         Map<String, Object> data = new HashMap<>();
         int uk = 0;
         for (String s : list) {
-
             String[] arrs = s.split(":");
             int idx = -1;
             for (int i = 0; i < arrs.length; i++) {
@@ -353,16 +425,16 @@ public class UnnamedProtocolController {
         data.put("upProtocolNum", upLayer.keySet().size());
         data.put("packetNum", list.size());
         data.put("unnamedProtocolNum", uk);
-        data.put("unnamedProtocolType",1);
+        data.put("unnamedProtocolType", 1);
         return data;
     }
 
-    private void splitFile(File file,Map<String, Integer> upLayer){
+    private void splitFile(File file, Map<String, Integer> upLayer) {
         List<String> protocols = upLayer.keySet().stream().toList();
-        String [] protos = new String[protocols.size()];
-        for (int i=0;i<protos.length;i++)
+        String[] protos = new String[protocols.size()];
+        for (int i = 0; i < protos.length; i++)
             protos[i] = protocols.get(i);
-        asyncUPService.splitFile(file,protos);
+        asyncUPService.splitFile(file, protos);
     }
 
     private void delExpiredData(String key) {
@@ -382,7 +454,7 @@ public class UnnamedProtocolController {
 
     private void getDetailData(Map<String, Object> data, String file, Integer pageNo) {
         int st = pageSize * pageNo;
-        data.put("data", redisTemplate.opsForList().range(file, st, st + pageSize-1));
+        data.put("data", redisTemplate.opsForList().range(file, st, st + pageSize - 1));
         Long sz = redisTemplate.opsForList().size(file);
         data.put("count", sz);
         long pageNum = sz / pageSize;
@@ -394,7 +466,7 @@ public class UnnamedProtocolController {
 
     private void getDetailData(Map<String, Object> data, String file, String proto, Integer pageNo) {
         int st = pageSize * pageNo;
-        data.put("data", redisTemplate.opsForList().range(asyncUPService.genKey(file, proto), st, st + pageSize-1));
+        data.put("data", redisTemplate.opsForList().range(asyncUPService.genKey(file, proto), st, st + pageSize - 1));
         Long sz = redisTemplate.opsForList().size(asyncUPService.genKey(file, proto));
         data.put("count", sz);
         long pageNum = sz / pageSize;
