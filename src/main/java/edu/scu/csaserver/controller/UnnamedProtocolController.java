@@ -258,6 +258,20 @@ public class UnnamedProtocolController {
         return Res.success(ret);
     }
 
+
+    @GetMapping("clear")
+    public Object clear(@RequestParam(name = "file",required = true)String file){
+        Set<String> keys= redisTemplate.keys(file+"*");
+        redisTemplate.delete(keys);
+        Set<Object> tableKey = redisTemplate.opsForHash().keys(redisTableName);
+        for (Object key:tableKey){
+            if (key instanceof String && ((String) key).startsWith(file)){
+                redisTemplate.opsForHash().delete(redisTableName,key);
+            }
+        }
+        return Res.success(null);
+    }
+
     @PostMapping("multiUpload")
     public Object multiUpload(@RequestParam("file") MultipartFile[] files) throws FileNotFoundException {
         Map<String, String> map = new HashMap<>();
