@@ -180,6 +180,7 @@ public class UnnamedProtocolController {
         }
         List<FileVo> list = new ArrayList<>();
         for (File f : Objects.requireNonNull(file.listFiles())) {
+            if (f.getName().endsWith("pcap") || f.getName().endsWith("pcapng"))
             list.add(new FileVo(f.getName(), f.lastModified(), f.length()));
         }
         return Res.success(list);
