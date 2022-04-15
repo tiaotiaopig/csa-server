@@ -262,6 +262,7 @@ public class UnnamedProtocolController {
     @GetMapping("clear")
     public Object clear(@RequestParam(name = "file",required = true)String file){
         Set<String> keys= redisTemplate.keys(file+"*");
+        assert keys != null;
         redisTemplate.delete(keys);
         Set<Object> tableKey = redisTemplate.opsForHash().keys(redisTableName);
         for (Object key:tableKey){
