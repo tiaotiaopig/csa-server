@@ -187,7 +187,8 @@ public class AsyncUPService {
     }
     @Async
     public void genUnknown(String filepath){
-        String []cmd = new String[]{"sh","-c","python3 "+ pcapAnaScriptPath+" "+filepath};
+        String []cmd = new String[]{"sh","-c","python3 "+ pcapAnaScriptPath+" "+filepath+" all"};
+//        String cmd = "python3 "+ pcapAnaScriptPath+" "+filepath +" all";
         try {
             Process process = Runtime.getRuntime().exec(cmd);
             int code = process.waitFor();
