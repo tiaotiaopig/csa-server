@@ -345,7 +345,7 @@ public class UnnamedProtocolController {
                 return Res.genRes(ResCode.FILE_NOT_EXIST);
             }
             StringBuilder sb = new StringBuilder();
-            sb.append(tsharkPath).append(" -r ").append(filePath);
+            sb.append(tsharkPath).append(" -r '").append(filePath).append("' ");
             for (String t : DATA)
                 sb.append(" -e ").append(t);
             sb.append(" -T fields").append(" -E separator=^");
