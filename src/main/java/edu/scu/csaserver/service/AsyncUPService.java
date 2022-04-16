@@ -58,26 +58,26 @@ public class AsyncUPService {
             String status = splitStatus(file.getName(),proto);
             if (status==null||status.equals(doing)||status.equals(error)) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(tsharkPath).append(" -r ").append(file.getAbsolutePath()).append(" -R \"").append(proto).append("\" -j \"").append(proto).append("\" -2 ");
+                sb.append(tsharkPath).append(" -r '").append(file.getAbsolutePath()).append("' -R \"").append(proto).append("\" -j \"").append(proto).append("\" -2 ");
                 for (String t : fields)
                     sb.append(" -e \"").append(t).append("\"");
                 sb.append(" -T fields").append(" -E separator=\"^\"");
                 String[] cmd1 = new String[]{"sh", "-c", sb.toString()};
                 System.out.println(Arrays.toString(cmd1));
-                String []cmd2= new String[]{"sh", "-c", tsharkPath + " -r " + file.getAbsolutePath() + " -R \"" + proto + "\" -2 -Y \"frame\" -x"};
+                String []cmd2= new String[]{"sh", "-c", tsharkPath + " -r '" + file.getAbsolutePath() + "' -R \"" + proto + "\" -2 -Y \"frame\" -x"};
                 System.out.println(Arrays.toString(cmd2));
                  doGenData(file.getName(),file.getAbsolutePath(),proto,fields,cmd1,cmd2);
             }else {
                 String filePath = tsharkSplitPath+key;
                 StringBuilder sb = new StringBuilder();
-                sb.append(tsharkPath).append(" -r ").append(filePath).append(" -R \"").append(proto).append("\" -j \"").append(proto).append("\" -2 ");
+                sb.append(tsharkPath).append(" -r '").append(filePath).append("' -R \"").append(proto).append("\" -j \"").append(proto).append("\" -2 ");
                 for (String t : fields)
                     sb.append(" -e \"").append(t).append("\"");
                 sb.append(" -T fields").append(" -E separator=\"^\"");
                 String[] cmd1 = new String[]{"sh", "-c", sb.toString()};
                 System.out.println(Arrays.toString(cmd1));
 
-                String []cmd2= new String[]{"sh", "-c", tsharkPath + " -r " + filePath + " -R \"" + proto + "\" -2 -Y \"frame\" -x"};
+                String []cmd2= new String[]{"sh", "-c", tsharkPath + " -r '" + filePath + "' -R \"" + proto + "\" -2 -Y \"frame\" -x"};
                 System.out.println(Arrays.toString(cmd2));
                 doGenData(file.getName(),key,proto,fields,cmd1,cmd2);
             }
@@ -187,7 +187,7 @@ public class AsyncUPService {
     }
     @Async
     public void genUnknown(String filepath){
-        String []cmd = new String[]{"sh","-c","python3 "+ pcapAnaScriptPath+" "+filepath+" all"};
+        String []cmd = new String[]{"sh","-c","python3 "+ pcapAnaScriptPath+" '"+filepath+"' all"};
 //        String cmd = "python3 "+ pcapAnaScriptPath+" "+filepath +" all";
         try {
             Process process = Runtime.getRuntime().exec(cmd);
