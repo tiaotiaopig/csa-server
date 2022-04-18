@@ -3,6 +3,7 @@ package edu.scu.csaserver.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.Link;
+import edu.scu.csaserver.domain.Node;
 import edu.scu.csaserver.domain.SubNetworkLink;
 import edu.scu.csaserver.mapper.SubNetworkLinkMapper;
 import edu.scu.csaserver.service.LinkService;
@@ -12,6 +13,7 @@ import edu.scu.csaserver.vo.LinkInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -130,21 +132,20 @@ implements LinkService{
         if (hash.hasKey(func, filename)) {
             links = (List<LinkInfo>) hash.get(func, filename);
         } else {
-            List<Integer> exist = LinkPredictionUtil.linkPrediction(func, filename);
+            List<String> exist = LinkPredictionUtil.linkPrediction(func, filename);
             int len = exist.size();
-            links = new ArrayList<>(len / 2);
-            for (int index = 0; index < len; index += 2) {
+            links = new ArrayList<>(len / 3);
+            for (int index = 0; index < len; index += 3) {
                 LinkInfo linkInfo = new LinkInfo();
                 linkInfo.setSource("节点" + exist.get(index));
                 linkInfo.setTarget("节点" + exist.get(index + 1));
+                linkInfo.setWeight(exist.get(index + 2));
                 links.add(linkInfo);
             }
             hash.put(func, filename, links);
         }
         return links;
     }
-
-
 }
 
 

@@ -1,7 +1,5 @@
 package edu.scu.csaserver.utils;
 
-import edu.scu.csaserver.domain.Link;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +19,13 @@ public class LinkPredictionUtil {
      * @param path 待计算的图的路径，xx.txt,点对格式（从0或1开始编号）
      * @return 返回前10%节点作为预测的链路
      */
-    public static List<Integer> linkPrediction(String func, String path) {
-        List<Integer> list = new ArrayList<>();
+    public static List<String> linkPrediction(String func, String path) {
+        List<String> list = new ArrayList<>();
         String cmd = pythonPath + func + " graph/" + path;
         try {
             Process proc = Runtime.getRuntime().exec(cmd);
             Scanner res = new Scanner(proc.getInputStream());
-            while (res.hasNext()) list.add(res.nextInt());
+            while (res.hasNext()) list.add(res.next());
             res.close();
             proc.waitFor();
         } catch (IOException | InterruptedException e) {

@@ -2,6 +2,8 @@ server:
   port: 7788
 
 spring:
+  mvc:
+    static-path-pattern: /**
   datasource:
     # mysql配置
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -31,6 +33,13 @@ spring:
     validate-on-migrate: true
     # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
     baseline-on-migrate: true
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+  servlet:
+    multipart:
+      max-request-size: 5GB  # 上传文件总的最大值 默认10MB
+      max-file-size: 1GB #单个文件最大值 默认10MB
 
 mybatis-plus:
   # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，
@@ -55,3 +64,30 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: false
+
+# 其他配置
+self:
+  cyber-sky:
+    url: http://192.168.50.30:16520/sap/api
+    secret: d13537583cc2a61b38d7d28cb26d0fcf1580a2a49d436dd0bb597957ab1681b5
+    username: licl
+  unnamed-protocol:
+    redis-table-name: unnamedProtocol
+    redis-split-name: upSplit
+    tshark-result: analyse/out.json
+    tshark-upload-pro: /home/mool/backend/pcap/
+    tshark-upload-dev: C:\Users\13208\Desktop\csa-server\target\classes\public\pcap\
+    tshark-split-dir: /home/mool/backend/split-pcap/
+    expire-time: 604800
+    unknown-status-key: unknown_status
+    unknown-chart-key: unknown
+
+    status:
+      doing: doing
+      empty: empty
+      done: done
+      error: error
+    tshark:
+      path: tshark
+    pcap-ana-script:
+      path: /home/mool/backend/anaUnknownPcap.py

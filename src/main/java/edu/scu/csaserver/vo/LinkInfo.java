@@ -1,6 +1,7 @@
 package edu.scu.csaserver.vo;
 
 import edu.scu.csaserver.domain.Link;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -27,6 +28,9 @@ public class LinkInfo implements Serializable {
      */
     @ApiModelProperty("目标节点（相当于id）")
     private String target;
+
+    @ApiModelProperty("链路预测权重")
+    private String weight;
 
     /**
      * link 实体类
