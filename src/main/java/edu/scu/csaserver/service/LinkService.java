@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import edu.scu.csaserver.vo.LinkInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -39,4 +40,21 @@ public interface LinkService extends IService<Link> {
      * @return 10%预测为存在的边
      */
     List<LinkInfo> linkPredictByFunc(String func, String filename);
+
+    /**
+     * 根据图名称和掩盖比例，返回掩盖的边
+     * @param dataName 图名称
+     * @param ratio 掩盖比例
+     * @return 掩盖的边
+     */
+    List<LinkInfo> getMasked(String dataName, String ratio);
+
+    /**
+     * 根据图名称和掩盖比例，返回指定方法的链路预测结果
+     * @param dataName 图名称
+     * @param ratio 掩盖比例
+     * @param funcName 使用的链路预测方法
+     * @return 预测存在的边（）
+     */
+    Map<String, Object> getPrediction(String dataName, String ratio, String funcName);
 }

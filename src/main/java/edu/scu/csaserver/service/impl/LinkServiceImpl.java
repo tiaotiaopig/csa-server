@@ -3,6 +3,7 @@ package edu.scu.csaserver.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.Link;
+import edu.scu.csaserver.domain.Node;
 import edu.scu.csaserver.domain.SubNetworkLink;
 import edu.scu.csaserver.mapper.SubNetworkLinkMapper;
 import edu.scu.csaserver.service.LinkService;
@@ -12,10 +13,13 @@ import edu.scu.csaserver.vo.LinkInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -119,7 +123,7 @@ implements LinkService{
     /**
      * 根据方法名和文件名,调用对应的链路预测算法,返回10%预测为存在的边
      *
-     * @param func     要调用的方法名
+     * @param func 要调用的方法名
      * @param filename 拓扑图的名称
      * @return 10%预测为存在的边
      */
@@ -130,13 +134,14 @@ implements LinkService{
         if (hash.hasKey(func, filename)) {
             links = (List<LinkInfo>) hash.get(func, filename);
         } else {
-            List<Integer> exist = LinkPredictionUtil.linkPrediction(func, filename);
+            List<String> exist = LinkPredictionUtil.linkPrediction(func, filename);
             int len = exist.size();
-            links = new ArrayList<>(len / 2);
-            for (int index = 0; index < len; index += 2) {
+            links = new ArrayList<>(len / 3);
+            for (int index = 0; index < len; index += 3) {
                 LinkInfo linkInfo = new LinkInfo();
                 linkInfo.setSource("节点" + exist.get(index));
                 linkInfo.setTarget("节点" + exist.get(index + 1));
+                linkInfo.setWeight(exist.get(index + 2));
                 links.add(linkInfo);
             }
             hash.put(func, filename, links);
@@ -144,7 +149,41 @@ implements LinkService{
         return links;
     }
 
+    @Override
+    public List<LinkInfo> getMasked(String dataName, String ratio) {
+        List<LinkInfo> list = new ArrayList<>();
+        List<String> masked = LinkPredictionUtil.getMasked(dataName, ratio);
+        int len = masked.size();
+        for (int index = 0; index < len; index += 2) {
+            LinkInfo linkInfo = new LinkInfo();
+            linkInfo.setSource("节点" + masked.get(index));
+            linkInfo.setTarget("节点" + masked.get(index + 1));
+            linkInfo.setWeight("0");
+            list.add(linkInfo);
+        }
+        return list;
+    }
 
+    @Override
+    public Map<String, Object> getPrediction(String dataName, String ratio, String funcName) {
+        // 不想封装啦，直接用Map得了
+        Map<String, Object> res = new HashMap<>();
+        List<LinkInfo> list = new ArrayList<>();
+        List<String> predicted = LinkPredictionUtil.getPrediction(dataName, ratio, funcName);
+        // 因为最后两个元素是auc和ap
+        int len = predicted.size() - 2;
+        for (int index = 0; index < len; index += 3) {
+            LinkInfo linkInfo = new LinkInfo();
+            linkInfo.setSource("节点" + predicted.get(index));
+            linkInfo.setTarget("节点" + predicted.get(index + 1));
+            linkInfo.setWeight(predicted.get(index + 2));
+            list.add(linkInfo);
+        }
+        res.put("links", list);
+        res.put("auc", predicted.get(len));
+        res.put("ap", predicted.get(len + 1));
+        return res;
+    }
 }
 
 
