@@ -65,9 +65,10 @@ public class Res<T> implements Serializable {
 //        return res;
 //    }
 //
-//    public static <T> Res<T> fail(Integer code, String msg) {
-//        return new Res<>(code, msg);
-//    }
+    public static <T> Res<T> fail(Integer code, String msg) {
+        return new Res<>(code, msg);
+    }
+
     public static <T> Res<T> genRes(ResCode code){
         return new Res<>(code);
     }

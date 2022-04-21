@@ -121,7 +121,7 @@ implements LinkService{
     /**
      * 根据方法名和文件名,调用对应的链路预测算法,返回10%预测为存在的边
      *
-     * @param func     要调用的方法名
+     * @param func 要调用的方法名
      * @param filename 拓扑图的名称
      * @return 10%预测为存在的边
      */
@@ -145,6 +145,36 @@ implements LinkService{
             hash.put(func, filename, links);
         }
         return links;
+    }
+
+    @Override
+    public List<LinkInfo> getMasked(String dataName, String ratio) {
+        List<LinkInfo> list = new ArrayList<>();
+        List<String> masked = LinkPredictionUtil.getMasked(dataName, ratio);
+        int len = masked.size();
+        for (int index = 0; index < len; index += 2) {
+            LinkInfo linkInfo = new LinkInfo();
+            linkInfo.setSource("节点" + masked.get(index));
+            linkInfo.setTarget("节点" + masked.get(index + 1));
+            linkInfo.setWeight("0");
+            list.add(linkInfo);
+        }
+        return list;
+    }
+
+    @Override
+    public List<LinkInfo> getPrediction(String dataName, String ratio, String funcName) {
+        List<LinkInfo> list = new ArrayList<>();
+        List<String> predicted = LinkPredictionUtil.getPrediction(dataName, ratio, funcName);
+        int len = predicted.size();
+        for (int index = 0; index < len; index += 3) {
+            LinkInfo linkInfo = new LinkInfo();
+            linkInfo.setSource("节点" + predicted.get(index));
+            linkInfo.setTarget("节点" + predicted.get(index + 1));
+            linkInfo.setWeight(predicted.get(index + 2));
+            list.add(linkInfo);
+        }
+        return list;
     }
 }
 

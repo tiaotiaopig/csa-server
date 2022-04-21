@@ -26,8 +26,8 @@ class GraphControllerTest {
         assertThat(graphController).isNotNull();
     }
 
-    @Test
-    void getGraph02() {
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/graph/getGraph", Res.class)).isNotNull();
-    }
+//    @Test
+//    void getGraph02() {
+//        assertThat(restTemplate.getForObject("http://localhost:" + port + "/graph/getGraph", Res.class)).isNotNull();
+//    }
 }
