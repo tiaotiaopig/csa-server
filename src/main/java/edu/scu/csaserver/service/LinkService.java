@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import edu.scu.csaserver.vo.LinkInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -55,5 +56,5 @@ public interface LinkService extends IService<Link> {
      * @param funcName 使用的链路预测方法
      * @return 预测存在的边（）
      */
-    List<LinkInfo> getPrediction(String dataName, String ratio, String funcName);
+    Map<String, Object> getPrediction(String dataName, String ratio, String funcName);
 }

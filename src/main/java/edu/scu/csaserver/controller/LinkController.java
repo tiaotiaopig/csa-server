@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 连接相关接口
@@ -114,5 +115,17 @@ public class LinkController {
     @GetMapping("/predict")
     public Res<List<LinkInfo>> linkPredictBy(@RequestParam("func") String func, @RequestParam("filename") String filename) {
         return Res.success(linkService.linkPredictByFunc(func, filename));
+    }
+
+    @ApiOperation(value = "根据文件和比例进行链路掩盖")
+    @GetMapping("/masked")
+    public Res<List<LinkInfo>> masked(@RequestParam("filename") String filename, @RequestParam("ratio") String ratio) {
+        return Res.success(linkService.getMasked(filename, ratio));
+    }
+
+    @ApiOperation(value = "在链路掩盖的基础上进行链路预测")
+    @GetMapping("/predict2")
+    public Res<Map<String, Object>> maskedAndPredict(@RequestParam("filename") String filename, @RequestParam("ratio") String ratio, @RequestParam("func") String funcName) {
+        return Res.success(linkService.getPrediction(filename, ratio, funcName));
     }
 }

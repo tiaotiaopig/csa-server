@@ -27,12 +27,12 @@ public class LinkPredictionUtil {
     }
 
     public static List<String> getMasked(String dataName, String ratio) {
-        String cmd = pythonFile + pythonFile + "1 " + dataName + " " + ratio;
+        String cmd = pythonPath + pythonFile + "1 " + dataName + " " + ratio;
         return exec(cmd);
     }
 
     public static List<String> getPrediction(String dataName, String ratio, String funcName) {
-        String cmd = pythonFile + pythonFile + "2 " + dataName + " " + ratio + " " + funcName;
+        String cmd = pythonPath + pythonFile + "2 " + dataName + " " + ratio + " " + funcName;
         return exec(cmd);
     }
 

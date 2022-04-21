@@ -17,7 +17,9 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -163,10 +165,13 @@ implements LinkService{
     }
 
     @Override
-    public List<LinkInfo> getPrediction(String dataName, String ratio, String funcName) {
+    public Map<String, Object> getPrediction(String dataName, String ratio, String funcName) {
+        // 不想封装啦，直接用Map得了
+        Map<String, Object> res = new HashMap<>();
         List<LinkInfo> list = new ArrayList<>();
         List<String> predicted = LinkPredictionUtil.getPrediction(dataName, ratio, funcName);
-        int len = predicted.size();
+        // 因为最后两个元素是auc和ap
+        int len = predicted.size() - 2;
         for (int index = 0; index < len; index += 3) {
             LinkInfo linkInfo = new LinkInfo();
             linkInfo.setSource("节点" + predicted.get(index));
@@ -174,7 +179,10 @@ implements LinkService{
             linkInfo.setWeight(predicted.get(index + 2));
             list.add(linkInfo);
         }
-        return list;
+        res.put("links", list);
+        res.put("auc", predicted.get(len));
+        res.put("ap", predicted.get(len + 1));
+        return res;
     }
 }
 
