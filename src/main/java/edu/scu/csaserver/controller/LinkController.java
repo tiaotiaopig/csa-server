@@ -126,6 +126,7 @@ public class LinkController {
     @ApiOperation(value = "在链路掩盖的基础上进行链路预测")
     @GetMapping("/predict2")
     public Res<Map<String, Object>> maskedAndPredict(@RequestParam("filename") String filename, @RequestParam("ratio") String ratio, @RequestParam("func") String funcName) {
-        return Res.success(linkService.getPrediction(filename, ratio, funcName));
+        Map<String, Object> res = linkService.getPrediction(filename, ratio, funcName);
+        return res == null ? Res.fail(400, "请求参数错误") : Res.success(res);
     }
 }

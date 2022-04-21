@@ -170,6 +170,7 @@ implements LinkService{
         Map<String, Object> res = new HashMap<>();
         List<LinkInfo> list = new ArrayList<>();
         List<String> predicted = LinkPredictionUtil.getPrediction(dataName, ratio, funcName);
+        if (predicted.size() == 0) return null;
         // 因为最后两个元素是auc和ap
         int len = predicted.size() - 2;
         for (int index = 0; index < len; index += 3) {
