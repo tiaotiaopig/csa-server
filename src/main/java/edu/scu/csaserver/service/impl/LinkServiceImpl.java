@@ -151,8 +151,14 @@ implements LinkService{
 
     @Override
     public List<LinkInfo> getMasked(String dataName, String ratio) {
+        HashOperations<String, Object, Object> opsForHash = redisTemplate.opsForHash();
+        if (opsForHash.hasKey(ratio, dataName)) {
+            // 遮盖比例作为键，图名作为二级键
+            return (List<LinkInfo>) opsForHash.get(ratio, dataName);
+        }
         List<LinkInfo> list = new ArrayList<>();
         List<String> masked = LinkPredictionUtil.getMasked(dataName, ratio);
+
         int len = masked.size();
         for (int index = 0; index < len; index += 2) {
             LinkInfo linkInfo = new LinkInfo();
@@ -161,12 +167,19 @@ implements LinkService{
             linkInfo.setWeight("0");
             list.add(linkInfo);
         }
+        opsForHash.put(ratio, dataName, list);
         return list;
     }
 
     @Override
     public Map<String, Object> getPrediction(String dataName, String ratio, String funcName) {
         // 不想封装啦，直接用Map得了
+        String key = ratio + dataName;
+        HashOperations<String, Object, Object> opsForHash = redisTemplate.opsForHash();
+        if (opsForHash.hasKey(key, funcName)) {
+            // 这里使用了比例+图名作为键，方法名作为二级键
+            return (Map<String, Object>) opsForHash.get(key, funcName);
+        }
         Map<String, Object> res = new HashMap<>();
         List<LinkInfo> list = new ArrayList<>();
         List<String> predicted = LinkPredictionUtil.getPrediction(dataName, ratio, funcName);
@@ -183,10 +196,7 @@ implements LinkService{
         res.put("links", list);
         res.put("auc", predicted.get(len));
         res.put("ap", predicted.get(len + 1));
+        opsForHash.put(key, funcName, res);
         return res;
     }
 }
-
-
-
-
