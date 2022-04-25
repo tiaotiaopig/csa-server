@@ -55,4 +55,11 @@ public class FileController {
             return Res.success(Arrays.asList("common_neighbor", "page_rank", "sim_rank"));
         }
     }
+
+    @GetMapping("/description")
+    @ApiOperation(value = "获取关键节点/链路预测方法的描述信息", notes = "参数是方法名")
+    public Res<String> getFuncDesc(@RequestParam("funcName") String funcName) {
+        String funcDes = fileService.readFuncDes(funcName);
+        return funcDes == null ? Res.fail(400, "请求错误，请检查") : Res.success(funcDes);
+    }
 }

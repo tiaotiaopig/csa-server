@@ -7,6 +7,7 @@ import java.util.List;
 public interface FileService {
 
     String filePath = "graph";
+    String desPath = "func_description";
 
     /**
      * 上传文件服务
@@ -27,4 +28,11 @@ public interface FileService {
      * @return 节点对列表
      */
     List<int[]> parseTxt(String filename);
+
+    /**
+     * 根据提供的方法名，读取相应的方法描述文本
+     * @param funcName
+     * @return
+     */
+    String readFuncDes(String funcName);
 }

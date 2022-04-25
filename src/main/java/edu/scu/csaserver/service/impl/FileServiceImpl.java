@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -89,5 +90,24 @@ public class FileServiceImpl implements FileService {
         for (Integer node : nodes) nodeArray[index++] = node;
         res.add(nodeArray);
         return res;
+    }
+
+    /**
+     * 根据提供的方法名，读取相应的方法描述文本
+     *
+     * @param funcName
+     * @return
+     */
+    @Override
+    public String readFuncDes(String funcName) {
+        String fileName = String.format("lp_%s.txt", funcName);
+        File file = new File(desPath, fileName);
+        String desc = null;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Files.newInputStream(file.toPath())))) {
+            desc = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return desc;
     }
 }
