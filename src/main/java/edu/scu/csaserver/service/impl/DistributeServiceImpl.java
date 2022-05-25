@@ -44,4 +44,17 @@ public class DistributeServiceImpl implements DistributeService {
         }
         return res;
     }
+
+    @Override
+    public Map<String, List<? extends Number>> edge_betweenness_centrality(String fileName) {
+        Map<String, List<? extends Number>> res;
+        HashOperations<String, Object, Object> opsForHash = redisTemplate.opsForHash();
+        String key = "edge_betweenness_centrality";
+        if (opsForHash.hasKey(key, fileName)) {
+            res = (Map<String, List<? extends Number>>) opsForHash.get(key, fileName);
+        } else {
+            res = DistributeUtil.edge_betweenness_centrality(fileName);
+        }
+        return res;
+    }
 }

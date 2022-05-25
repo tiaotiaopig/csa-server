@@ -29,6 +29,8 @@ public class GraphUtil {
             map.put("avg_degree", res.next());
             map.put("diameter", res.next());
             map.put("density", res.next());
+            map.put("radius", res.next());
+            map.put("avg_path_length", res.next());
             res.close();
             proc.waitFor();
         } catch (IOException | InterruptedException e) {

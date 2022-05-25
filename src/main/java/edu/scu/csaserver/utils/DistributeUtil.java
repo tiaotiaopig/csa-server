@@ -46,4 +46,23 @@ public class DistributeUtil {
         return map;
     }
 
+    public static Map<String, List<? extends Number>> edge_betweenness_centrality(String fileName) {
+        String cmd = pythonFile + fileName + " edge_betweenness_centrality";
+        List<String> res = PythonUtil.exec(cmd);
+        HashMap<String, List<? extends Number>> map = new HashMap<>();
+        List<Integer> source = new ArrayList<>();
+        List<Integer> target = new ArrayList<>();
+        List<Double> value = new ArrayList<>();
+        int len = res.size();
+        for (int id = 0; id < len; id += 3) {
+            source.add(Integer.parseInt(res.get(id)));
+            target.add(Integer.parseInt(res.get(id + 1)));
+            value.add(Double.parseDouble(res.get(id + 2)));
+        }
+        map.put("source", source);
+        map.put("target", target);
+        map.put("value", value);
+        return map;
+    }
+
 }

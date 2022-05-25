@@ -40,4 +40,10 @@ public class DistributeController {
     public Res<Map<String, List<Integer>>> getCommDis(@RequestParam("fileName") String fileName) {
         return Res.success(distributeService.community_distribute(fileName));
     }
+
+    @GetMapping("/edgeBetweenCentrality")
+    @ApiOperation(value = "获取边的接近中心性")
+    public Res<Map<String, List<? extends Number>>> getEdgeBetCen(@RequestParam("fileName") String fileName) {
+        return Res.success(distributeService.edge_betweenness_centrality(fileName));
+    }
 }

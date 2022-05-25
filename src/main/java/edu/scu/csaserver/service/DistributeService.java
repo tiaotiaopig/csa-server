@@ -15,5 +15,12 @@ public interface DistributeService {
      */
     Map<String, List<Integer>> degree_distribute(String fileName);
 
+    /**
+     * 获取某个图的社团分布信息
+     * @param fileName
+     * @return
+     */
     Map<String, List<Integer>> community_distribute(String fileName);
+
+    Map<String, List<? extends Number>> edge_betweenness_centrality(String fileName);
 }

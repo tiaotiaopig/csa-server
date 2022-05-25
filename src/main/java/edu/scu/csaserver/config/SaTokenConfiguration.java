@@ -16,7 +16,8 @@ import java.util.Collections;
  * @author lifeng
  * @date 2021/7/23 下午7:29
  */
-@Configuration
+// 展示让配置不生效
+//@Configuration
 public class SaTokenConfiguration implements WebMvcConfigurer {
 
     private StpUtil StpUserUtil;
@@ -30,7 +31,7 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:5500", "http://192.168.50.17:6688")
+//                .allowedOrigins("http://127.0.0.1:5500", "http://192.168.50.17:6688")
                 .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)
                 .maxAge(3600)
