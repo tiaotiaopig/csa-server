@@ -13,6 +13,7 @@ spring:
   redis:
     host: 192.168.50.17
     port: 6379
+    database: 1
 
   flyway:
     # 是否启用flyway

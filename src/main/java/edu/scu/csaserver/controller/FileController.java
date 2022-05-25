@@ -50,7 +50,7 @@ public class FileController {
     @ApiOperation(value = "获取所有关键节点/链路预测方法名称", notes = "选项为node或link")
     public Res<List<String>> getALLFunction(@PathVariable("choice") String choice) {
         if ("node".equals(choice)) {
-            return Res.success(Arrays.asList("D", "BC", "CC", "YY"));
+            return Res.success(Arrays.asList("D", "BC", "CC", "KNI_GCN"));
         } else {
             return Res.success(Arrays.asList("common_neighbor", "page_rank", "sim_rank", "attention_feature_fusion"));
         }
