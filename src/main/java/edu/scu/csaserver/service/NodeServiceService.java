@@ -2,11 +2,10 @@ package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.NodeService;
 import com.baomidou.mybatisplus.extension.service.IService;
-import edu.scu.csaserver.vo.Count;
-import edu.scu.csaserver.vo.ServiceCount;
+import edu.scu.csaserver.domain.vo.Count;
+import edu.scu.csaserver.domain.vo.ServiceCount;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 我们有个实体类也叫 service

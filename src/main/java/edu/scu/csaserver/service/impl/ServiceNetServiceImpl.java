@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.ServiceNet;
 import edu.scu.csaserver.service.ServiceNetService;
 import edu.scu.csaserver.mapper.ServiceNetMapper;
-import edu.scu.csaserver.vo.Count;
+import edu.scu.csaserver.domain.vo.Count;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

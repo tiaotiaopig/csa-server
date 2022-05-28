@@ -2,9 +2,9 @@ package edu.scu.csaserver.controller;
 
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.service.SituationService;
-import edu.scu.csaserver.vo.NodeNormal;
-import edu.scu.csaserver.vo.Res;
-import edu.scu.csaserver.vo.TopoElem;
+import edu.scu.csaserver.domain.vo.NodeNormal;
+import edu.scu.csaserver.domain.vo.Res;
+import edu.scu.csaserver.domain.vo.TopoElem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

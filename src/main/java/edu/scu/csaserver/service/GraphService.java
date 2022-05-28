@@ -1,6 +1,6 @@
 package edu.scu.csaserver.service;
 
-import edu.scu.csaserver.vo.Graph;
+import edu.scu.csaserver.domain.vo.Graph;
 
 import java.util.HashMap;
 

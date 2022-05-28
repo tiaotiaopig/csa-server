@@ -1,6 +1,5 @@
-package edu.scu.csaserver.vo;
+package edu.scu.csaserver.domain.vo;
 
-import edu.scu.csaserver.domain.Node;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package edu.scu.csaserver.ro;
+package edu.scu.csaserver.domain.ro;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -2,7 +2,7 @@ package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.ServiceNet;
 import com.baomidou.mybatisplus.extension.service.IService;
-import edu.scu.csaserver.vo.Count;
+import edu.scu.csaserver.domain.vo.Count;
 
 import java.util.List;
 

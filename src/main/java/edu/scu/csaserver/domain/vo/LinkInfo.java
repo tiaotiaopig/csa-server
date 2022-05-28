@@ -1,4 +1,4 @@
-package edu.scu.csaserver.vo;
+package edu.scu.csaserver.domain.vo;
 
 import edu.scu.csaserver.domain.Link;
 import io.swagger.annotations.Api;

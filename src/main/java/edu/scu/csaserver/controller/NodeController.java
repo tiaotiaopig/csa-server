@@ -1,13 +1,13 @@
 package edu.scu.csaserver.controller;
 
 import edu.scu.csaserver.domain.Node;
-import edu.scu.csaserver.ro.AddedNode;
-import edu.scu.csaserver.ro.Req;
+import edu.scu.csaserver.domain.ro.AddedNode;
+import edu.scu.csaserver.domain.ro.Req;
 import edu.scu.csaserver.service.NodeService;
-import edu.scu.csaserver.vo.Count;
-import edu.scu.csaserver.vo.NodeList;
-import edu.scu.csaserver.vo.Res;
-import edu.scu.csaserver.vo.ServiceVul;
+import edu.scu.csaserver.domain.vo.Count;
+import edu.scu.csaserver.domain.vo.NodeList;
+import edu.scu.csaserver.domain.vo.Res;
+import edu.scu.csaserver.domain.vo.ServiceVul;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

@@ -9,10 +9,8 @@ import edu.scu.csaserver.situation.NodeProcess;
 import edu.scu.csaserver.situation.PhysicalTransmission;
 import edu.scu.csaserver.situation.TopologyStructure;
 import edu.scu.csaserver.utils.KeyNodePath;
-import edu.scu.csaserver.vo.NodeNormal;
-import edu.scu.csaserver.vo.TopoElem;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import edu.scu.csaserver.domain.vo.NodeNormal;
+import edu.scu.csaserver.domain.vo.TopoElem;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

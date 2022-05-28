@@ -2,7 +2,7 @@ package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.Link;
 import com.baomidou.mybatisplus.extension.service.IService;
-import edu.scu.csaserver.vo.LinkInfo;
+import edu.scu.csaserver.domain.vo.LinkInfo;
 
 import java.util.List;
 import java.util.Map;

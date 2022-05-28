@@ -1,7 +1,7 @@
 package edu.scu.csaserver.mapper;
 
 import edu.scu.csaserver.domain.ServiceNet;
-import edu.scu.csaserver.vo.Count;
+import edu.scu.csaserver.domain.vo.Count;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

@@ -1,13 +1,12 @@
 package edu.scu.csaserver.controller;
 
 import edu.scu.csaserver.domain.Link;
-import edu.scu.csaserver.domain.SubNetworkLink;
-import edu.scu.csaserver.ro.AddLink;
-import edu.scu.csaserver.ro.AddedNode;
-import edu.scu.csaserver.ro.Req;
+import edu.scu.csaserver.domain.ro.AddLink;
+import edu.scu.csaserver.domain.ro.Req;
+import edu.scu.csaserver.domain.vo.LinkInfo;
+import edu.scu.csaserver.domain.vo.Page;
+import edu.scu.csaserver.domain.vo.Res;
 import edu.scu.csaserver.service.LinkService;
-import edu.scu.csaserver.service.SubNetworkLinkService;
-import edu.scu.csaserver.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

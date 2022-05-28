@@ -21,7 +21,7 @@
         gmt_create,gmt_modified
     </sql>
 
-    <select id="getByServicePortCount" resultType="edu.scu.csaserver.vo.Count">
+    <select id="getByServicePortCount" resultType="edu.scu.csaserver.domain.vo.Count">
         SELECT
             b.service_port AS count_name,
             COUNT(a.node_id) AS count_value
@@ -34,7 +34,7 @@
             b.service_port
     </select>
 
-    <select id="getNodeSafetyCount" resultType="edu.scu.csaserver.vo.Count">
+    <select id="getNodeSafetyCount" resultType="edu.scu.csaserver.domain.vo.Count">
         SELECT
             a.service_safety_level AS count_name,
             COUNT(DISTINCT b.node_id) AS count_value

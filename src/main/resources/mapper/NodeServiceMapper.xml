@@ -36,7 +36,7 @@
             a.id = b.service_id;
     </select>
 
-    <select id="serviceVulCount" resultType="edu.scu.csaserver.vo.Count">
+    <select id="serviceVulCount" resultType="edu.scu.csaserver.domain.vo.Count">
         WITH vulnerability_count ( service_id, running_num ) AS (
             SELECT
                 service_id,

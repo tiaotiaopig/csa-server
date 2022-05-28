@@ -1,13 +1,11 @@
 package edu.scu.csaserver.controller;
 
-import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.session.SaSessionCustomUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import com.wf.captcha.GifCaptcha;
-import edu.scu.csaserver.ro.LoginUser;
-import edu.scu.csaserver.ro.Req;
-import edu.scu.csaserver.vo.LoginInfo;
-import edu.scu.csaserver.vo.Res;
+import edu.scu.csaserver.domain.ro.LoginUser;
+import edu.scu.csaserver.domain.ro.Req;
+import edu.scu.csaserver.domain.vo.LoginInfo;
+import edu.scu.csaserver.domain.vo.Res;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.Random;
 
 /**
  * 我们来简单实现一下认证功能

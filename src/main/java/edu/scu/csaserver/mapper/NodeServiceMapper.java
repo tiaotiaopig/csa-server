@@ -2,13 +2,11 @@ package edu.scu.csaserver.mapper;
 
 import edu.scu.csaserver.domain.NodeService;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import edu.scu.csaserver.vo.Count;
-import edu.scu.csaserver.vo.ServiceCount;
-import org.apache.ibatis.annotations.MapKey;
+import edu.scu.csaserver.domain.vo.Count;
+import edu.scu.csaserver.domain.vo.ServiceCount;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Entity edu.scu.csaserver.domain.NodeService

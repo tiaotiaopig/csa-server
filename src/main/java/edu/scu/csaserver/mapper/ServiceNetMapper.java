@@ -2,7 +2,7 @@ package edu.scu.csaserver.mapper;
 
 import edu.scu.csaserver.domain.ServiceNet;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import edu.scu.csaserver.vo.Count;
+import edu.scu.csaserver.domain.vo.Count;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,16 +1,14 @@
 package edu.scu.csaserver.controller;
 
 import edu.scu.csaserver.service.GraphService;
-import edu.scu.csaserver.vo.Graph;
-import edu.scu.csaserver.vo.Res;
+import edu.scu.csaserver.domain.vo.Graph;
+import edu.scu.csaserver.domain.vo.Res;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * 拓扑图相关接口

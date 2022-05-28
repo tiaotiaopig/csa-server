@@ -1,8 +1,8 @@
 package edu.scu.csaserver.service;
 
 import edu.scu.csaserver.domain.Link;
-import edu.scu.csaserver.vo.NodeNormal;
-import edu.scu.csaserver.vo.TopoElem;
+import edu.scu.csaserver.domain.vo.NodeNormal;
+import edu.scu.csaserver.domain.vo.TopoElem;
 
 /**
  * 计算网络效能态势的业务逻辑

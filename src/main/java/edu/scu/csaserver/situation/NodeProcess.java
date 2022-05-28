@@ -1,7 +1,7 @@
 package edu.scu.csaserver.situation;
 
 import edu.scu.csaserver.domain.Node;
-import edu.scu.csaserver.vo.NodeNormal;
+import edu.scu.csaserver.domain.vo.NodeNormal;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package edu.scu.csaserver.vo;
+package edu.scu.csaserver.domain.vo;
 
 /**
  * Sa中对前端响应的封装

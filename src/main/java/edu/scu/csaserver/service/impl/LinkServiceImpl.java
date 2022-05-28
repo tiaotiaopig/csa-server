@@ -3,17 +3,15 @@ package edu.scu.csaserver.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.scu.csaserver.domain.Link;
-import edu.scu.csaserver.domain.Node;
 import edu.scu.csaserver.domain.SubNetworkLink;
 import edu.scu.csaserver.mapper.SubNetworkLinkMapper;
 import edu.scu.csaserver.service.LinkService;
 import edu.scu.csaserver.mapper.LinkMapper;
 import edu.scu.csaserver.utils.LinkPredictionUtil;
-import edu.scu.csaserver.vo.LinkInfo;
+import edu.scu.csaserver.domain.vo.LinkInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

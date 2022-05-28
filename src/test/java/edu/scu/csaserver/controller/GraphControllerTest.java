@@ -1,6 +1,5 @@
 package edu.scu.csaserver.controller;
 
-import edu.scu.csaserver.vo.Res;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

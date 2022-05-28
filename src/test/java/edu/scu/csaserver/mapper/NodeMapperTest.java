@@ -1,16 +1,14 @@
 package edu.scu.csaserver.mapper;
 
 import edu.scu.csaserver.domain.Node;
-import edu.scu.csaserver.vo.Count;
-import edu.scu.csaserver.vo.NodeVul;
+import edu.scu.csaserver.domain.vo.Count;
+import edu.scu.csaserver.domain.vo.NodeVul;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class NodeMapperTest {

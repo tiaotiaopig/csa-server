@@ -1,7 +1,7 @@
 package edu.scu.csaserver.controller;
 
 import edu.scu.csaserver.service.FileService;
-import edu.scu.csaserver.vo.Res;
+import edu.scu.csaserver.domain.vo.Res;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

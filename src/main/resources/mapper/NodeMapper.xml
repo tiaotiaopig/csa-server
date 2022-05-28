@@ -42,7 +42,7 @@
         select max(id) from node;
     </select>
 
-    <select id="getPhysicalTypeCount" resultType="edu.scu.csaserver.vo.Count">
+    <select id="getPhysicalTypeCount" resultType="edu.scu.csaserver.domain.vo.Count">
         SELECT
             node.physical_type AS count_name,
             COUNT( physical_type ) AS count_value
@@ -52,7 +52,7 @@
             node.physical_type;
     </select>
 
-    <select id="getLogicalTypeCount" resultType="edu.scu.csaserver.vo.Count">
+    <select id="getLogicalTypeCount" resultType="edu.scu.csaserver.domain.vo.Count">
         SELECT
             node.logical_type AS count_name,
             COUNT( logical_type ) AS count_value
@@ -62,7 +62,7 @@
             node.logical_type;
     </select>
 
-    <select id="getServiceVulCount" resultType="edu.scu.csaserver.vo.Count">
+    <select id="getServiceVulCount" resultType="edu.scu.csaserver.domain.vo.Count">
         SELECT
             a.node_id AS count_name,
             SUM( b.service_vulnerability_sum ) AS count_value
@@ -77,7 +77,7 @@
             count_value desc
     </select>
 
-    <select id="getNodeVulNum" resultType="edu.scu.csaserver.vo.NodeVul">
+    <select id="getNodeVulNum" resultType="edu.scu.csaserver.domain.vo.NodeVul">
         SELECT
             a.node_name,
             c.id AS service_id,
