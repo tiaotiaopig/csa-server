@@ -1,10 +1,9 @@
 package edu.scu.csaserver.service.impl;
 
+import edu.scu.csaserver.cachedao.DistributeCacheDAO;
 import edu.scu.csaserver.service.DistributeService;
 import edu.scu.csaserver.utils.DistributeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,16 +17,17 @@ import java.util.Map;
 @Service
 public class DistributeServiceImpl implements DistributeService {
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final DistributeCacheDAO distributeCacheDAO;
+
+    public DistributeServiceImpl(DistributeCacheDAO distributeCacheDAO) {
+        this.distributeCacheDAO = distributeCacheDAO;
+    }
     @Override
     public Map<String, List<Integer>> degree_distribute(String fileName) {
         Map<String, List<Integer>> res;
-        HashOperations<String, Object, Object> opsForHash = redisTemplate.opsForHash();
-        String key = "degree_distribute";
-        if (opsForHash.hasKey(key, fileName)) {
-            res = (Map<String, List<Integer>>) opsForHash.get(key, fileName);
-        } else {
+        if ((res = distributeCacheDAO.getDegreeDis(fileName)) == null) {
             res = DistributeUtil.degree_distribute(fileName);
+            distributeCacheDAO.setDegreeDis(fileName, res);
         }
         return res;
     }
@@ -35,12 +35,9 @@ public class DistributeServiceImpl implements DistributeService {
     @Override
     public Map<String, List<Integer>> community_distribute(String fileName) {
         Map<String, List<Integer>> res;
-        HashOperations<String, Object, Object> opsForHash = redisTemplate.opsForHash();
-        String key = "community_distribute";
-        if (opsForHash.hasKey(key, fileName)) {
-            res = (Map<String, List<Integer>>) opsForHash.get(key, fileName);
-        } else {
+        if ((res = distributeCacheDAO.getCommDis(fileName)) == null) {
             res = DistributeUtil.community_distribute(fileName);
+            distributeCacheDAO.setCommDis(fileName, res);
         }
         return res;
     }
@@ -48,12 +45,9 @@ public class DistributeServiceImpl implements DistributeService {
     @Override
     public Map<String, List<? extends Number>> edge_betweenness_centrality(String fileName) {
         Map<String, List<? extends Number>> res;
-        HashOperations<String, Object, Object> opsForHash = redisTemplate.opsForHash();
-        String key = "edge_betweenness_centrality";
-        if (opsForHash.hasKey(key, fileName)) {
-            res = (Map<String, List<? extends Number>>) opsForHash.get(key, fileName);
-        } else {
+        if ((res = distributeCacheDAO.getLinkBC(fileName)) == null) {
             res = DistributeUtil.edge_betweenness_centrality(fileName);
+            distributeCacheDAO.setLinkBC(fileName, res);
         }
         return res;
     }
