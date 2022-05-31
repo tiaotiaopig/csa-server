@@ -1,5 +1,7 @@
 package edu.scu.csaserver.service.impl;
 
+import edu.scu.csaserver.cachedao.GraphCacheDAO;
+import edu.scu.csaserver.constant.GraphKey;
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.domain.Node;
 import edu.scu.csaserver.domain.SubNetwork;
@@ -38,7 +40,15 @@ public class GraphServiceImpl implements GraphService {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private GraphCacheDAO graphCacheDAO;
+
+    /**
+     * 获取存在MySQL的原始拓扑图,现已废弃
+     * @return
+     */
     @Override
+    @Deprecated
     public Graph generateGraph() {
         Graph graph = new Graph();
         HashMap<Integer, String> map = new HashMap<>();
@@ -93,15 +103,22 @@ public class GraphServiceImpl implements GraphService {
      */
     @Override
     public Graph generateGraph(String filename) {
-        Graph graph = new Graph();
-        List<int[]> parseRes;
-        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
-        if (hash.hasKey("graph", filename)) {
-            parseRes = (List<int[]>) hash.get("graph", filename);
-        } else {
-            parseRes = fileService.parseTxt(filename);
-            hash.put("graph", filename, parseRes);
+        Graph graph;
+        if ((graph = graphCacheDAO.getGraph(filename)) == null) {
+            graph = getGraphFromText(filename);
+            graphCacheDAO.setGraph(filename, graph);
         }
+        return graph;
+    }
+
+    /**
+     * 把解析文本并封装成Graph对象的逻辑提取出来
+     * @param filename
+     * @return
+     */
+    private Graph getGraphFromText(String filename) {
+        Graph graph = new Graph();
+        List<int[]> parseRes = fileService.parseTxt(filename);
         int len = parseRes.size();
         // 先填充边信息
         int[] link, nodes;
@@ -130,15 +147,10 @@ public class GraphServiceImpl implements GraphService {
      */
     @Override
     public HashMap<String, String> getGraphInfo(String filename) {
-        String key = "graphCount";
         HashMap<String, String> graphCount;
-        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
-        if (hash.hasKey(key, filename)) {
-            graphCount = (HashMap<String, String>) hash.get(key, filename);
-//            redisTemplate.expire(key, 60, TimeUnit.SECONDS);
-        } else {
+        if ((graphCount = graphCacheDAO.getGraphCount(filename)) == null) {
             graphCount = GraphUtil.graphCount(filename);
-            hash.put(key, filename, graphCount);
+            graphCacheDAO.setGraphCount(filename, graphCount);
         }
         return graphCount;
     }

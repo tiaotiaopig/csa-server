@@ -2,6 +2,7 @@ package edu.scu.csaserver.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import edu.scu.csaserver.cachedao.GraphCacheDAO;
 import edu.scu.csaserver.domain.Link;
 import edu.scu.csaserver.domain.SubNetworkLink;
 import edu.scu.csaserver.mapper.SubNetworkLinkMapper;
@@ -34,6 +35,9 @@ implements LinkService{
     private SubNetworkLinkMapper subNetworkLinkMapper;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private GraphCacheDAO graphCacheDAO;
 
     @Override
     public List<LinkInfo> getLinksByNodeId(List<Integer> nodes) {
@@ -120,12 +124,13 @@ implements LinkService{
 
     /**
      * 根据方法名和文件名,调用对应的链路预测算法,返回10%预测为存在的边
-     *
+     * 默认的掩盖比例是50%,现已废弃
      * @param func 要调用的方法名
      * @param filename 拓扑图的名称
      * @return 10%预测为存在的边
      */
     @Override
+    @Deprecated
     public List<LinkInfo> linkPredictByFunc(String func, String filename) {
         List<LinkInfo> links;
         HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
@@ -147,15 +152,25 @@ implements LinkService{
         return links;
     }
 
+    /**
+     * 对指定的名称的图,使用指定的掩盖比例进行隐藏,并返回掩盖的边
+     * @param filename 图名称
+     * @param ratio 掩盖比例
+     * @return
+     */
     @Override
-    public List<LinkInfo> getMasked(String dataName, String ratio) {
-        HashOperations<String, Object, Object> opsForHash = redisTemplate.opsForHash();
-        if (opsForHash.hasKey(ratio, dataName)) {
-            // 遮盖比例作为键，图名作为二级键
-            return (List<LinkInfo>) opsForHash.get(ratio, dataName);
+    public List<LinkInfo> getMasked(String ratio, String filename) {
+        List<LinkInfo> maskedLinks;
+        if ((maskedLinks = graphCacheDAO.getMaskedLinks(ratio, filename)) == null) {
+            maskedLinks = getMaskedByOp(filename, ratio);
+            graphCacheDAO.setMaskedLinks(ratio, filename, maskedLinks);
         }
+        return maskedLinks;
+    }
+
+    private List<LinkInfo> getMaskedByOp(String ratio, String filename) {
         List<LinkInfo> list = new ArrayList<>();
-        List<String> masked = LinkPredictionUtil.getMasked(dataName, ratio);
+        List<String> masked = LinkPredictionUtil.getMasked(filename, ratio);
 
         int len = masked.size();
         for (int index = 0; index < len; index += 2) {
@@ -165,22 +180,24 @@ implements LinkService{
             linkInfo.setWeight("0");
             list.add(linkInfo);
         }
-        opsForHash.put(ratio, dataName, list);
         return list;
     }
 
     @Override
-    public Map<String, Object> getPrediction(String dataName, String ratio, String funcName) {
+    public Map<String, Object> getPrediction(String filename, String ratio, String funcName) {
         // 不想封装啦，直接用Map得了
-        String key = ratio + dataName;
-        HashOperations<String, Object, Object> opsForHash = redisTemplate.opsForHash();
-        if (opsForHash.hasKey(key, funcName)) {
-            // 这里使用了比例+图名作为键，方法名作为二级键
-            return (Map<String, Object>) opsForHash.get(key, funcName);
+        Map<String, Object> predictRes;
+        if ((predictRes = graphCacheDAO.getPredictCache(ratio, filename, funcName)) == null) {
+            predictRes = getPredictionByOp(filename, ratio, funcName);
+            graphCacheDAO.setPredictCache(ratio, filename, funcName, predictRes);
         }
+        return predictRes;
+    }
+
+    private Map<String, Object> getPredictionByOp(String filename, String ratio, String funcName) {
         Map<String, Object> res = new HashMap<>();
         List<LinkInfo> list = new ArrayList<>();
-        List<String> predicted = LinkPredictionUtil.getPrediction(dataName, ratio, funcName);
+        List<String> predicted = LinkPredictionUtil.getPrediction(filename, ratio, funcName);
         if (predicted.size() == 0) return null;
         // 因为最后两个元素是auc和ap
         int len = predicted.size() - 2;
@@ -194,7 +211,6 @@ implements LinkService{
         res.put("links", list);
         res.put("auc", predicted.get(len));
         res.put("ap", predicted.get(len + 1));
-        opsForHash.put(key, funcName, res);
         return res;
     }
 }

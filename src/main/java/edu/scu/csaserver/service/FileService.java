@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface FileService {
 
-    String filePath = "graph";
-    String desPath = "func_description";
+    String filePath = "/home/lifeng/Develop/backend/csa/graph";
+    String desPath = "/home/lifeng/Develop/backend/csa/func_description";
 
     /**
      * 上传文件服务

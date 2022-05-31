@@ -1,0 +1,59 @@
+server:
+  port: 17788
+
+spring:
+  datasource:
+    # mysql配置
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.50.17:33061/csa?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: root
+    password: csa123
+
+  # redis配置
+  redis:
+    host: 192.168.50.17
+    port: 6379
+    database: 2
+    client-type: lettuce # 使用jedis会bean找不到,实际是可以的
+
+  flyway:
+    # 是否启用flyway
+    enabled: true
+    # 编码格式，默认UTF-8
+    encoding: UTF-8
+    # 迁移sql脚本文件存放路径，默认db/migration
+    locations: classpath:db/migration
+    # 迁移sql脚本文件名称的前缀，默认V
+    sql-migration-prefix: V
+    # 迁移sql脚本文件名称的分隔符，默认2个下划线__
+    sql-migration-separator: __
+    # 迁移sql脚本文件名称的后缀
+    sql-migration-suffixes: .sql
+    # 迁移时是否进行校验，默认true
+    validate-on-migrate: true
+    # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
+    baseline-on-migrate: true
+
+mybatis-plus:
+  # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，
+  # 注册后在 Mapper 对应的 XML 文件中可以直接使用类名，
+  # 而不用使用全限定的类名(即 XML 中调用的时候不用包含包名
+
+  type-aliases-package: edu.scu.csaserver.domain, edu.scu.csaserver.vo
+
+# Sa-Token配置
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: satoken
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false

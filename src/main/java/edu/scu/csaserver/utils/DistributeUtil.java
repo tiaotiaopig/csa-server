@@ -1,5 +1,7 @@
 package edu.scu.csaserver.utils;
 
+import edu.scu.csaserver.constant.PythonExec;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +14,11 @@ import java.util.Map;
  */
 public class DistributeUtil {
 
-    private final static String pythonFile = "pyfile/distribution.py ";
+    private final static String pythonFile = PythonExec.DIS.getEXEC();
 
     public static Map<String, List<Integer>> degree_distribute(String fileName) {
-        String cmd = pythonFile + fileName + " degree_distribute";
+//        String cmd = pythonFile + fileName + " degree_distribute";
+        String cmd = String.format(pythonFile, fileName, "degree_distribute");
         List<String> res = PythonUtil.exec(cmd);
         HashMap<String, List<Integer>> map = new HashMap<>();
         List<Integer> degree = new ArrayList<>();
@@ -31,7 +34,8 @@ public class DistributeUtil {
     }
 
     public static Map<String, List<Integer>> community_distribute(String fileName) {
-        String cmd = pythonFile + fileName + " community_distribute";
+//        String cmd = pythonFile + fileName + " community_distribute";
+        String cmd = String.format(pythonFile, fileName, "community_distribute");
         List<String> res = PythonUtil.exec(cmd);
         HashMap<String, List<Integer>> map = new HashMap<>();
         List<Integer> community = new ArrayList<>();
@@ -47,7 +51,8 @@ public class DistributeUtil {
     }
 
     public static Map<String, List<? extends Number>> edge_betweenness_centrality(String fileName) {
-        String cmd = pythonFile + fileName + " edge_betweenness_centrality";
+//        String cmd = pythonFile + fileName + " edge_betweenness_centrality";
+        String cmd = String.format(pythonFile, fileName, "edge_betweenness_centrality");
         List<String> res = PythonUtil.exec(cmd);
         HashMap<String, List<? extends Number>> map = new HashMap<>();
         List<Integer> source = new ArrayList<>();

@@ -1,9 +1,8 @@
 package edu.scu.csaserver.utils;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import edu.scu.csaserver.constant.PythonExec;
+
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * 使用java调用若干链路预测算法
@@ -11,8 +10,8 @@ import java.util.Scanner;
  * @date 2022/3/24 22:16
  */
 public class LinkPredictionUtil {
-    private final static String pythonFile = "pyfile/mask_predict.py ";
-    private final static String pythonFile2 = "pyfile/LinkPrediction.py ";
+    private final static String pythonFile = PythonExec.PREDICT.getEXEC();
+    private final static String pythonFile2 = "/home/lifeng/Develop/backend/csa/pyfile/LinkPrediction.py ";
 
     /**
      * 使用链路预测算法 func 计算 path 图的存在链路（取前10%）
@@ -26,12 +25,14 @@ public class LinkPredictionUtil {
     }
 
     public static List<String> getMasked(String dataName, String ratio) {
-        String cmd = pythonFile + "1 " + dataName + " " + ratio;
+//        String cmd = pythonFile + "1 " + dataName + " " + ratio;
+        String cmd = String.format(pythonFile, "mask", dataName, ratio, "None");
         return PythonUtil.exec(cmd);
     }
 
     public static List<String> getPrediction(String dataName, String ratio, String funcName) {
-        String cmd = pythonFile + "2 " + dataName + " " + ratio + " " + funcName;
+//        String cmd = pythonFile + "2 " + dataName + " " + ratio + " " + funcName;
+        String cmd = String.format(pythonFile, "predict", dataName, ratio, funcName);
         return PythonUtil.exec(cmd);
     }
 }
